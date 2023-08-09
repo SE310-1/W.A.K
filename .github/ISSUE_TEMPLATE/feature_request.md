@@ -10,9 +10,6 @@ assignees: ''
 **What Is your feature request? Please describe.**
 A clear and concise description of what the feature is.
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
-
 **What is the need of this feature?**
 A clear and concise description of why this feature is required.
 

@@ -4,10 +4,35 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     <title>Vite + React</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
+
+  <body>
+  <div class="share-btn-container">
+    <a href="https://www.facebook.com/sharer.php?u=[post-url]">
+      <i class="fab fa-facebook"></i>
+    </a>
+    <a href="https://twitter.com/share?url=[post-url]&text=[post-title]">
+      <i class="fab fa-twitter"></i>
+    </a>
+    <a href="https://pinterest.com/pin/create/bookmarklet/?media=[post-img]&url=[post-url]&description=[post-title]">
+      <i class="fab fa-pinterest"></i>
+    </a>
+    <a href="https://www.linkedin.com/shareArticle?url=[post-url]&title=[post-title]">
+      <i class="fab fa-linkedin"></i>
+    </a>
+    <a href="https://api.whatsapp.com/send?text=[post-title] [post-url]">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+  </div>
+  </body>
+
 </html>

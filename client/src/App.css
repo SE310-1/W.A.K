@@ -5,7 +5,22 @@
   text-align: center;
 }
 
-/* Add these styles for the share button */
+/* Updated shared buttons, main shapes positions and styles css */
+.share-btn-container {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Add these styles for the share button
+Smooth Animated motion for better user experience
+*/
+
 .share-button {
   display: flex;
   justify-content: center;
@@ -30,34 +45,8 @@
   background-color: #0056b3;
 }
 
-/* Individual styles for each button */
-.twitter-button {
-  background-color: #1da1f2;
-}
-
-.facebook-button {
-  background-color: #1877f2;
-}
-
-.instagram-button {
-  background-color: #e1306c;
-}
-
-
-/* Updated shared buttons, main shapes positions and styles css */
-.share-btn-container {
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
 /* Animated motions and colours css */
-.share-btn-container a i{
+.share-btn-container a i {
   font-size: 32px;
 }
 
@@ -65,11 +54,11 @@
   margin: 12px 0;
 }
 
-.share-btn-container a{ //
+.share-btn-container a{
   transition: 500ms;
 }
 
-.share-btn-container a:hover{ //
+.share-btn-container a:hover{
   transform:scale(1.2);
 }
 
@@ -85,8 +74,8 @@
   color : #e60023;
 }
 
-.share-btn-container .fa-linkedin {
-  color : #0a66c2;
+.share-btn-container .fa-reddit {
+  color : #5f99cf;
 }
 
 .share-btn-container .fa-whatsapp {

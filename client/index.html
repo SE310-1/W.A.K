@@ -32,6 +32,20 @@
 </div>
 
 <script>
+  // Initially hide the icons
+  const icons = document.querySelectorAll(".share-btn-container a i");
+  icons.forEach(icon => {
+    icon.style.display = "none";
+  });
+
+  // Show the icons after the page has loaded
+  document.addEventListener("DOMContentLoaded", function() {
+    icons.forEach(icon => {
+      icon.style.display = "inline";
+    });
+  });
+
+  // Your existing share link generation code
   const postUrl = encodeURIComponent(window.location.href);
   const postTitle = document.title;
   const postImgElement = document.querySelector('meta[property="og:image"]');
@@ -54,5 +68,4 @@
 </script>
 </body>
 </html>
-
 

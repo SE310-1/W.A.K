@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
 import './App.css'
 import axios from "axios";
+import SearchBarComponent from './Components/searchBar';
 
 function App() {
     const [backendData, setBackendData] = useState([{}])
@@ -16,13 +17,15 @@ function App() {
     }, []);
 
     return (
-        <>
+        <div>
+            <SearchBarComponent />
             {backendData.movies && backendData.movies.map((movie, i) => (
                 <div key={i}>
                     <h1>{movie}</h1>
                 </div>
             ))}
-        </>
+        </div>
+        
     )
 }
 

@@ -14,7 +14,7 @@ function App() {
         };
         fetchData().then(r => setBackendData(r));
     }, []);
-
+    
     return (
         <>
             {backendData.movies && backendData.movies.map((movie, i) => (
@@ -25,6 +25,5 @@ function App() {
         </>
     )
 }
-
 
 export default App

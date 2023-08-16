@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SearchBar from '@mkyy/mui-search-bar';
 
 
 const SearchBarComponent = () => {
   const [textFieldValue, setTextFieldValue] = useState('');
 
-  const handleSearch = (query: string) => {
+  const handleSearch = () => {
     // Handle the search logic here
   };
 

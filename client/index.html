@@ -1,13 +1,71 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Vite + React</title>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/vite.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <title>Vite + React</title>
 </head>
 <body>
 <div id="root"></div>
 <script type="module" src="/src/main.jsx"></script>
+
+<!-- Shared button's body structures and where it retrieves its data -->
+<div class="share-btn-container">
+  <a id="facebook-share">
+    <i class="fab fa-facebook"></i>
+  </a>
+  <a id="twitter-share">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a id="pinterest-share">
+    <i class="fab fa-pinterest"></i>
+  </a>
+  <a id="whatsapp-share">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  <a id="reddit-share">
+    <i class="fab fa-reddit"></i>
+  </a>
+</div>
+
+<script>
+  // Initially hide the icons
+  const icons = document.querySelectorAll(".share-btn-container a i");
+  icons.forEach(icon => {
+    icon.style.display = "none";
+  });
+
+  // Show the icons after the page has loaded
+  document.addEventListener("DOMContentLoaded", function() {
+    icons.forEach(icon => {
+      icon.style.display = "inline";
+    });
+  });
+
+  // Your existing share link generation code
+  const postUrl = encodeURIComponent(window.location.href);
+  const postTitle = document.title;
+  const postImgElement = document.querySelector('meta[property="og:image"]');
+  const postImg = postImgElement ? postImgElement.getAttribute("content") : "";
+
+  const facebookShareLink = "https://www.facebook.com/sharer.php?u=" + postUrl;
+  document.getElementById("facebook-share").href = facebookShareLink;
+
+  const twitterShareLink = "https://twitter.com/share?url=" + postUrl + "&text=" + postTitle;
+  document.getElementById("twitter-share").href = twitterShareLink;
+
+  const pinterestShareLink = "https://pinterest.com/pin/create/bookmarklet/?media=" + postImg + "&url=" + postUrl + "&description=" + postTitle;
+  document.getElementById("pinterest-share").href = pinterestShareLink;
+
+  const whatsappShareLink = "https://api.whatsapp.com/send?text=" + postTitle + " " + postUrl;
+  document.getElementById("whatsapp-share").href = whatsappShareLink;
+
+  const redditShareLink = "https://reddit.com/submit?url=" + postUrl + "&title=" + postTitle;
+  document.getElementById("reddit-share").href = redditShareLink;
+</script>
 </body>
 </html>
+

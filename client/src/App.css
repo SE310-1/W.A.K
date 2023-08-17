@@ -1,7 +1,111 @@
+/* App.css */
 #root {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
+
+/* Updated shared buttons, main shapes positions and styles css */
+.share-btn-container {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Add these styles for the share button
+Smooth Animated motion for better user experience
+*/
+
+.share-button {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.share-button button {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 0 5px;
+  transition: background-color 0.3s ease;
+}
+
+.share-button button:hover {
+  background-color: #0056b3;
+}
+
+/* Animated motions and colours css */
+.share-btn-container a i {
+  font-size: 32px;
+}
+
+.share-btn-container a{
+  margin: 12px 0;
+}
+
+.share-btn-container a{
+  transition: 500ms;
+}
+
+.share-btn-container a:hover{
+  transform:scale(1.2);
+}
+
+.share-btn-container .fa-facebook {
+  color : #1877f2;
+}
+
+.share-btn-container .fa-twitter {
+  color : #1da1f2;
+}
+
+.share-btn-container .fa-pinterest {
+  color : #e60023;
+}
+
+.share-btn-container .fa-reddit {
+  color : #5f99cf;
+}
+
+.share-btn-container .fa-whatsapp {
+  color : #25d366;
+}
+
+/* Media Queries */
+
+@media (max-width: 550px) {
+  .content {
+    padding: 8px 32px;
+  }
+
+  .share-btn-container {
+    transform: unset;
+    top: unset;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    flex-direction: row;
+    box-shadow: 4px 0 8px rgba(0,0,0,0.3);
+    padding: 16px 0;
+    justify-content: center;
+  }
+
+  .share-btn-container a{
+    margin: 0 32px;
+  }
+
+}
+
 
 

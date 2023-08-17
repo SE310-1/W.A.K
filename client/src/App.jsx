@@ -1,50 +1,37 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import axios from 'axios';
-import SearchBar from '@mkyy/mui-search-bar';
+import {BrowserRouter, Navigate, Route, Routes,} from 'react-router-dom'
+import {useAuthContext} from './hooks/useAuthContext'
+import Navbar from "./Components/Navbar/index.jsx";
+import Login from "./Pages/Login/index.jsx";
+import Signup from "./Pages/Signup/index.jsx";
+import Home from "./Pages/Home/index.jsx";
+import './App.css'
 
 function App() {
-  const [backendData, setBackendData] = useState({ movies: [] });
-  const [textFieldValue, setTextFieldValue] = useState('');
-  const [filteredMovies, setFilteredMovies] = useState([]);
+    const {user} = useAuthContext()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(`${import.meta.env.VITE_BASE_API_URL}/test`);
-      return result.data;
-    };
-    fetchData().then((r) => setBackendData(r));
-  }, []);
-
-  useEffect(() => {
-    // Filter movies based on textFieldValue
-    const filtered = backendData.movies.filter((movie) =>
-      movie.toLowerCase().includes(textFieldValue.toLowerCase())
-    );
-    setFilteredMovies(filtered);
-  }, [textFieldValue, backendData.movies]);
-
-
-  return (
-    <div>
-      <SearchBar
-        style={{
-          backgroundColor: '#000000',
-          borderRadius: '8px',
-          border: '1px solid #ccc',
-        }}
-        value={textFieldValue}
-        onChange={(newValue) => {
-    setTextFieldValue(newValue);
-  }}
-      />
-      {filteredMovies.map((movie, i) => (
-        <div key={i}>
-          <h1>{movie}</h1>
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <Navbar/>
+                <div className="pages">
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={user ? <Home/> : <Navigate to="/login"/>}
+                        />
+                        <Route
+                            path="/login"
+                            element={!user ? <Login/> : <Navigate to="/"/>}
+                        />
+                        <Route
+                            path="/signup"
+                            element={!user ? <Signup/> : <Navigate to="/"/>}
+                        />
+                    </Routes>
+                </div>
+            </BrowserRouter>
         </div>
-      ))}
-    </div>
-  );
+    )
 }
 
 export default App;

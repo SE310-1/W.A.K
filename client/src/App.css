@@ -1,8 +1,18 @@
 /* App.css */
 #root {
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+    background: #ffe3e3;
+    height: 100vh;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: #111111;
 }
 
 /* Updated shared buttons, main shapes positions and styles css */
@@ -106,6 +116,5 @@ Smooth Animated motion for better user experience
   }
 
 }
-
 
 

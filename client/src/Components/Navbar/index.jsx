@@ -2,6 +2,7 @@ import {Link} from 'react-router-dom'
 import {useLogout} from "../../Hooks/useLogout.js";
 import { useAuthContext } from '../../Hooks/useAuthContext'
 import './style.css'
+import SearchBar from '@mkyy/mui-search-bar';
 
 const Navbar = () => {
     const { logout } = useLogout()
@@ -17,6 +18,7 @@ const Navbar = () => {
                 <Link to="/">
                     <h1>W.A.K</h1>
                 </Link>
+                <SearchBar/>
                 <nav>
                     {user && (
                         <div>

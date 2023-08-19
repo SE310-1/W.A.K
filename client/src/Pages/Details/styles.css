@@ -1,0 +1,38 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.movie-details-container {
+    display: flex;
+    width: 100vw;
+    height: 70vh;
+    overflow: hidden;
+    background-color: #333; /* Set the background color to black */
+    color: #fff; /* Set the text color to white */
+}
+
+.movie-image {
+    flex: 1;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.movie-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.movie-details {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+

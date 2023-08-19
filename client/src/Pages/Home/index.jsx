@@ -14,7 +14,7 @@ const Index = () => {
     const fetchData = async () => {
       try {
         const movies = [];
-        for (let page = 1; page <= 100; page++) {
+        for (let page = 1; page <= 10; page++) {
           const response = await axios.get(
             `${BASE_URL}/discover/movie?api_key=${API_KEY}&page=${page}`
           );

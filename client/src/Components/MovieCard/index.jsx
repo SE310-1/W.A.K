@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.css'; // Make sure your CSS file path is correct
+import './style.css'; 
 
 const MovieCard = ({ movie }) => {
   // Calculate the number of filled stars based on the rating

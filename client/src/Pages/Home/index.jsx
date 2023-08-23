@@ -3,6 +3,7 @@ import axios from "axios";
 import SearchBar from "@mkyy/mui-search-bar";
 import MovieCard from "../../Components/MovieCard";
 import MediaGrid from "../../Components/MediaGrid";
+import './style.css';
 
 const Index = () => {
   const [backendData, setBackendData] = useState({ movies: [] });

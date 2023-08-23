@@ -1,29 +1,38 @@
-import {useEffect, useState} from 'react'
+import {BrowserRouter, Navigate, Route, Routes,} from 'react-router-dom'
+import {useAuthContext} from './hooks/useAuthContext'
+import Navbar from "./Components/Navbar/index.jsx";
+import Login from "./Pages/Login/index.jsx";
+import Signup from "./Pages/Signup/index.jsx";
+import Home from "./Pages/Home/index.jsx";
 import './App.css'
-import axios from "axios";
+import MovieDetailsPage from './Pages/Details';
 
 function App() {
-    const [backendData, setBackendData] = useState([{}])
-
-    useEffect( () => {
-        const fetchData = async () => {
-            const result = await axios(
-                `${import.meta.env.VITE_BASE_API_URL}/test`,
-            );
-            return result.data;
-        };
-        fetchData().then(r => setBackendData(r));
-    }, []);
+    const {user} = useAuthContext()
 
     return (
-        <>
-            {backendData.movies && backendData.movies.map((movie, i) => (
-                <div key={i}>
-                    <h1>{movie}</h1>
+        <div className="App">
+            <BrowserRouter>
+                <Navbar/>
+                <div className="pages">
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={user ? <Home/> : <Navigate to="/login"/>}
+                        />
+                        <Route
+                            path="/login"
+                            element={!user ? <Login/> : <Navigate to="/"/>}
+                        />
+                        <Route
+                            path="/signup"
+                            element={!user ? <Signup/> : <Navigate to="/"/>}
+                        />
+                    </Routes>
                 </div>
-            ))}
-        </>
+            </BrowserRouter>
+        </div>
     )
 }
 
-export default App
+export default App;

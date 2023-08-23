@@ -1,0 +1,54 @@
+.movie-card {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .movie-card img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+  }
+  
+  .movie-card:hover img {
+    transform: scale(1.1);
+  }
+  
+  .movie-card .movie-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* Make the black bar width 100% of the container */
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .movie-card:hover .movie-info {
+    opacity: 1;
+  }
+  
+  .movie-card p {
+    margin: 0;
+    font-size: 1rem;
+  }
+  
+  .movie-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    margin-top: 5px;
+  }
+  
+  @media (max-width: 768px) {
+    .movie-card .movie-info {
+      padding: 5px;
+    }
+  
+    .movie-card p,
+    .movie-card h3 {
+      font-size: 0.9rem;
+    }
+  }
+  

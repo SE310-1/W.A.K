@@ -1,0 +1,69 @@
+h1 {
+    margin: 0;
+    font-size: 24px;
+    color: white;
+}
+
+p {
+    margin: 10px 0 0;
+    font-size: 16px;
+    color: white;
+    line-height: 1.5;
+}
+
+.movie-card {
+    width: 100vw;
+    height: 100vh;
+    scroll-snap-align: start;
+}
+
+.movie-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.movie-details {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 70%;
+    position: absolute;
+    bottom: 25%;
+    left: 10%;
+    transform: translateY(-50%);
+    text-align: left;
+    backdrop-filter: blur(10px);
+}
+
+.movie-details-title {
+    margin-bottom: 1.5rem;
+}
+
+.movie-details-description {
+    margin-bottom: 1.5rem;
+}
+
+.movie-details button {
+    background: #cfffcf;
+    color: #111;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect */
+.movie-details button:hover {
+    background-color: #bfffbf;
+    transform: scale(1.05);
+}

@@ -13,25 +13,25 @@ const Index = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const movies = [];
-        for (let page = 1; page <= 10; page++) {
+        if (textFieldValue.trim() !== '') {
           const response = await axios.get(
-            `${BASE_URL}/discover/movie?api_key=${API_KEY}&page=${page}`
+            `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${textFieldValue}`
           );
           if (response.status === 200) {
-            movies.push(...response.data.results);
+            setBackendData({ movies: response.data.results });
           } else {
             console.error('Request failed with status:', response.status);
           }
+        } else {
+          setBackendData({ movies: [] }); // Clear movies when search bar is empty
         }
-        setBackendData({ movies });
       } catch (error) {
         console.error('An error occurred:', error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [textFieldValue]);
 
   useEffect(() => {
     // Filter movies based on textFieldValue

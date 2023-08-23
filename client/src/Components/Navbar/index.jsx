@@ -18,7 +18,6 @@ const Navbar = () => {
                 <Link to="/">
                     <h1>W.A.K</h1>
                 </Link>
-                <SearchBar/>
                 <nav>
                     {user && (
                         <div>

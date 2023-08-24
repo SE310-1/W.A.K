@@ -39,7 +39,8 @@ const Home = () => {
     };
 
     return (
-        <>
+        <>  
+            <h1 className="featured-heading">Featured Movies</h1> {/* Added heading */}
             <Carousel className="home" showArrows={true} emulateTouch={true} showStatus={false} showThumbs={false} infiniteLoop={true} autoPlay={false}>
                 {backendData?.movies.slice(0, 7).map((movie, i) => (
                     <div className="movie-card" key={i}>
@@ -48,6 +49,7 @@ const Home = () => {
                         <div className="movie-details-home">
                             <h1 className="movie-details-title">{movie.title}</h1>
                             <p className="movie-details-description">{movie.overview}</p>
+                            <img className="movie-details-img">{movie.backgroundImage}</img>
                             <button onClick={() => showDetail(movie)}>More Info</button>
                         </div>
                     </div>

@@ -33,17 +33,34 @@ const Index = () => {
       }
     };
 
-    fetchData();
-  }, [textFieldValue]);
+        fetchData();
+    }, [textFieldValue]);
 
-  useEffect(() => {
-    // Filter movies based on textFieldValue
-    const filtered = backendData.movies.filter((movie) =>
-      movie.title.toLowerCase().includes(textFieldValue.toLowerCase())
-    );
-    setFilteredMovies(filtered);
-  }, [textFieldValue, backendData.movies]);
+    useEffect(() => {
+        // Filter movies based on textFieldValue
+        const filtered = backendData.movies.filter((movie) =>
+            movie.title.toLowerCase().includes(textFieldValue.toLowerCase())
+        );
+        setFilteredMovies(filtered);
+    }, [textFieldValue, backendData.movies]);
 
+    return (
+        <div>
+            <SearchBar
+                style={{
+                    backgroundColor: '#FFFFFF',
+                    borderRadius: '8px',
+                    border: '1px solid #ccc',
+                    top: '3.5vh',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    position: 'fixed',
+                }}
+                value={textFieldValue}
+                onChange={(newValue) => {
+                    setTextFieldValue(newValue);
+                }}
+            />
   return (
     <div>
       <SearchBar
@@ -70,3 +87,4 @@ const Index = () => {
 };
 
 export default Index;
+

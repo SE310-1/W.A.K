@@ -22,6 +22,10 @@ app.get('/test', (req, res) => {
     res.json({"movies": ["The Matrix", "The Matrix Reloaded", "The Matrix Revolutions"]});
 });
 
+app.get('/search', (req, res) => {
+    res.sendFile(__dirname + '../../client/src/Pages/Search/Search.jsx');
+});
+
 app.post('/login', async (req, res) => {
     const {username, password} = req.body
 

@@ -28,3 +28,7 @@ nav button {
     z-index: 1;
     position: relative;
 }
+
+.search-button {
+    margin-left: 0;
+}

@@ -21,6 +21,7 @@ p {
 .carousel .control-dots {
     position: fixed;
 }
+
 .carousel.carousel-slider .control-arrow {
     position: fixed;
 }

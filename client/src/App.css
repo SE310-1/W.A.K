@@ -15,6 +15,10 @@ a {
     color: #111111;
 }
 
+.App {
+  background-color: #ffe3e3;
+}
+
 /* Updated shared buttons, main shapes positions and styles css */
 .share-btn-container {
   background: #fff;

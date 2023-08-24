@@ -5,6 +5,8 @@ import Login from "./Pages/Login/index.jsx";
 import Signup from "./Pages/Signup/index.jsx";
 import Home from "./Pages/Home/index.jsx";
 import './App.css'
+import Search from "./Pages/Search/Search.jsx";
+import MovieDetailsPage from "./Pages/Details/index.jsx";
 
 function App() {
     const {user} = useAuthContext()
@@ -20,6 +22,11 @@ function App() {
                             element={user ? <Home/> : <Navigate to="/login"/>}
                         />
                         <Route
+                            path="/search"
+                            element={user ? <Search/> : <Navigate to="/login"/>}
+                        />
+                        <Route path="/detail/:id" element={<MovieDetailsPage/>} />
+                        <Route
                             path="/login"
                             element={!user ? <Login/> : <Navigate to="/"/>}
                         />
@@ -34,4 +41,4 @@ function App() {
     )
 }
 
-export default App
+export default App;

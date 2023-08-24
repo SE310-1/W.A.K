@@ -32,7 +32,7 @@ p {
     scroll-snap-align: start;
 }
 
-.movie-image {
+.movie-image-home {
     width: 100%;
     height: 100vh;
     background-size: cover;
@@ -46,7 +46,7 @@ p {
     z-index: -1;
 }
 
-.movie-details {
+.movie-details-home {
     background-color: rgba(0, 0, 0, 0.7);
     padding: 30px !important;
     border-radius: 5px;
@@ -68,7 +68,7 @@ p {
     margin-bottom: 1.5rem !important;
 }
 
-.movie-details button {
+.movie-details-home button {
     background: #cfffcf;
     color: #111;
     border: none;
@@ -79,7 +79,7 @@ p {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.movie-details button:hover {
+.movie-details-home button:hover {
     background-color: #bfffbf;
     transform: scale(1.05);
 }

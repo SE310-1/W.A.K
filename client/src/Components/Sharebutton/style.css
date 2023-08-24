@@ -12,7 +12,7 @@
     visibility: hidden; /* Initially hidden */
     opacity: 0; /* Initially transparent */
     transition: visibility 0s, opacity 0.5s;
-    transform: rotate(90deg); /* Rotate 90 degrees to the left */
+    transform: rotate(360deg); /* Rotate 90 degrees to the left */
     transform-origin: bottom right; /* Set the transform origin */
 }
 

@@ -10,7 +10,6 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 
 const ShareButtons = () => {
-
     const [isVisible, setIsVisible] = useState(false); // State to track visibility
 
     const postUrl = encodeURIComponent(window.location.href);
@@ -26,15 +25,11 @@ const ShareButtons = () => {
     const whatsappShareLink = `https://api.whatsapp.com/send?text=${postTitle} ${postUrl}`;
     const redditShareLink = `https://reddit.com/submit?url=${postUrl}&title=${postTitle}`;
 
-    const handleSearchResult = () => {
-        setIsVisible(true); // Show the share buttons
-    };
-
     useEffect(() => {
         // Simulate the delay before showing the share buttons
         const timer = setTimeout(() => {
-            handleSearchResult(); // Show the share buttons after the delay
-        }, 1000); // Adjust the time in milliseconds as needed
+            setIsVisible(true); // Show the share buttons after the delay
+        }, 500); // Adjust the time in milliseconds as needed
 
         return () => clearTimeout(timer); // Clean up the timeout on unmount
     }, []);

@@ -2,8 +2,9 @@
 .share-btn-container {
     background: #fff;
     display: flex;
-    flex-direction: column;
-    padding: 16px;
+    flex-direction: row; /* Change flex-direction to row for horizontal alignment */
+    align-items: center; /* Center the icons vertically */
+    padding: 2px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     position: fixed;
     bottom: 20px;
@@ -11,6 +12,13 @@
     visibility: hidden; /* Initially hidden */
     opacity: 0; /* Initially transparent */
     transition: visibility 0s, opacity 0.5s;
+    transform: rotate(90deg); /* Rotate 90 degrees to the left */
+    transform-origin: bottom right; /* Set the transform origin */
+}
+
+.share-btn-container a {
+    margin: 12px 10px;
+    transition: 500ms;
 }
 
 /* Add this class to control visibility transition */
@@ -21,66 +29,33 @@
     transition: visibility 0.3s, opacity 0.3s, transform 0.3s;
 }
 
-/* Add these styles for the share button
-Smooth Animated motion for better user experience
-*/
-
-.share-button {
-    display: flex;
-    justify-content: center;
-    margin: 20px;
-}
-
-.share-button button {
-    display: flex;
-    align-items: center;
-    padding: 6px 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    margin: 0 5px;
-    transition: background-color 0.3s ease;
-}
-
-.share-button button:hover {
-    background-color: #0056b3;
-}
-
 /* Animated motions and colours css */
 .share-btn-container a i {
-    font-size: 32px;
+    font-size: 22px;
 }
 
-.share-btn-container a{
-    margin: 12px 0;
-    transition: 500ms;
-}
-
-.share-btn-container a:hover{
-    transform:scale(1.2);
+.share-btn-container a:hover {
+    transform: scale(1.2);
 }
 
 .share-btn-container .fa-facebook {
-    color : #1877f2;
+    color: #1877f2;
 }
 
 .share-btn-container .fa-twitter {
-    color : #1da1f2;
+    color: #1da1f2;
 }
 
 .share-btn-container .fa-pinterest {
-    color : #e60023;
+    color: #e60023;
 }
 
 .share-btn-container .fa-reddit {
-    color : #5f99cf;
+    color: #5f99cf;
 }
 
 .share-btn-container .fa-whatsapp {
-    color : #25d366;
+    color: #25d366;
 }
 
 /* Media Queries */
@@ -106,3 +81,4 @@ Smooth Animated motion for better user experience
         margin: 0 32px;
     }
 }
+

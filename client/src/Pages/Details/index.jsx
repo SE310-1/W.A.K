@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import './styles.css'; 
-import SearchBar from '@mkyy/mui-search-bar';
+import { useEffect, useState } from 'react';
+import './styles.css';
+import ShareButtons from '../../Components/Sharebutton'; // Adjust the relative path to match your project structure
 
 const MovieDetailsPage = () => {
     const [movieData, setMovieData] = useState(null);
+    const [showShareButtons, setShowShareButtons] = useState(false);
 
     useEffect(() => {
-        const apiKey = '8e66d594db8136414e394600886d8cab'; 
-        const movieId = 'tt0468569'; 
+        const apiKey = '8e66d594db8136414e394600886d8cab';
+        const movieId = 'tt0468569';
 
         fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`)
             .then(response => response.json())
             .then(data => {
                 setMovieData(data);
+                // Simulate the delay before showing the share buttons
+                const timer = setTimeout(() => {
+                    setShowShareButtons(true); // Show the share buttons after the delay
+                }, 500); // Adjust the time in milliseconds as needed
+                return () => clearTimeout(timer); // Clean up the timeout on unmount
             })
             .catch(error => {
                 console.error('Error fetching movie data:', error);
@@ -49,6 +55,7 @@ const MovieDetailsPage = () => {
                             IMDb: {movieData.vote_average}/10, Popularity: {movieData.popularity}
                         </div>
                     </div>
+                    {showShareButtons && <ShareButtons />} {/* Render share buttons */}
                 </div>
             </div>
         </div>
@@ -56,3 +63,4 @@ const MovieDetailsPage = () => {
 };
 
 export default MovieDetailsPage;
+

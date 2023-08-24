@@ -43,9 +43,9 @@ const Home = () => {
             <Carousel className="home" showArrows={true} emulateTouch={true} showStatus={false} showThumbs={false} infiniteLoop={true} autoPlay={false}>
                 {backendData?.movies.slice(0, 7).map((movie, i) => (
                     <div className="movie-card" key={i}>
-                        <div className="movie-image" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})` }}>
+                        <div className="movie-image-home" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})` }}>
                         </div>
-                        <div className="movie-details">
+                        <div className="movie-details-home">
                             <h1 className="movie-details-title">{movie.title}</h1>
                             <p className="movie-details-description">{movie.overview}</p>
                             <button onClick={() => showDetail(movie)}>More Info</button>

@@ -1,6 +1,6 @@
 /* App.css */
 #root {
-    background: #ffe3e3;
+    background: #2c2d34;
     height: 100vh;
 }
 
@@ -16,7 +16,7 @@ a {
 }
 
 .App {
-  background-color: #ffe3e3;
+  background-color: #2c2d34;
 }
 
 /* Updated shared buttons, main shapes positions and styles css */
@@ -27,7 +27,6 @@ a {
   padding: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   position: fixed;
-  top: 50%;
   transform: translateY(-50%);
 }
 

@@ -33,15 +33,15 @@ const MovieDetailsPage = () => {
     }
 
     return (
-        <div className="movie-details-container">
-            <div className="movie-image">
+        <div className="movie-details-container-details">
+            <div className="movie-image-details">
                 <img
                     src={`https://image.tmdb.org/t/p/w500${movieData.poster_path}`}
                     alt={movieData.title}
                     style={{ maxWidth: '100%', height: '100%' }}
                 />
             </div>
-            <div className="movie-details">
+            <div className="movie-details-details">
                 <div className="content">
                     <div className="movie-name">{movieData.title}</div>
                     <div className="details-section">

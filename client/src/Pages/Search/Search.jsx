@@ -54,7 +54,8 @@ const Search = () => {
         <div>
             <SearchBar
                 style={{
-                    backgroundColor: "#FFFFFF",
+                    color: "black",
+                    backgroundColor: "white",
                     borderRadius: "8px",
                     border: "1px solid #ccc",
                     position: "absolute",

@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL, apiKey } from "../../../env.js";
 import { Carousel } from 'react-responsive-carousel';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import "./style.css";
 
 const Home = () => {
     const navigate = useNavigate();
     const [backendData, setBackendData] = useState({ movies: [] });
+    const [currentBackgroundImage, setCurrentBackgroundImage] = useState(null); // New state variable
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,24 +39,45 @@ const Home = () => {
         navigate(`/detail/${movie.id}`);
     };
 
+    const handleCarouselChange = (selectedIndex) => {
+        if (backendData?.movies[selectedIndex]?.backdrop_path) {
+            const backdropUrl = `https://image.tmdb.org/t/p/original${backendData.movies[selectedIndex].backdrop_path}`;
+            setCurrentBackgroundImage(backdropUrl);
+        }
+    };
+
     return (
-        <>  
-            <h1 className="featured-heading">Featured Movies</h1> {/* Added heading */}
-            <Carousel className="home" showArrows={true} emulateTouch={true} showStatus={false} showThumbs={false} infiniteLoop={true} autoPlay={false}>
-                {backendData?.movies.slice(0, 7).map((movie, i) => (
-                    <div className="movie-card" key={i}>
-                        <div className="movie-image-home" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})` }}>
+        <div className="home-container">
+        <div className="background-image" style={{ backgroundImage: `url(${currentBackgroundImage})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}></div>
+        <div className="overlay"></div>  
+        <h1 className="featured-heading">Featured Movies</h1>
+            <div className="movie-details-container-home">
+                <Carousel
+                    className="carousel"
+                    showArrows={true}
+                    emulateTouch={false}
+                    showStatus={false}
+                    showThumbs={true}
+                    infiniteLoop={true}
+                    autoPlay={false}
+                    onChange={handleCarouselChange}
+                >
+                    {backendData?.movies.slice(0, 7).map((movie, i) => (
+                        <div className="movie-card" key={i}>
+                            <div
+                                className="movie-image-home"
+                                style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})` }}
+                            ></div>
+                            <div className="movie-details-home">
+                                <h1 className="movie-details-title">{movie.title}</h1>
+                                <p className="movie-details-description">{movie.overview}</p>
+                                <button className="button-13" onClick={() => showDetail(movie)}>More Info</button>
+                            </div>
                         </div>
-                        <div className="movie-details-home">
-                            <h1 className="movie-details-title">{movie.title}</h1>
-                            <p className="movie-details-description">{movie.overview}</p>
-                            <img className="movie-details-img">{movie.backgroundImage}</img>
-                            <button onClick={() => showDetail(movie)}>More Info</button>
-                        </div>
-                    </div>
-                ))}
-            </Carousel>
-        </>
+                    ))}
+                </Carousel>
+            </div>
+        </div>
     );
 }
 

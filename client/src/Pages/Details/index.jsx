@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import './styles.css';
 import { useParams } from 'react-router-dom';
 import {apiKey} from '../../../env.js';
+import ShareButtons from '../../Components/Sharebutton'; 
 
 const MovieDetailsPage = () => {
     const [movieData, setMovieData] = useState(null);
+    const [showShareButtons, setShowShareButtons] = useState(false);
     const { id } = useParams();
     const urlParts = id.split('/');
     const movieId = urlParts[urlParts.length - 1];
@@ -15,6 +17,11 @@ const MovieDetailsPage = () => {
             .then(response => response.json())
             .then(data => {
                 setMovieData(data);
+                // Simulate the delay before showing the share buttons
+                const timer = setTimeout(() => {
+                    setShowShareButtons(true); // Show the share buttons after the delay
+                }, 500); // Adjust the time in milliseconds as needed
+                return () => clearTimeout(timer); // Clean up the timeout on unmount
             })
             .catch(error => {
                 console.error('Error fetching movie data:', error);
@@ -51,6 +58,7 @@ const MovieDetailsPage = () => {
                             IMDb: {movieData.vote_average}/10, Popularity: {movieData.popularity}
                         </div>
                     </div>
+                    {showShareButtons && <ShareButtons />} {/* Render share buttons */}
                 </div>
             </div>
         </div>
@@ -58,3 +66,4 @@ const MovieDetailsPage = () => {
 };
 
 export default MovieDetailsPage;
+

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import SearchBar from '@mkyy/mui-search-bar';
-import ShareButtons from '../../Components/Sharebutton'; // Adjust the relative path to match your project structure
 
 const Index = () => {
     const [backendData, setBackendData] = useState({ movies: [] });
@@ -59,9 +58,6 @@ const Index = () => {
                     setTextFieldValue(newValue);
                 }}
             />
-
-            {/* Conditionally render the ShareButtons component */}
-            {filteredMovies.length > 0 && <ShareButtons />}
 
             {filteredMovies.map((movie) => (
                 <div key={movie.id}>

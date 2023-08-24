@@ -12,6 +12,52 @@ input {
     box-sizing: border-box;
 }
 
+/* More info button */
+.movie-details-home button,
+.login button {
+    background-color: #fff;
+    border: 1px solid #d5d9d9;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 8px;
+    box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+    box-sizing: border-box;
+    color: #0f1111;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 29px;
+    padding: 0 15px 0 11px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    width: 100px;
+}
+
+.movie-details-home button:hover,
+.login button:hover {
+    background-color: #f7fafa;
+}
+
+.movie-details-home button:focus,
+.login button:focus {
+    border-color: #008296;
+    box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+    outline: 0;
+}
+
+.login {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 4px;
+    color: #000; /* Set text color to black */
+}
+
 form button {
     background: #E3FFE3;
     border: 0;

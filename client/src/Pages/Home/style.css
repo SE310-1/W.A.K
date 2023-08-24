@@ -76,7 +76,8 @@ body {
     margin: 19vh;
     max-width: 70%;
     width: 100%;
-    background-color: #333; /* Set the background color to black */
+    background-color: #1a1a1a; 
+    opacity: 90%;
     color: #fff; /* Set the text color to white */
     border-radius: 5px;
     backdrop-filter: blur(10px);
@@ -102,7 +103,6 @@ body {
     position: absolute;
     top: 10vh;
     left: 28%;
-    font-family: 'Roboto', sans-serif;
     transform: translateX(-50%);
     font-size: 3rem;
     color: white;

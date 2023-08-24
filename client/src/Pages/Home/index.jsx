@@ -35,7 +35,7 @@ const Index = () => {
 
     return (
         <>
-            <Carousel showArrows={false} emulateTouch={true} showStatus={false} showThumbs={false} infiniteLoop={true}>
+            <Carousel showArrows={true} emulateTouch={true} showStatus={false} showThumbs={false} infiniteLoop={true} autoPlay={false}>
                 {backendData?.movies.slice(0, 8).map((movie, i) => (
                     <div className="movie-card" key={i}>
                         <div className="movie-image" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})` }}>

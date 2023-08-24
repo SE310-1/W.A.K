@@ -48,11 +48,11 @@ p {
 
 .movie-details {
     background-color: rgba(0, 0, 0, 0.7);
-    padding: 30px;
+    padding: 30px !important;
     border-radius: 5px;
     max-width: 70%;
     position: relative;
-    bottom: 50%;
+    bottom: 40%;
     left: 10%;
     transform: translateY(-50%);
     text-align: left;
@@ -65,7 +65,7 @@ p {
 }
 
 .movie-details-description {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem !important;
 }
 
 .movie-details button {

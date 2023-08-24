@@ -48,10 +48,11 @@ const Search = () => {
                     backgroundColor: "#FFFFFF",
                     borderRadius: "8px",
                     border: "1px solid #ccc",
-                    top: "3.5vh",
+                    position: "absolute",
+                    top: "20px",
                     left: "50%",
                     transform: "translateX(-50%)",
-                    position: "fixed",
+                    zIndex: "999"
                 }}
                 value={textFieldValue}
                 onChange={(newValue) => {

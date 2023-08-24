@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import './styles.css'; 
-import SearchBar from '@mkyy/mui-search-bar';
+import { useEffect, useState } from 'react';
+import './styles.css';
+import { useParams } from 'react-router-dom';
+import {apiKey} from '../../../env.js';
 
 const MovieDetailsPage = () => {
     const [movieData, setMovieData] = useState(null);
+    const { id } = useParams();
+    const urlParts = id.split('/');
+    const movieId = urlParts[urlParts.length - 1];
 
     useEffect(() => {
-        const apiKey = '8e66d594db8136414e394600886d8cab'; 
-        const movieId = 'tt0468569'; 
 
         fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`)
             .then(response => response.json())

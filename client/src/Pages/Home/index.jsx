@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { BASE_URL, API_KEY } from "../../../env.js";
+import { BASE_URL, apiKey } from "../../../env.js";
 import { Carousel } from 'react-responsive-carousel';
+import {useNavigate} from 'react-router-dom';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import "./style.css";
 
-const Index = () => {
-
+const Home = () => {
+    const navigate = useNavigate();
     const [backendData, setBackendData] = useState({ movies: [] });
 
     useEffect(() => {
@@ -15,7 +16,7 @@ const Index = () => {
                 const movies = [];
                 for (let page = 1; page <= 1; page++) {
                     const response = await axios.get(
-                        `${BASE_URL}/discover/movie?api_key=${API_KEY}&page=${page}`
+                        `${BASE_URL}/discover/movie?api_key=${apiKey}&page=${page}`
                     );
                     if (response.status === 200) {
                         movies.push(...response.data.results);
@@ -31,19 +32,23 @@ const Index = () => {
         };
 
         fetchData();
-    }, []); // Empty dependency array, only fetch data once
+    }, []);
+
+    const showDetail = (movie) => {
+        navigate(`/detail/${movie.id}`);
+    };
 
     return (
         <>
-            <Carousel showArrows={true} emulateTouch={true} showStatus={false} showThumbs={false} infiniteLoop={true} autoPlay={false}>
-                {backendData?.movies.slice(0, 8).map((movie, i) => (
+            <Carousel className="home" showArrows={true} emulateTouch={true} showStatus={false} showThumbs={false} infiniteLoop={true} autoPlay={false}>
+                {backendData?.movies.slice(0, 7).map((movie, i) => (
                     <div className="movie-card" key={i}>
                         <div className="movie-image" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})` }}>
                         </div>
                         <div className="movie-details">
                             <h1 className="movie-details-title">{movie.title}</h1>
                             <p className="movie-details-description">{movie.overview}</p>
-                            <button>More Info</button>
+                            <button onClick={() => showDetail(movie)}>More Info</button>
                         </div>
                     </div>
                 ))}
@@ -52,4 +57,4 @@ const Index = () => {
     );
 }
 
-export default Index;
+export default Home;

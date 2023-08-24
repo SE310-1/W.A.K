@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import './styles.css';
-import ShareButtons from '../../Components/Sharebutton'; // Adjust the relative path to match your project structure
+import { useParams } from 'react-router-dom';
+import {apiKey} from '../../../env.js';
+import ShareButtons from '../../Components/Sharebutton'; 
 
 const MovieDetailsPage = () => {
     const [movieData, setMovieData] = useState(null);
     const [showShareButtons, setShowShareButtons] = useState(false);
+    const { id } = useParams();
+    const urlParts = id.split('/');
+    const movieId = urlParts[urlParts.length - 1];
 
     useEffect(() => {
-        const apiKey = '8e66d594db8136414e394600886d8cab';
-        const movieId = 'tt0468569';
 
         fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`)
             .then(response => response.json())

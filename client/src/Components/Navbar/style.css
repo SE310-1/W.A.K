@@ -26,3 +26,7 @@ nav button {
     align-items: center;
     justify-content: space-between;
 }
+
+.search-button {
+    margin-left: 0;
+}

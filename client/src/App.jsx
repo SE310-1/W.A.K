@@ -6,6 +6,7 @@ import Signup from "./Pages/Signup/index.jsx";
 import Home from "./Pages/Home/index.jsx";
 import './App.css'
 import MovieDetailsPage from './Pages/Details';
+import Details from "./Pages/Details";
 
 function App() {
     const {user} = useAuthContext()
@@ -18,7 +19,7 @@ function App() {
                     <Routes>
                         <Route
                             path="/"
-                            element={user ? <Home/> : <Navigate to="/login"/>}
+                            element={user ? <Details/> : <Navigate to="/login"/>}
                         />
                         <Route
                             path="/login"

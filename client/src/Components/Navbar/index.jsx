@@ -1,15 +1,15 @@
-import {Link} from 'react-router-dom'
-import {useLogout} from "../../Hooks/useLogout.js";
-import {useAuthContext} from '../../Hooks/useAuthContext'
-import './style.css'
+import { Link } from 'react-router-dom';
+import { useLogout } from "../../Hooks/useLogout.js";
+import { useAuthContext } from '../../Hooks/useAuthContext';
+import './style.css';
 
 const Navbar = () => {
-    const {logout} = useLogout()
-    const {user} = useAuthContext()
+    const { logout } = useLogout();
+    const { user } = useAuthContext();
 
     const handleClick = () => {
-        logout()
-    }
+        logout();
+    };
 
     return (
         <header>
@@ -18,16 +18,20 @@ const Navbar = () => {
                     <h1>W.A.K</h1>
                 </Link>
                 <nav>
-                    {user && (
+                    {user ? (
                         <div>
                             <span>Welcome {user.username}</span>
-                            <button>
-                                <Link to="/search" className="search-button">Search</Link>
+                            <button className="button-13">
+                                <Link to="/search" className="search-button">
+                                    <i className="fas fa-search"></i> Search
+                                </Link>
                             </button>
-                            <button onClick={handleClick}>Log out</button>
+                            <button className="button-13" onClick={handleClick}>
+                                <i className="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                            
                         </div>
-                    )}
-                    {!user && (
+                    ) : (
                         <div>
                             <div>
                                 <Link to="/login">Login</Link>
@@ -38,7 +42,7 @@ const Navbar = () => {
                 </nav>
             </div>
         </header>
-    )
+    );
 }
 
-export default Navbar
+export default Navbar;

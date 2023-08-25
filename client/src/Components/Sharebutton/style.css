@@ -23,7 +23,7 @@
 
 /* Add this class to control visibility transition */
 .share-btn-container.visible {
-    visibility: visible;
+    visibility: hidden;
     opacity: 1;
     transform: scale(1);
     transition: visibility 0.3s, opacity 0.3s, transform 0.3s;

@@ -33,6 +33,7 @@
 
 .movie-card p {
     margin: 0;
+    margin-bottom: 3vh;
     font-size: 1rem;
 }
 

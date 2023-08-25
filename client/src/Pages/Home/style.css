@@ -1,85 +1,203 @@
-h1 {
+/* Reset default margins */
+body, h1, p {
     margin: 0;
-    font-size: 24px;
+}
+
+/* Global styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    /* background-color: #333; Dark gray background */
     color: white;
 }
 
-p {
-    margin: 10px 0 0;
-    font-size: 16px;
-    color: white;
-    line-height: 1.5;
+/* Carousel control arrows */
+.carousel.carousel-slider .control-arrow {
+    top: 0;
+    color: #fff;
+    font-size: 26px;
+    padding: 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.home {
-    position: fixed;
+.carousel.carousel-slider .control-arrow.prev {
+    left: 0;
+}
+
+.carousel.carousel-slider .control-arrow.next {
+    right: 0;
+}
+
+.thumbs-wrapper{
+    display:none;
+}
+
+/* Home container */
+/* Blurred background image */
+.background-image {
+    position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
-}
-
-.carousel .control-dots {
-    position: fixed;
-}
-
-.carousel.carousel-slider .control-arrow {
-    position: fixed;
-}
-
-.movie-card {
-    width: 100vw;
-    height: 100vh;
-    scroll-snap-align: start;
-}
-
-.movie-image-home {
     width: 100%;
-    height: 100vh;
+    height: 100%;
+    z-index: 2; /* Position the background behind the content */
+    filter: blur(5px); /* Apply the blur effect */
     background-size: cover;
-    position: relative;
+    background-repeat: no-repeat;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent black overlay */
+    z-index: 2; /* Position the overlay between the background and the content */
+}
+
+
+/* Home container */
+.home-container {
+    position: relative; /* Create a positioning context for absolute positioning */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    overflow: hidden; /* Hide overflowing content */
+    background: none; /* Remove background from this container */
+}
+
+
+/* Movie details container */
+.movie-details-container-home {
+    margin: 19vh;
+    max-width: 70%;
+    width: 100%;
+    background-color: #1a1a1a; 
+    opacity: 90%;
+    color: #fff; /* Set the text color to white */
+    border-radius: 5px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    color: white;
-    padding: 20px;
-    box-sizing: border-box;
-    z-index: -1;
+    align-items: flex-start;
+    z-index: 3;
 }
 
-.movie-details-home {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 30px !important;
-    border-radius: 5px;
-    max-width: 70%;
+/* Movie card */
+.movie-card {
     position: relative;
-    bottom: 40%;
-    left: 10%;
-    transform: translateY(-50%);
-    text-align: left;
-    backdrop-filter: blur(10px);
-    z-index: 2;
+    width: 100%;
+    overflow: hidden;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
 }
 
+/* Featured heading */
+.featured-heading {
+    position: absolute;
+    top: 10vh;
+    left: 28%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    color: white;
+    z-index: 3;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Movie image */
+.movie-image-home {
+    height: 60vh;
+    flex: 1;
+    overflow: hidden;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Movie details */
+.movie-details-home {
+    width: 50%;
+    padding: 4vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.movie-card p{
+    font-size: 18px;
+}
+
+/* Movie details title */
 .movie-details-title {
-    margin-bottom: 1.5rem;
+    font-size: 6vh;
+    margin-bottom: 10px;
+    margin-bottom: 2vh;
+    text-align: left; /* Align text to the left */
 }
 
+/* Movie details description */
 .movie-details-description {
-    margin-bottom: 1.5rem !important;
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 5vh;
+    text-align: left; /* Align text to the left */
 }
 
+/* More info button */
 .movie-details-home button {
-    background: #cfffcf;
-    color: #111;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #d5d9d9;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 8px;
+    box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+    box-sizing: border-box;
+    color: #0f1111;
     cursor: pointer;
+    display: inline-block;
     font-size: 16px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    line-height: 29px;
+    padding: 0 15px 0 11px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    width: 100px;
 }
 
 .movie-details-home button:hover {
-    background-color: #bfffbf;
-    transform: scale(1.05);
+    background-color: #f7fafa;
 }
+
+.movie-details-home button:focus{
+    border-color: #008296;
+    box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+    outline: 0;
+}
+
+
+.button-13 {
+
+  }
+  
+  .button-13:hover {
+    background-color: #f7fafa;
+  }
+  
+  .button-13:focus {
+    border-color: #050505;
+    box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+    outline: 0;
+  }
+
+/* ... Rest of your CSS ... */

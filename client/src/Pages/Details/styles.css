@@ -1,33 +1,75 @@
-/* styles.css */
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Roboto, sans-serif;
     margin: 0;
     padding: 0;
 }
 
-.movie-details-container {
+.page-container {
     display: flex;
-    width: 100vw;
-    height: 70vh;
-    overflow: hidden;
-    background-color: #333; /* Set the background color to black */
-    color: #fff; /* Set the text color to white */
+    flex-direction: column;
+    align-items: center;
+    margin: 10vh;
+    z-index: 3;
+    opacity: 90%;
+    background-color: #1a1a1a; 
 }
 
-.movie-image {
-    flex: 1;
-    height: 100vh;
+/* Home container */
+.home-container-details {
+    position: relative;
+    display: flex;
+    height: 800px;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
+    background: none;
 }
 
-.movie-image img {
+.background-image-details {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    z-index: 2; /* Position the background behind the content */
+    filter: blur(5px); /* Apply the blur effect */
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
-.movie-details {
+
+.movie-details-container-details {
+    display: flex;
+    height: auto;
+    overflow: hidden;
+    margin: 2vh;
+    color: #fff; /* Set the text color to white */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+}
+
+.movie-name{
+    font-size: 5vh;
+}
+
+.movie-image-details {
+    flex: 1;
+    height: auto;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.movie-image-details img {
+    width:40vh;
+    height: auto;
+    object-fit: cover;
+    
+}
+
+.movie-details-details {
     flex: 1;
     padding: 20px;
     display: flex;
@@ -35,4 +77,3 @@ body {
     justify-content: center;
     align-items: flex-start;
 }
-

@@ -67,6 +67,29 @@ app.post('/rating', async (req, res) => {
     }
 });
 
+app.get('/api/rating/movie/:movieId', async (req, res) => {
+    const { movieId } = req.params;
+    const username = req.user.username; // Assuming you have user authentication middleware
+
+    try {
+        const existingUserRating = await Rating.findOne({ username });
+        if (existingUserRating) {
+            const movieRating = existingUserRating.movies.find(item => item.movieId === movieId);
+            if (movieRating) {
+                res.json({ rating: movieRating.rating });
+            } else {
+                res.json({ rating: null }); // Movie not rated by the user
+            }
+        } else {
+            res.json({ rating: null }); // User has not rated any movies
+        }
+    } catch (error) {
+        console.error('Error fetching movie rating:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         app.listen(process.env.PORT, () => console.log(`Server IS running` + process.env.PORT));

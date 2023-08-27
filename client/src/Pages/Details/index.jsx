@@ -15,6 +15,21 @@ const MovieDetailsPage = () => {
     const movieId = urlParts[urlParts.length - 1];
     const {user} = useAuthContext()
     const {rating} = useRating()
+    const [userRating, setUserRating] = useState(null);
+
+    useEffect(() => {
+        // Fetch the movie rating for the logged-in user
+        fetch(`/api/rating/movie/${encodeURIComponent(movieId)}`)
+            .then(response => response.json())
+            .then(data => {
+                setUserRating(data.rating);
+            })
+            .catch(error => {
+                console.error('Error fetching movie rating:', error);
+            });
+    }, [movieId]);
+
+
 
     useEffect(() => {
         fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`)
@@ -79,19 +94,9 @@ const MovieDetailsPage = () => {
                                     onChange={ratingChanged}
                                     size={24}
                                     color2={'#ffd700'}
+                                    value={userRating}
                                 />
                             </div>
-                        </div>
-                        {showShareButtons && <ShareButtons />}
-
-                        <div>
-                            <h2>Your rating</h2>
-                            <ReactStars
-                                count={5}
-                                onChange={ratingChanged}
-                                size={24}
-                                color2={'#ffd700'}
-                            />
                         </div>
                     </div>
                 </div>

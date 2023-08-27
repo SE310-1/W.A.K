@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const User = require("./src/models/userModel");
+const Rating = require("./src/models/ratingModel");
 const jwt = require('jsonwebtoken')
 
 const createToken = (_id) => {
@@ -48,6 +49,24 @@ app.post('/signup', async (req, res) => {
         const user = await User.signup(email, username, password)
         const token = createToken(user._id)
         res.status(200).json({email, username, token})
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+});
+
+app.post('/rating', async (req, res) => {
+    const {username, rating, movie} = req.body
+
+    try {
+        const existingRating = await Rating.findOne({ username, movie });
+
+        if (existingRating) {
+            existingRating.rating = rating;
+            await existingRating.save();
+        } else {
+            await Rating.review(username, movie, rating);
+        }
+        res.status(200).json({username, movie, rating})
     } catch (error) {
         res.status(400).json({error: error.message})
     }

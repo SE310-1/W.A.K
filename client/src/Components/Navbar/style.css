@@ -9,16 +9,15 @@ body {
 
 h1 {
     color: white;
-    font-family: 'Roboto', sans-serif; /* Add this line */
+    font-family: 'Roboto', sans-serif;
 }
 
-nav a, nav button {
+nav button {
     margin-left: 20px;
-    font-family: 'Roboto', sans-serif; /* Add this line */
+    font-family: 'Roboto', sans-serif; 
 }
 
 
-/* CSS */
 .button-13 {
   background-color: #fff;
   border: 1px solid #d5d9d9;
@@ -27,6 +26,7 @@ nav a, nav button {
   box-sizing: border-box;
   color: #0f1111;
   cursor: pointer;
+  font-family: 'Roboto', sans-serif; 
   display: inline-block;
   font-size: 13px;
   line-height: 29px;
@@ -52,7 +52,6 @@ nav a, nav button {
 }
 
 nav button {
-    background: #198a19;
     color: #111;
     border: 2px solid #111111;
     padding: 6px 10px;
@@ -70,6 +69,8 @@ nav button {
     justify-content: space-between;
     z-index: 1;
     position: relative;
+    background-color: #2a2d32;
+    ;
 }
 
 .search-button {

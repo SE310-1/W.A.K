@@ -34,8 +34,13 @@ const Navbar = () => {
                     ) : (
                         <div>
                             <div>
+                            <button className="button-13">
                                 <Link to="/login">Login</Link>
+                            </button>
+
+                            <button className="button-13">
                                 <Link to="/signup">Signup</Link>
+                            </button>                              
                             </div>
                         </div>
                     )}

@@ -1,6 +1,7 @@
 import {useState} from "react"
 import {useSignup} from "../../Hooks/useSignup.js"
 import "./style.css"
+import backgroundImage from "./img/movies.jpeg"; 
 
 const Index = () => {
     const [email, setEmail] = useState('')
@@ -15,6 +16,10 @@ const Index = () => {
     }
 
     return (
+        <div className="home-container-login">
+        <div className="background-image-signup" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}></div>
+        <div className="overlay-login"></div> 
+        <div className="login-page">
         <form className="signup" onSubmit={handleSubmit}>
             <h3>Sign Up</h3>
 
@@ -37,9 +42,11 @@ const Index = () => {
                 value={password}
             />
 
-            <button disabled={isLoading}>Sign up</button>
+            <button className="button-13" disabled={isLoading}>Sign up</button>
             {error && <div className="error">{error}</div>}
         </form>
+    </div>
+    </div>
     )
 }
 

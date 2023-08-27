@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLogin } from "../../Hooks/useLogin.js";
 import "./style.css";
 
-import backgroundImage from "./img/movies.jpeg"; // Adjust the path as needed
+import backgroundImage from "./img/movies.jpeg"; 
 
 const Index = () => {
     const [username, setUserName] = useState('');

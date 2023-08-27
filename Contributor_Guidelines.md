@@ -46,12 +46,13 @@ To set up your environment, follow the steps below:
 - Install the dependencies by running `npm run installAll` in the root directory
 - Reach out to our Lead Developer Dhruvkanth for the env folders, and place them inside client folder and server folder as '.env' form
 - Finally, create two separate terminal one for the client folder and one for the server folder and navigate to the 2 folders respectively. Run the following command in both the terminals
+- We used User Testing to test our application. We asked our friends to use our application and give us feedback. 
+
+
 ```
 npm run dev
 ```
 - Finally, after connection, you will get an HTTP link inside client terminal, click and run the web application
-- To run the tests, run `npm test` in the root directory
-
 
 ## The types of contributions
 
@@ -60,7 +61,6 @@ We welcome all contributions to this project, however we kindly ask you to follo
 - New features
 - Improvements to existing features
 - Improvements to documentation
-- Improvements to tests
 - Improvements to code quality
 - Many more!
 
@@ -75,7 +75,6 @@ We welcome all contributions to this project, however we kindly ask you to follo
 
 - Must be able to use Git and GitHub
 - Must be familiar with JavaScript, React, Node.js, Express.js, MongoDB, HTML, CSS
-- Write tests for your code
 - Follow good coding practices
 
 

@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import './styles.css';
+import ReactStars from 'react-stars'
 import { useParams } from 'react-router-dom';
 import { apiKey } from '../../../env.js';
-import ShareButtons from '../../Components/Sharebutton'; 
+import ShareButtons from '../../Components/Sharebutton';
+import {useAuthContext} from "../../Hooks/useAuthContext";
+import {useRating} from "../../Hooks/useRating";
 
 const MovieDetailsPage = () => {
     const [movieData, setMovieData] = useState(null);
@@ -10,6 +13,8 @@ const MovieDetailsPage = () => {
     const { id } = useParams();
     const urlParts = id.split('/');
     const movieId = urlParts[urlParts.length - 1];
+    const { user } = useAuthContext()
+    const{rating} = useRating()
 
     useEffect(() => {
         fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`)
@@ -31,7 +36,13 @@ const MovieDetailsPage = () => {
         return <div>Loading...</div>;
     }
 
+
+
     const backdropUrl = `https://image.tmdb.org/t/p/original${movieData.backdrop_path}`;
+
+    const ratingChanged = async (newRating) => {
+       await rating(user.username, newRating, movieData.title)
+    }
 
     return (
         <div className="home-container-details">
@@ -53,6 +64,7 @@ const MovieDetailsPage = () => {
                             <h2>Cast</h2>
                             <div className="movie-cast">Actor 1, Actor 2, Actor 3</div>
                         </div>
+
                         <div className="details-section">
                             <h2>Description</h2>
                             <div className="movie-description">{movieData.overview}</div>
@@ -64,6 +76,25 @@ const MovieDetailsPage = () => {
                             </div>
                         </div>
                         {showShareButtons && <ShareButtons />} {/* Render share buttons */}
+
+                        <div>
+                            <h2>Your rating</h2>
+                            <ReactStars
+                                count={5}
+                                onChange={ratingChanged}
+                                size={24}
+                                color2={'#ffd700'}
+                            />
+                        </div>
+                        <div>
+                            <h2>Your rating</h2>
+                            <ReactStars
+                                count={5}
+                                onChange={ratingChanged}
+                                size={24}
+                                color2={'#ffd700'}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -73,4 +104,3 @@ const MovieDetailsPage = () => {
 };
 
 export default MovieDetailsPage;
-

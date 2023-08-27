@@ -36,8 +36,6 @@ const MovieDetailsPage = () => {
         return <div>Loading...</div>;
     }
 
-
-
     const backdropUrl = `https://image.tmdb.org/t/p/original${movieData.backdrop_path}`;
 
     const ratingChanged = async (newRating) => {
@@ -77,15 +75,6 @@ const MovieDetailsPage = () => {
                         </div>
                         {showShareButtons && <ShareButtons />} {/* Render share buttons */}
 
-                        <div>
-                            <h2>Your rating</h2>
-                            <ReactStars
-                                count={5}
-                                onChange={ratingChanged}
-                                size={24}
-                                color2={'#ffd700'}
-                            />
-                        </div>
                         <div>
                             <h2>Your rating</h2>
                             <ReactStars

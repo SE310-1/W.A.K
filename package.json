@@ -1,8 +1,9 @@
 {
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.4.2",
-    "@fortawesome/free-brands-svg-icons": "^6.4.2",
-    "@fortawesome/react-fontawesome": "^0.2.0",
-    "@mkyy/mui-search-bar": "^0.5.2"
+  "name": "W.A.K",
+  "version": "1.0.0",
+  "description": "The W.A.K project",
+  "scripts": {
+    "removeModules": "rm -rf node_modules && cd client && rm -rf node_modules && cd ../server && rm -rf node_modules",
+    "installAll": "npm install && cd client && npm install && cd ../server && npm install"
   }
 }

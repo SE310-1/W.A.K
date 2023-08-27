@@ -57,17 +57,12 @@ app.post('/signup', async (req, res) => {
 app.post('/rating', async (req, res) => {
     const {username, rating, movie} = req.body
 
-    try {
-        const existingRating = await Rating.findOne({ username, movie });
-
-        if (existingRating) {
-            existingRating.rating = rating;
-            await existingRating.save();
-        } else {
-            await Rating.review(username, movie, rating);
-        }
+    try{
+        console.log("WAITIN")
+        await Rating.review(username, movie, rating);
         res.status(200).json({username, movie, rating})
-    } catch (error) {
+    }
+    catch(error) {
         res.status(400).json({error: error.message})
     }
 });

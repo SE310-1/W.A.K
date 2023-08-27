@@ -10,15 +10,21 @@ We want to offer a seamless way to organise, discover, and enjoy their favourite
 # How do I get started? Including prerequisites, install instructions, and how to test/deploy the project (if relevant)
 Step 1: Ensure you have well suited IDE (IntelliJ,Visual Studio Code,Eclipse,.... etc) installed in your local device
 
-Step 2: Clone this Github repo project to your own IDE and take the following steps
+Step 2: Clone this GitHub repo project to your own IDE and take the following steps
 
-Step 3: run 'npm i' inside your terminal (To install necessary npm dependencies required)
+Step 3: Open the terminal at the root of the project and run the following command (To install necessary npm dependencies required)
+```
+npm run installAll
+```
 
-Step 4: Download the env folders, and locate them inside client folder and server folder as '.env' form
+Step 4: Reach out to our Lead Developer Dhruvkanth for the env folders, and place them inside client folder and server folder as '.env' form
 
-Step 5: Finally, create two seperate terminal, redirect your path until you get one for client and one for server.
+Step 5: Finally, create two separate terminal one for the client folder and one for the server folder and navigate to the 2 folders respectively. Run the following command in both the terminals
+```
+npm run dev
+```
 
-Step 6: Finally, after connection, you will get a HTTP link inside client terminal, click and run the web application
+Step 6: Finally, after connection, you will get an HTTP link inside client terminal, click and run the web application
 
 # How can the software be used? In other words, licence details
 W.A.K is licensed under the MIT License. Please read the licence for more information.
@@ -35,8 +41,17 @@ Features:
 - Search bar
 - Share button
 
-Installation: 
-- Instructions on how to install this version.
+Installation:
+- Instructions on how to install this version can be found in the README.md file or in the [Contributor Guidelines](Contributor_Guidelines.md).
 
 # Where can I get more help, if I need it?
-Ask our friendly developers onsite 24/7 
+Flick our friendly developers an email!
+
+| Name            | Email                     |
+|-----------------|---------------------------|
+| Dhruvkanth Puli | dpul133@aucklanduni.ac.nz |
+| Kevin Jin       | kjin505@aucklanduni.ac.nz |
+| Aditya Sohani   | asoh038@aucklanduni.ac.nz |
+| Adwait Mane     | jgai284@aucklanduni.ac.nz |
+| Young Min Kim   | ykim583@aucklanduni.ac.nz |
+| Eric Jiang      | ejia362@aucklanduni.ac.nz |

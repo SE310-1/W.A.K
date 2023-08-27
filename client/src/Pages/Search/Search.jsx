@@ -4,6 +4,8 @@ import SearchBar from "@mkyy/mui-search-bar";
 import MediaGrid from "../../Components/MediaGrid";
 import "./style.css";
 import { apiKey, BASE_URL } from "../../../env.js";
+import backgroundImage from "./img/movies.jpeg"; 
+
 
 const Search = () => {
     const [backendData, setBackendData] = useState({ movies: [] });
@@ -51,7 +53,10 @@ const Search = () => {
     }, [isInitialLoad]);
 
     return (
-        <div>
+        <div className="home-container-search">
+        <div className="background-image-search" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}></div>
+        <div className="overlay-search"></div>  
+        {/* <div className="page"> */}
             <SearchBar
                 style={{
                     color: "black",
@@ -70,9 +75,11 @@ const Search = () => {
                 }}
                 placeholder="Search Movie"
             />
+            
             <div className="movie-list">
                 <MediaGrid medias={filteredMovies} />
-            </div>
+            {/* </div> */}
+        </div>
         </div>
     );
 };

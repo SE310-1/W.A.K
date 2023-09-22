@@ -1,4 +1,4 @@
-f---
+---
 name: Feature request
 about: Suggest an idea for this project
 title: ''
@@ -13,7 +13,7 @@ As a [role or user],
 I want to [do something],
 So that [rationale].
 
-## Description
+## Additional Context
 
 [Provide a brief description of the desired functionality and the problem it aims to solve.]
 

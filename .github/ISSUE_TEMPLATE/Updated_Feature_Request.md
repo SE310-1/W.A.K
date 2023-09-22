@@ -1,22 +1,13 @@
----
-name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: enhancement
-assignees: ''
-
----
-
 ## User Story
 
 As a [role or user],
 I want to [do something],
 So that [rationale].
 
-## Description
+## Additional context
 
-[Provide a brief description of the desired functionality and the problem it aims to solve.]
+[Add any other context or screenshots about the feature request here.]
 
 ## Acceptance Criteria
 
-- [Clearly list the criteria that need to be met for this feature to be considered complete.]
+- [ ] [Clearly list the criteria that need to be met for this feature to be considered complete.]

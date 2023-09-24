@@ -110,19 +110,41 @@ app.get("/users", async (req, res) => {
     }
 });
 
-app.put("/user/:myid/add-friend/:friendId", async (req, res) => {
-    const userId = req.params.myid; // If you are sending userId in the request body
-    const friendId = req.params.friendId; // Get friendId from URL parameters
+app.put("/user/:myUsername/add-friend/:friendUsername", async (req, res) => {
+    const myUsername = req.params.myUsername; // If you are sending myUsername in the request body
+    const friendUsername = req.params.friendUsername; // Get friendUsername from URL parameters
 
     try {
-        const result = await User.findByIdAndUpdate(
-            friendId,
-            { $addToSet: { friendsRequests: userId } } // Update the username field
+        const result = await User.findOneAndUpdate(
+            { username: friendUsername },
+            { $addToSet: { friendsRequests: myUsername } } // Update the username field
         );
         console.log(result);
         res.send(result);
     } catch (error) {
         console.error("Error updating user:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get("/friend-requests/:myUsername", async (req, res) => {
+    const myUsername = req.params.myUsername;
+    try {
+        const result = await User.findOne({ username: myUsername });
+        res.json(result.friendsRequests);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get("/user/:myUsername", async (req, res) => {
+    const myUsername = req.params.myUsername;
+    try {
+        const result = await User.findOne({ username: myUsername });
+        res.json(result.username);
+    } catch (error) {
+        console.error("Error fetching users:", error);
         res.status(500).json({ error: error.message });
     }
 });

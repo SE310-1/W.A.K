@@ -18,6 +18,10 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    favorites:{
+        type: [String], // storing IDs of the favourite movies
+        default : []
     }
 })
 

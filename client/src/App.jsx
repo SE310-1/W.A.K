@@ -39,7 +39,6 @@ function App() {
               path="/favourites"
               element={user ? <Favourites /> : <Navigate to="/signup" />}
             />
-            />
           </Routes>
         </div>
       </BrowserRouter>

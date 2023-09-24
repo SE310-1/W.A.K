@@ -149,6 +149,46 @@ app.get("/user/:myUsername", async (req, res) => {
     }
 });
 
+app.put(
+    "/user/:myUsername/decline-friend-request/:friendUsername",
+    async (req, res) => {
+        const myUsername = req.params.myUsername; // If you are sending myUsername in the request body
+        const friendUsername = req.params.friendUsername; // Get friendUsername from URL parameters
+
+        try {
+            const result = await User.findOneAndUpdate(
+                { username: myUsername },
+                { $pull: { friendsRequests: friendUsername } }
+            );
+            console.log(result);
+            res.send(result);
+        } catch (error) {
+            console.error("Error updating user:", error);
+            res.status(500).json({ error: error.message });
+        }
+    }
+);
+
+app.put(
+    "/user/:myUsername/accept-friend-request/:friendUsername",
+    async (req, res) => {
+        const myUsername = req.params.myUsername; // If you are sending myUsername in the request body
+        const friendUsername = req.params.friendUsername; // Get friendUsername from URL parameters
+
+        try {
+            const result = await User.findOneAndUpdate(
+                { username: myUsername },
+                { $addToSet: { friends: friendUsername } }
+            );
+            console.log(result);
+            res.send(result);
+        } catch (error) {
+            console.error("Error updating user:", error);
+            res.status(500).json({ error: error.message });
+        }
+    }
+);
+
 mongoose
     .connect(process.env.MONGO_URI)
     .then(() => {

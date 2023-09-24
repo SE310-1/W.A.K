@@ -32,7 +32,6 @@ const Navbar = () => {
                             <button className="button-13" onClick={handleClick}>
                                 <i className="fas fa-sign-out-alt"></i> Logout
                             </button>
-                            
                         </div>
                     ) : (
                         <div>

@@ -7,6 +7,7 @@ import Home from "./Pages/Home/index.jsx";
 import './App.css'
 import MovieDetailsPage from './Pages/Details';
 import Search from "./Pages/Search/Search.jsx";
+import Favourites from './Pages/Favourites';
 
 function App() {
     const {user} = useAuthContext()
@@ -33,6 +34,10 @@ function App() {
                         <Route
                             path="/signup"
                             element={!user ? <Signup/> : <Navigate to="/"/>}
+                        />
+                        <Route
+                            path="/favourites"
+                            element={!user ? <Favourites/> : <Navigate to="/signup"/>} // TODO: change the code to revert to /signup once the signup is fully working
                         />
                     </Routes>
                 </div>

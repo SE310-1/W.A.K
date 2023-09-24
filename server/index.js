@@ -163,7 +163,7 @@ app.put(
             console.log(result);
             res.send(result);
         } catch (error) {
-            console.error("Error updating user:", error);
+            console.error("Error decline friend request:", error);
             res.status(500).json({ error: error.message });
         }
     }
@@ -174,7 +174,6 @@ app.put(
     async (req, res) => {
         const myUsername = req.params.myUsername; // If you are sending myUsername in the request body
         const friendUsername = req.params.friendUsername; // Get friendUsername from URL parameters
-
         try {
             const result = await User.findOneAndUpdate(
                 { username: myUsername },
@@ -183,11 +182,22 @@ app.put(
             console.log(result);
             res.send(result);
         } catch (error) {
-            console.error("Error updating user:", error);
+            console.error("Error accepting friend request:", error);
             res.status(500).json({ error: error.message });
         }
     }
 );
+
+app.get("/friends/:myUsername", async (req, res) => {
+    const myUsername = req.params.myUsername;
+    try {
+        const result = await User.findOne({ username: myUsername });
+        res.json(result.friends);
+    } catch (error) {
+        console.error("Error showing friends:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
 mongoose
     .connect(process.env.MONGO_URI)

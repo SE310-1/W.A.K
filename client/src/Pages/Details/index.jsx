@@ -30,7 +30,6 @@ const MovieDetailsPage = () => {
     }, [movieId]);
 
 
-
     useEffect(() => {
         fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`)
             .then(response => response.json())

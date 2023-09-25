@@ -18,47 +18,34 @@ const MovieDetailsPage = () => {
     const [userRating, setUserRating] = useState(null);
 
     async function findRating(userRatingsData, title) {
-        const details = await userRatingsData;
-        console.log(details);
-        console.log(title);
-        const {movies} = details;
-
+        const {movies} = await userRatingsData;
+        // Find movie with matching Title
+        // TODO: Introduce Movie Id variable to avoid identical ratings of movies with Identical names
         const movie = movies.find((x) => x.movieTitle == title);
-        
-        console.log(movie);
 
-        if (!movie) {
-            return null;
+        if (movie) {
+            return movie.rating;
         }
-        
-        console.log("About to return");
-        console.log(movie.rating);
 
-        return movie.rating;
+        return null;
     }
   
     useEffect(() => {
-
         async function processRating () {
+            // We need the movie Title and the users Username in order to identify the rating for a given movie
+            // We also do not want to contiually run this function everytime the user rating changes
+            // TODO: Memoize this response
             if (movieData && userRating == null && user) {
            
-            // Fetch the movie rating for the logged-in user
-    
-            const resp = fetch(`${import.meta.env.VITE_BASE_API_URL}/api/${user.username}/rating/movie/${encodeURIComponent(movieId)}`, {
+            // Fetch list of movie ratings for a given user
+            const userRatingsData = fetch(`${import.meta.env.VITE_BASE_API_URL}/api/${user.username}/ratings`, {
                 method: 'GET',
             })
                 .then(response => response.json())
-                
                 .catch(error => {
                     console.error('Error fetching movie rating:', error);
                 });
-    
-                const val = await findRating(resp, movieData.title);
-                console.log(val);
-                setUserRating(val);
-                console.log("User rating");
-                console.log(userRating);
-    
+                setUserRating(await findRating(userRatingsData, movieData.title));
             }
         }
 

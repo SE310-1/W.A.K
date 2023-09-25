@@ -21,7 +21,6 @@ const Home = () => {
                     );
                     if (response.status === 200) {
                         movies.push(...response.data.results);
-                        console.log('movies', movies);
                     } else {
                         console.error('Request failed with status:', response.status);
                     }

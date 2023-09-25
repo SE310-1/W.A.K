@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../Hooks/useAuthContext';
-import { useFavourites } from '../../Hooks/useFavourites';
+import { useFavourites } from '../../Hooks/useFavourites.js';
 import { useRating } from '../../Hooks/useRating';
 import MovieCard from '../../Components/MovieCard';
 

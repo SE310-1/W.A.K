@@ -67,19 +67,32 @@ app.post('/rating', async (req, res) => {
     }
 });
 
-app.get('/api/rating/movie/:movieId', async (req, res) => {
-    const { movieId } = req.params;
-    const username = req.user.username; // Assuming you have user authentication middleware
 
-    try {
+app.get('/api/:username/rating/movie/:movieId', async (req, res) => {
+    console.log("in here");
+    // res.json("test");
+    const { username, movieId } = req.params;
+    // const username = req.body.username; // Assuming you have user authentication middleware
+    
+    // res.json(username);
+     
+ try {
         const existingUserRating = await Rating.findOne({ username });
+        
         if (existingUserRating) {
+            res.json(existingUserRating);
+
+            /**
+            
             const movieRating = existingUserRating.movies.find(item => item.movieId === movieId);
             if (movieRating) {
                 res.json({ rating: movieRating.rating });
             } else {
                 res.json({ rating: null }); // Movie not rated by the user
             }
+
+             */
+            
         } else {
             res.json({ rating: null }); // User has not rated any movies
         }
@@ -87,6 +100,7 @@ app.get('/api/rating/movie/:movieId', async (req, res) => {
         console.error('Error fetching movie rating:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
+   
 });
 
 

@@ -13,21 +13,58 @@ const MovieDetailsPage = () => {
     const {id} = useParams();
     const urlParts = id.split('/');
     const movieId = urlParts[urlParts.length - 1];
-    const {user} = useAuthContext()
-    const {rating} = useRating()
+    const {user} = useAuthContext();
+    const {rating} = useRating();
     const [userRating, setUserRating] = useState(null);
 
+    async function findRating(userRatingsData, title) {
+        const details = await userRatingsData;
+        console.log(details);
+        console.log(title);
+        const {movies} = details;
+
+        const movie = movies.find((x) => x.movieTitle == title);
+        
+        console.log(movie);
+
+        if (!movie) {
+            return null;
+        }
+        
+        console.log("About to return");
+        console.log(movie.rating);
+
+        return movie.rating;
+    }
+  
     useEffect(() => {
-        // Fetch the movie rating for the logged-in user
-        fetch(`/api/rating/movie/${encodeURIComponent(movieId)}`)
-            .then(response => response.json())
-            .then(data => {
-                setUserRating(data.rating);
+
+        async function processRating () {
+            if (movieData && userRating == null && user) {
+           
+            // Fetch the movie rating for the logged-in user
+    
+            const resp = fetch(`${import.meta.env.VITE_BASE_API_URL}/api/${user.username}/rating/movie/${encodeURIComponent(movieId)}`, {
+                method: 'GET',
             })
-            .catch(error => {
-                console.error('Error fetching movie rating:', error);
-            });
-    }, [movieId]);
+                .then(response => response.json())
+                
+                .catch(error => {
+                    console.error('Error fetching movie rating:', error);
+                });
+    
+                const val = await findRating(resp, movieData.title);
+                console.log(val);
+                setUserRating(val);
+                console.log("User rating");
+                console.log(userRating);
+    
+            }
+        }
+
+        processRating();
+        
+    }, [movieId, user, movieData, userRating]);
 
 
 

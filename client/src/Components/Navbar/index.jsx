@@ -22,6 +22,9 @@ const Navbar = () => {
                         <div>
                             <span>Welcome {user.username}</span>
                             <button className="button-13">
+                                <Link to="/favourites">Favourites</Link>
+                            </button>
+                            <button className="button-13">
                                 <Link to="/search" className="search-button">
                                     <i className="fas fa-search"></i> Search
                                 </Link>
@@ -29,7 +32,6 @@ const Navbar = () => {
                             <button className="button-13" onClick={handleClick}>
                                 <i className="fas fa-sign-out-alt"></i> Logout
                             </button>
-                            
                         </div>
                     ) : (
                         <div>

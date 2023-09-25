@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../Hooks/useAuthContext';
 import { useFavourites } from '../../Hooks/useFavourites';
 import { useRating } from '../../Hooks/useRating';
-import MovieCard from '../MovieCard/MovieCard';
+import MovieCard from '../../Components/MovieCard';
 
 const FavouritesList = () => {
   const { user } = useAuthContext(); // get the user from the AuthContext

@@ -13,21 +13,45 @@ const MovieDetailsPage = () => {
     const {id} = useParams();
     const urlParts = id.split('/');
     const movieId = urlParts[urlParts.length - 1];
-    const {user} = useAuthContext()
-    const {rating} = useRating()
+    const {user} = useAuthContext();
+    const {rating} = useRating();
     const [userRating, setUserRating] = useState(null);
 
+    async function findRating(userRatingsData, title) {
+        const {movies} = await userRatingsData;
+        // Find movie with matching Title
+        // TODO: Introduce Movie Id variable to avoid identical ratings of movies with Identical names
+        const movie = movies.find((x) => x.movieTitle == title);
+
+        if (movie) {
+            return movie.rating;
+        }
+
+        return null;
+    }
+  
     useEffect(() => {
-        // Fetch the movie rating for the logged-in user
-        fetch(`/api/rating/movie/${encodeURIComponent(movieId)}`)
-            .then(response => response.json())
-            .then(data => {
-                setUserRating(data.rating);
+        async function processRating () {
+            // We need the movie Title and the users Username in order to identify the rating for a given movie
+            // We also do not want to contiually run this function everytime the user rating changes
+            // TODO: Memoize this response
+            if (movieData && userRating == null && user) {
+           
+            // Fetch list of movie ratings for a given user
+            const userRatingsData = fetch(`${import.meta.env.VITE_BASE_API_URL}/api/${user.username}/ratings`, {
+                method: 'GET',
             })
-            .catch(error => {
-                console.error('Error fetching movie rating:', error);
-            });
-    }, [movieId]);
+                .then(response => response.json())
+                .catch(error => {
+                    console.error('Error fetching movie rating:', error);
+                });
+                setUserRating(await findRating(userRatingsData, movieData.title));
+            }
+        }
+
+        processRating();
+        
+    }, [movieId, user, movieData, userRating]);
 
 
     useEffect(() => {

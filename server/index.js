@@ -57,7 +57,6 @@ app.post('/signup', async (req, res) => {
 app.post('/rating', async (req, res) => {
     const {username, rating, movie} = req.body
     try{
-        console.log("WAITIN")
         await Rating.review(username, movie, rating);
         res.status(200).json({username, movie, rating})
     }
@@ -66,19 +65,12 @@ app.post('/rating', async (req, res) => {
     }
 });
 
-app.get('/api/rating/movie/:movieId', async (req, res) => {
-    const { movieId } = req.params;
-    const username = req.user.username; // Assuming you have user authentication middleware
-
+app.get('/api/:username/ratings', async (req, res) => {
+    const { username } = req.params;
     try {
         const existingUserRating = await Rating.findOne({ username });
         if (existingUserRating) {
-            const movieRating = existingUserRating.movies.find(item => item.movieId === movieId);
-            if (movieRating) {
-                res.json({ rating: movieRating.rating });
-            } else {
-                res.json({ rating: null }); // Movie not rated by the user
-            }
+            res.json(existingUserRating);            
         } else {
             res.json({ rating: null }); // User has not rated any movies
         }
@@ -86,12 +78,12 @@ app.get('/api/rating/movie/:movieId', async (req, res) => {
         console.error('Error fetching movie rating:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
+   
 });
-
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
-        app.listen(process.env.PORT, () => console.log(`Server IS running` + process.env.PORT));
+        app.listen(process.env.PORT, () => console.log(`Server is running on port: ` + process.env.PORT));
     })
     .catch(err => {
         console.log(err);

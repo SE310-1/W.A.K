@@ -3,12 +3,17 @@ import "./style.css";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CircularProgress, styled } from "@mui/material";
-import UserListCard from "../../Components/FriendRequestListCard";
-import FriendRequestListCard from "../../Components/FriendRequestListCard";
-// Shows error for whatever reason
- 
+import {FriendRequestListCard, SendRequestListCard, FriendListCard} from "../../Components/FriendRequestListCard";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { addFriend } from "../../Functions/addFriend";
+import { declineFriendRequest } from "../../Functions/declineFriendRequest.js";
+import { acceptFriendRequest } from "../../Functions/acceptFriendRequest";
+import { useFriendRequests } from "../../Hooks/useFriendRequests";
+import { useFriends } from "../../Hooks/useFriends";
+import { useSearchFriends } from "../../Hooks/useSearchUsers";
+import SearchBar from "@mkyy/mui-search-bar";
 
 // Create Custom Tab Panel Component That uses value to indicate its value
 
@@ -16,6 +21,32 @@ import FriendRequestListCard from "../../Components/FriendRequestListCard";
 // Create Requests Component that shows list of requests
 // Create Search Component that allows user to send requests
 // Add Search Image into the background
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
 
 interface StyledTabsProps {
   children?: React.ReactNode;
@@ -81,24 +112,31 @@ const StyledTab = styled((props: StyledTabProps) => (
 const Friends = () => {
     const [tabIndex, setTabIndex] = React.useState(0);
 
-    const friends = [
-      {
-      username: "Sam"
-    },
-    {
-      username: "Luca"
-    },
-    {
-      username: "Kenny"
-    },
-    {
-      username: "Vishva"
-    },
-    {
-      username: "Alex"
-    },
-  ];
+    const [reload, setReload] = useState(false);
+    const { user } = useAuthContext();
+    const [textFieldValue, setTextFieldValue] = useState("");
 
+    const {
+      friendRequests,
+      isPending: isPendingFriendRequests,
+      error: errorFriendRequests,
+    } = useFriendRequests(user.username, reload);
+
+    const {
+      friends,
+      isPending: isPendingFriends,
+      error: errorFriends,
+  } = useFriends(user.username, reload);
+
+  const {
+    searchUsers,
+    isPending: isPendingSearchUsers,
+    error: errorSearchUsers,
+} = useSearchFriends(textFieldValue);
+
+const handleReload = () => {
+  setReload(!reload); // Toggle the reload state to trigger re-fetching
+};
     // Inspiration: https://mui.com/material-ui/react-tabs/
     return (
         <div className="home-container-search">
@@ -114,10 +152,64 @@ const Friends = () => {
         <StyledTab label="Requests"/>
         <StyledTab label="Add Friend"/>
       </StyledTabs>
-      {friends.map(user => 
-      <Card sx={{ minWidth: 325, margin: 1.5, background: '#3b3e43', padding: 1.5, boxShadow: 5, borderRadius: 3 }}><FriendRequestListCard username={user.username} /></Card>
-      )}
-      <CircularProgress color="secondary" />
+      <CustomTabPanel value={tabIndex} index={0}>
+      
+                    {errorFriends && <div>{errorFriends}</div>}
+                    {isPendingFriends && <div><CircularProgress color="secondary" /></div>}
+                    {friends &&
+                        friends.map((friend) => {
+                            return (
+                                <>
+                                  <Card sx={{ width: 450, margin: 1.5, background: '#3b3e43', padding: 1.5, boxShadow: 5, borderRadius: 3 }}><FriendListCard username={friend}><></></FriendListCard></Card>
+                                </>
+                            );
+                        })}
+        
+      </CustomTabPanel>
+      <CustomTabPanel value={tabIndex} index={1}>
+      {errorFriendRequests && <div>{errorFriendRequests}</div>}
+                    {isPendingFriendRequests && <div><CircularProgress color="secondary" /></div>}
+                    {friendRequests &&
+                        friendRequests.map((friendRequest) => {
+                            console.log(friendRequest);
+                            return (
+                                <>
+                                    <Card sx={{ width: 450, margin: 1.5, background: '#3b3e43', padding: 1.5, boxShadow: 5, borderRadius: 3 }}><FriendRequestListCard onDecline={async () => {await declineFriendRequest(user.username, friendRequest); handleReload();}} onAccept={async () => {await acceptFriendRequest(user.username, friendRequest); handleReload();}} username={friendRequest}/></Card>
+                                </>
+                            );
+                        })}
+      </CustomTabPanel>
+      <CustomTabPanel value={tabIndex} index={2}>
+      <SearchBar
+                style={{
+                    color: "black",
+                    backgroundColor: "white",
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                    position: "absolute",
+                    top: "215px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    zIndex: "999",
+                }}
+                value={textFieldValue}
+                onChange={(newValue) => {
+                    setTextFieldValue(newValue);
+                }}
+                placeholder="Search Movie"
+            />
+      {errorSearchUsers && <div>{errorSearchUsers}</div>}
+                {isPendingSearchUsers && <div>Loading...</div>}
+                {searchUsers &&
+                    searchUsers.map((friend) => {
+                        return (
+                            <>
+                                <Card sx={{ width: 450, margin: 1.5, background: '#3b3e43', padding: 1.5, boxShadow: 5, borderRadius: 3 }}><SendRequestListCard onSend={() => {addFriend(user.username, friend.username); handleReload();}} username={friend.username}/></Card>
+                            </>
+                        );
+                    })}
+        
+        </CustomTabPanel>
     </Box>     
             </div> 
         </div>

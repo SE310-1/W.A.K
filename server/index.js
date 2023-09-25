@@ -89,6 +89,7 @@ app.get("/api/:username/ratings", async (req, res) => {
     }
 });
 
+// Route to get all users.
 app.get("/users", async (req, res) => {
     try {
         const result = await User.find();
@@ -99,16 +100,15 @@ app.get("/users", async (req, res) => {
     }
 });
 
+// Route to add a friend request.
 app.put("/user/:myUsername/add-friend/:friendUsername", async (req, res) => {
-    const myUsername = req.params.myUsername; // If you are sending myUsername in the request body
-    const friendUsername = req.params.friendUsername; // Get friendUsername from URL parameters
-
+    const myUsername = req.params.myUsername;
+    const friendUsername = req.params.friendUsername;
     try {
         const result = await User.findOneAndUpdate(
             { username: friendUsername },
-            { $addToSet: { friendsRequests: myUsername } } // Update the username field
+            { $addToSet: { friendsRequests: myUsername } }
         );
-        console.log(result);
         res.send(result);
     } catch (error) {
         console.error("Error updating user:", error);
@@ -116,6 +116,7 @@ app.put("/user/:myUsername/add-friend/:friendUsername", async (req, res) => {
     }
 });
 
+// Route to get all friend requests for a user.
 app.get("/friend-requests/:myUsername", async (req, res) => {
     const myUsername = req.params.myUsername;
     try {
@@ -127,6 +128,7 @@ app.get("/friend-requests/:myUsername", async (req, res) => {
     }
 });
 
+// Route to get a user's username.
 app.get("/user/:myUsername", async (req, res) => {
     const myUsername = req.params.myUsername;
     try {
@@ -138,18 +140,17 @@ app.get("/user/:myUsername", async (req, res) => {
     }
 });
 
+// Route to decline a friend request.
 app.put(
     "/user/:myUsername/decline-friend-request/:friendUsername",
     async (req, res) => {
-        const myUsername = req.params.myUsername; // If you are sending myUsername in the request body
-        const friendUsername = req.params.friendUsername; // Get friendUsername from URL parameters
-
+        const myUsername = req.params.myUsername;
+        const friendUsername = req.params.friendUsername;
         try {
             const result = await User.findOneAndUpdate(
                 { username: myUsername },
                 { $pull: { friendsRequests: friendUsername } }
             );
-            console.log(result);
             res.send(result);
         } catch (error) {
             console.error("Error decline friend request:", error);
@@ -158,17 +159,17 @@ app.put(
     }
 );
 
+// Route to accept a friend request.
 app.put(
     "/user/:myUsername/accept-friend-request/:friendUsername",
     async (req, res) => {
-        const myUsername = req.params.myUsername; // If you are sending myUsername in the request body
-        const friendUsername = req.params.friendUsername; // Get friendUsername from URL parameters
+        const myUsername = req.params.myUsername;
+        const friendUsername = req.params.friendUsername;
         try {
             const result = await User.findOneAndUpdate(
                 { username: myUsername },
                 { $addToSet: { friends: friendUsername } }
             );
-            console.log(result);
             res.send(result);
         } catch (error) {
             console.error("Error accepting friend request:", error);
@@ -177,6 +178,7 @@ app.put(
     }
 );
 
+// Route to get all friends for a user.
 app.get("/friends/:myUsername", async (req, res) => {
     const myUsername = req.params.myUsername;
     try {

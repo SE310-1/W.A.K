@@ -49,7 +49,28 @@
 }
 
 .tabs {
+    margin:auto;
+}
+
+/* Featured heading */
+.featured-heading {
+    position: absolute;
+    top: 7vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    color: white;
+    z-index: 3;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.friends-card {
+    width: 70%;
+    background-color: #2a2d32;
     padding: 20px;
-    height: 100%;
-    align-items: center;
+    margin: 150px auto;
+    display: flex;
+    text-align: center;
+    overflow-wrap: initial;
+    z-index: 1;
 }

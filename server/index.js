@@ -56,7 +56,6 @@ app.post('/signup', async (req, res) => {
 
 app.post('/rating', async (req, res) => {
     const {username, rating, movie} = req.body
-
     try{
         console.log("WAITIN")
         await Rating.review(username, movie, rating);

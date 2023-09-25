@@ -6,6 +6,7 @@ const app = express();
 const User = require("./src/models/userModel");
 const Rating = require("./src/models/ratingModel");
 const jwt = require("jsonwebtoken");
+const userModel = require("./src/models/userModel");
 const requireAuth = require("./src/middleware/requireAuth");
 
 const createToken = (_id) => {
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
 });
 
@@ -62,9 +64,7 @@ app.post("/signup", async (req, res) => {
 
 app.post("/rating", async (req, res) => {
   const { username, rating, movie } = req.body;
-
   try {
-    console.log("WAITIN");
     await Rating.review(username, movie, rating);
     res.status(200).json({ username, movie, rating });
   } catch (error) {
@@ -72,27 +72,119 @@ app.post("/rating", async (req, res) => {
   }
 });
 
-app.get("/api/rating/movie/:movieId", async (req, res) => {
-  const { movieId } = req.params;
-  const username = req.user.username; // Assuming you have user authentication middleware
-
+app.get("/api/:username/ratings", async (req, res) => {
+  const { username } = req.params;
   try {
     const existingUserRating = await Rating.findOne({ username });
     if (existingUserRating) {
-      const movieRating = existingUserRating.movies.find(
-        (item) => item.movieId === movieId
-      );
-      if (movieRating) {
-        res.json({ rating: movieRating.rating });
-      } else {
-        res.json({ rating: null }); // Movie not rated by the user
-      }
+      res.json(existingUserRating);
     } else {
       res.json({ rating: null }); // User has not rated any movies
     }
   } catch (error) {
     console.error("Error fetching movie rating:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Route to get all users.
+app.get("/users", async (req, res) => {
+  try {
+    const result = await User.find();
+    res.json(result);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Route to add a friend request.
+app.put("/user/:myUsername/add-friend/:friendUsername", async (req, res) => {
+  const myUsername = req.params.myUsername;
+  const friendUsername = req.params.friendUsername;
+  try {
+    const result = await User.findOneAndUpdate(
+      { username: friendUsername },
+      { $addToSet: { friendsRequests: myUsername } }
+    );
+    res.send(result);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Route to get all friend requests for a user.
+app.get("/friend-requests/:myUsername", async (req, res) => {
+  const myUsername = req.params.myUsername;
+  try {
+    const result = await User.findOne({ username: myUsername });
+    res.json(result.friendsRequests);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Route to get a user's username.
+app.get("/user/:myUsername", async (req, res) => {
+  const myUsername = req.params.myUsername;
+  try {
+    const result = await User.findOne({ username: myUsername });
+    res.json(result.username);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Route to decline a friend request.
+app.put(
+  "/user/:myUsername/decline-friend-request/:friendUsername",
+  async (req, res) => {
+    const myUsername = req.params.myUsername;
+    const friendUsername = req.params.friendUsername;
+    try {
+      const result = await User.findOneAndUpdate(
+        { username: myUsername },
+        { $pull: { friendsRequests: friendUsername } }
+      );
+      res.send(result);
+    } catch (error) {
+      console.error("Error decline friend request:", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
+
+// Route to accept a friend request.
+app.put(
+  "/user/:myUsername/accept-friend-request/:friendUsername",
+  async (req, res) => {
+    const myUsername = req.params.myUsername;
+    const friendUsername = req.params.friendUsername;
+    try {
+      const result = await User.findOneAndUpdate(
+        { username: myUsername },
+        { $addToSet: { friends: friendUsername } }
+      );
+      res.send(result);
+    } catch (error) {
+      console.error("Error accepting friend request:", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
+
+// Route to get all friends for a user.
+app.get("/friends/:myUsername", async (req, res) => {
+  const myUsername = req.params.myUsername;
+  try {
+    const result = await User.findOne({ username: myUsername });
+    res.json(result.friends);
+  } catch (error) {
+    console.error("Error showing friends:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -162,7 +254,7 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     app.listen(process.env.PORT, () =>
-      console.log(`Server IS running` + process.env.PORT)
+      console.log(`Server is running on port: ` + process.env.PORT)
     );
   })
   .catch((err) => {

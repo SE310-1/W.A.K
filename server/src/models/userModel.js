@@ -23,6 +23,12 @@ const userSchema = new Schema({
     type: [String], // storing IDs of the favourite movies
     default: [],
   },
+  friends: {
+    type: Array,
+  },
+  friendsRequests: {
+    type: Array,
+  },
 });
 
 // static signup method
@@ -42,7 +48,6 @@ userSchema.statics.signup = async function (email, username, password) {
 
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
-
   return this.create({ email, username, password: hash });
 };
 

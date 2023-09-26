@@ -19,6 +19,9 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    favorites: {
+        type: Array, // storing IDs of the favourite movies
+    },
     friends: {
         type: Array,
     },
@@ -63,6 +66,23 @@ userSchema.statics.login = async function (username, password) {
     }
 
     return user;
+};
+
+userSchema.methods.addFavorite = async function (movieId) {
+    if (this.favorites.includes(movieId)) {
+        throw Error("Movie already in favorites");
+    }
+    this.favorites.push(movieId);
+    return this.save();
+};
+
+userSchema.methods.removeFavorite = async function (movieId) {
+    const index = this.favorites.indexOf(movieId);
+    if (index === -1) {
+        throw Error("Movie not found in favorites");
+    }
+    this.favorites.splice(index, 1);
+    return this.save();
 };
 
 module.exports = mongoose.model("User", userSchema);

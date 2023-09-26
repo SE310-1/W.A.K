@@ -7,6 +7,7 @@ const User = require("./src/models/userModel");
 const Rating = require("./src/models/ratingModel");
 const jwt = require("jsonwebtoken");
 const userModel = require("./src/models/userModel");
+const requireAuth = require("./src/middleware/requireAuth");
 
 const createToken = (_id) => {
     return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
@@ -18,7 +19,7 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
         "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     );
     res.header(
         "Access-Control-Allow-Methods",
@@ -187,6 +188,69 @@ app.get("/friends/:myUsername", async (req, res) => {
     } catch (error) {
         console.error("Error showing friends:", error);
         res.status(500).json({ error: error.message });
+    }
+});
+
+app.get("/:myUsername/favorites", requireAuth, async (req, res) => {
+    const myUsername = req.params.myUsername;
+    try {
+        const result = await User.findOne({ username: myUsername });
+        res.json(result.favorites);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post("/favorites/add/:movieId", requireAuth, async (req, res) => {
+    const { movieId } = req.params;
+
+    try {
+        const user = await User.findOne({ _id: req.user._id });
+        if (!user) return res.status(404).json({ error: "User not found" });
+        await user.addFavorite(movieId);
+        res.status(200).json({ message: "Movie added to favorites" });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.delete("/favorites/remove/:movieId", requireAuth, async (req, res) => {
+    const { movieId } = req.params;
+
+    try {
+        const user = await User.findOne({ _id: req.user._id });
+        if (!user) return res.status(404).json({ error: "User not found" });
+        await user.removeFavorite(movieId);
+        res.status(200).json({ message: "Movie removed from favorites" });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.get("/favorites/isFavorite/:movieId", requireAuth, async (req, res) => {
+    const userId = req.user._id;
+    const { movieId } = req.params;
+
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const isFavorite = user.favorites.find(
+            (favoriteMovieId) => String(favoriteMovieId) === String(movieId)
+        );
+
+        if (!isFavorite) {
+            return res.json({ message: "Movie not in favourites" });
+        }
+
+        res.status(200).json({ message: "Movie in favorites" });
+    } catch (error) {
+        console.error("Error fetching favorite movie:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 

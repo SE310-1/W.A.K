@@ -3,6 +3,8 @@ import { useAuthContext } from '../../Hooks/useAuthContext';
 import { useFavourites } from '../../Hooks/useFavourites.js';
 import { useRating } from '../../Hooks/useRating';
 import MovieCard from '../../Components/MovieCard';
+import {apiKey} from '../../../env.js';
+
 
 const FavouritesList = () => {
   const { user } = useAuthContext(); // get the user from the AuthContext
@@ -16,7 +18,7 @@ const FavouritesList = () => {
       try {
         const promises = favourites.map((movieId) =>
           fetch(
-            `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
+            `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
           )
         );
         const responses = await Promise.all(promises);

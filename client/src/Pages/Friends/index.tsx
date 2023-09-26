@@ -169,7 +169,7 @@ const handleReload = () => {
       </StyledTabs>
       </div>
 
-
+      <div className="centralizer">
       <CustomTabPanel {...{className: "full-width"}} value={tabIndex} index={2}>
       <SearchBar
                 style={{
@@ -186,8 +186,8 @@ const handleReload = () => {
                 }}
                 placeholder="Search Username"
             />
-            
         </CustomTabPanel>
+        </div>
       <div className="content-section">
 
 
@@ -218,6 +218,7 @@ const handleReload = () => {
                         })}
       </CustomTabPanel>
       <CustomTabPanel value={tabIndex} index={2}>
+       
       {errorSearchUsers && <div>{errorSearchUsers}</div>}
                 {isPendingSearchUsers && <div>Loading...</div>}
                 {searchUsers &&

@@ -195,7 +195,7 @@ const handleReload = () => {
             />
         </CustomTabPanel>
         </div>
-      <div className="content-section">
+      <div className={`content-section ${((tabIndex == 2)  ? `` : `long-section`)}`}>
 
 
       <CustomTabPanel value={tabIndex} index={0}>

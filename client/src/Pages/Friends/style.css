@@ -101,18 +101,13 @@
     border-radius: 5px;
     display: block; 
     justify-content: center;
-    width: 100%;
+    width: auto;
     text-align: center;
     height: 650px;
 }
 
-
 .long-section {
-    height: 700px;
-}
-
-.shorter-section {
-    height: 500px;
+    height: 712px;
 }
 
 .centralizer {

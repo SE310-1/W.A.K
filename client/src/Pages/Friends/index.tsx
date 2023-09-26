@@ -41,7 +41,7 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{  }}>
           {children}
         </Box>
       )}
@@ -62,7 +62,8 @@ const StyledTabs = styled((props: StyledTabsProps) => (
      /> }}
   />
 ))({
-  backgroundColor: 'black',
+  margin: "0 auto",
+  backgroundColor: 'transparent',
   '& .MuiTabs-indicator': {
     display: 'flex',
     justifyContent: 'center',
@@ -71,9 +72,14 @@ const StyledTabs = styled((props: StyledTabsProps) => (
   '& .MuiTabs-indicatorSpan': {
     maxWidth: 80,
     maxHeight: 20,
-    width: '100%',
-    height:'100%',
+    height: 20,
+    width: 80,
     backgroundColor: '#00ff00',
+  },
+  '& .MuiTabs-flexContainer': {
+    display: 'flex',
+    justifyContent: 'center',
+    margin: "0 auto",
   },
 });
 
@@ -146,8 +152,13 @@ const handleReload = () => {
            
            <div className="overlay-search"></div>  
            <h1 className="featured-heading">Movies are better with friends.</h1>
+
+          
            <div className="friends-card">
-           <Box className = "tabs">
+            <div className="friends-card-content"> 
+      
+          <div className="tab-section">
+            
            <StyledTabs
           value={tabIndex}
           onChange={(e, index) => setTabIndex(index)}
@@ -156,8 +167,10 @@ const handleReload = () => {
         <StyledTab label="Requests"/>
         <StyledTab label="Add Friend"/>
       </StyledTabs>
+      </div>
+
+
       <CustomTabPanel value={tabIndex} index={0}>
-      
                     {errorFriends && <div>{errorFriends}</div>}
                     {isPendingFriends && <div><CircularProgress color="secondary" /></div>}
                     {friends &&
@@ -190,17 +203,14 @@ const handleReload = () => {
                     backgroundColor: "white",
                     borderRadius: "8px",
                     border: "1px solid #ccc",
-                    position: "absolute",
-                    top: "215px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
+                    margin: "25px auto 25px auto",                
                     zIndex: "999",
                 }}
                 value={textFieldValue}
                 onChange={(newValue) => {
                     setTextFieldValue(newValue);
                 }}
-                placeholder="Search Movie"
+                placeholder="Search Username"
             />
       {errorSearchUsers && <div>{errorSearchUsers}</div>}
                 {isPendingSearchUsers && <div>Loading...</div>}
@@ -214,8 +224,9 @@ const handleReload = () => {
                     })}
         
         </CustomTabPanel>
-    </Box>     
-            </div> 
+        </div>
+        </div>
+         
         </div>
     );
 };

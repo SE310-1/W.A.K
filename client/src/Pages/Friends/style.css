@@ -65,12 +65,41 @@
 }
 
 .friends-card {
-    width: 70%;
-    background-color: #2a2d32;
-    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
     margin: 150px auto;
-    display: flex;
     text-align: center;
     overflow-wrap: initial;
     z-index: 1;
+    width: 50%;
+    padding: 4vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+.friends-card-content {
+    margin: 5px auto;
+    width: 100%;
+    height: 800px;
+    text-align: center;
+    overflow-wrap: initial;
+    z-index: 1; 
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tab-section {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.scroll-section {
+    scroll-behavior: smooth;
+    padding: 0 0 20px 0;
+    margin: 20px 0 0 0;
+    height: 90%;
+    overflow-y:scroll;
 }

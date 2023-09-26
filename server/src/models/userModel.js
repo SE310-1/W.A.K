@@ -23,29 +23,30 @@ const userSchema = new Schema({
         required: true,
     },
     favorites: {
-        type: [String], // This is an array of Strings to store IDs of the favourite movies
-        default: [], // The default value is an empty array
+        type: Array, // storing IDs of the favourite movies
     },
     friends: {
-        type: Array, // Array to store friends of the user
+        type: Array,
     },
     friendsRequests: {
-        type: Array, // Array to store friend requests of the user
+        type: Array,
     },
 });
 
 // Static method to signup a new user
 userSchema.statics.signup = async function (email, username, password) {
     // Validation checks
+
     if (!email || !password) {
         throw Error("All fields must be filled");
     }
     if (!validator.isEmail(email)) {
         throw Error("Email not valid");
     }
-
+  
     // Check if email already exists in the database
-    const exists = await this.findOne({ email });
+    const [exists] = await Promise.all([this.findOne({ email })]);
+
     if (exists) {
         throw Error("Email already in use");
     }
@@ -65,7 +66,8 @@ userSchema.statics.login = async function (username, password) {
     }
 
     // Check if the user with the provided username exists
-    const user = await this.findOne({ username });
+    const [user] = await Promise.all([this.findOne({ username })]);
+
     if (!user) {
         throw Error("Incorrect email");
     }
@@ -76,7 +78,6 @@ userSchema.statics.login = async function (username, password) {
         throw Error("Incorrect password");
     }
 
-    // Return the logged-in user
     return user;
 };
 

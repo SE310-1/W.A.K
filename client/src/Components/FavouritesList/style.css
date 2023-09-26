@@ -1,0 +1,7 @@
+.favourites-box {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
+  background-color: black;
+}

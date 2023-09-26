@@ -1,12 +1,19 @@
-import {useAuthContext} from './useAuthContext'
+// Importing the useAuthContext custom hook
+import { useAuthContext } from "./useAuthContext";
 
+// Defining a custom hook 'useLogout'
 export const useLogout = () => {
-    const {dispatch} = useAuthContext()
+    // Destructuring dispatch from the context to dispatch actions
+    const { dispatch } = useAuthContext();
 
+    // Defining the logout function
     const logout = () => {
-        localStorage.removeItem('user')
-        dispatch({type: 'LOGOUT'})
-    }
+        // Removing the user item from localStorage
+        localStorage.removeItem("user");
+        // Dispatching the 'LOGOUT' action to update the context/state
+        dispatch({ type: "LOGOUT" });
+    };
 
-    return {logout}
-}
+    // Returning the logout function from the custom hook
+    return { logout };
+};

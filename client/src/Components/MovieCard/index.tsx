@@ -2,7 +2,19 @@ import React from "react";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
 
-const MovieCard = ({ movie }) => {
+interface Movie {
+  id: number;
+  vote_average: number;
+  poster_path: string;
+  title: string;
+  release_date: string;
+}
+
+interface MovieCardProps {
+  movie: Movie;
+}
+
+const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   const rating = movie.vote_average;
   const filledStars = Math.round((rating / 10) * 5);
   const navigate = useNavigate();

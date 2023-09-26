@@ -2,20 +2,32 @@ import { Link } from 'react-router-dom';
 import { useLogout } from "../../Hooks/useLogout.js";
 import { useAuthContext } from '../../Hooks/useAuthContext';
 import './style.css';
+import { useTheme } from '../../Hooks/useTheme.js';
+import { useEffect } from 'react';
 
 const Navbar = () => {
     const { logout } = useLogout();
     const { user } = useAuthContext();
+    const { themeColour, themeImage } = useTheme();
 
     const handleClick = () => {
         logout();
     };
 
+    let titleStyle = {};
+
+    useEffect(() => {
+        titleStyle = {
+            color: themeColour
+        };
+    }, [themeColour]);
+
+
     return (
         <header>
             <div className="container">
                 <Link to="/">
-                    <h1>W.A.K</h1>
+                    <h1 style={titleStyle}>W.A.K</h1>
                 </Link>
                 <nav>
                     {user ? (
@@ -36,13 +48,13 @@ const Navbar = () => {
                     ) : (
                         <div>
                             <div>
-                            <button className="button-13">
-                                <Link to="/login">Login</Link>
-                            </button>
+                                <button className="button-13">
+                                    <Link to="/login">Login</Link>
+                                </button>
 
-                            <button className="button-13">
-                                <Link to="/signup">Signup</Link>
-                            </button>                              
+                                <button className="button-13">
+                                    <Link to="/signup">Signup</Link>
+                                </button>
                             </div>
                         </div>
                     )}

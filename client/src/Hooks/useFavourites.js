@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useAuthContext } from './useAuthContext';
-import { REACT_APP_BASE_API_URL } from './env'; // Import the environment variable
-
 
 export const useFavourites = (username) => {
   const [favourites, setFavourites] = useState([]); // create a state for the favourites list
@@ -16,7 +14,7 @@ export const useFavourites = (username) => {
       setError(null);
       try {
         const response = await fetch(
-          `${REACT_APP_BASE_API_URL}/api/${username}/favourites`
+          `${process.env.REACT_APP_BASE_API_URL}/api/${username}/favourites`
         );
         const json = await response.json();
         if (response.ok) {
@@ -40,7 +38,7 @@ export const useFavourites = (username) => {
     setError(null);
     try {
       const response = await fetch(
-        `${REACT_APP_BASE_API_URL}/api/${username}/favourites`,
+        `${process.env.REACT_APP_BASE_API_URL}/api/${username}/favourites`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -65,7 +63,7 @@ export const useFavourites = (username) => {
     setError(null);
     try {
       const response = await fetch(
-        `${REACT_APP_BASE_API_URL}/api/${username}/favourites/${movieId}`,
+        `${process.env.BASE_URL}/api/${username}/favourites/${movieId}`,
         {
           method: 'DELETE',
         }

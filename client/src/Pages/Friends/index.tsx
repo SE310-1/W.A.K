@@ -14,6 +14,7 @@ import { useFriendRequests } from "../../Hooks/useFriendRequests";
 import { useFriends } from "../../Hooks/useFriends";
 import { useSearchFriends } from "../../Hooks/useSearchUsers";
 import SearchBar from "@mkyy/mui-search-bar";
+import backgroundImage from "./img/movies.jpeg";
 
 // Create Custom Tab Panel Component That uses value to indicate its value
 
@@ -140,6 +141,9 @@ const handleReload = () => {
     // Inspiration: https://mui.com/material-ui/react-tabs/
     return (
         <div className="home-container-search">
+           
+           <div className="background-image-search" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}></div>
+           
            <div className="overlay-search"></div>  
            <h1 className="featured-heading">Movies are better with friends.</h1>
            <div className="friends-card">

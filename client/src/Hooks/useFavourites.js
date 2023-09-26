@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuthContext } from './useAuthContext';
-import { REACT_APP_BASE_API_URL } from '../../env'; // Import the environment variable
+import { REACT_APP_BASE_API_URL } from './env'; // Import the environment variable
 
 
 export const useFavourites = (username) => {

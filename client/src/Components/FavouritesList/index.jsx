@@ -3,7 +3,7 @@ import { useAuthContext } from '../../Hooks/useAuthContext';
 import { useFavourites } from '../../Hooks/useFavourites.js';
 import { useRating } from '../../Hooks/useRating';
 import MovieCard from '../../Components/MovieCard';
-import { REACT_APP_BASE_API_URL } from '../../../env'; // Import the environment variable
+import { REACT_APP_BASE_API_URL } from './env'; // Import the environment variable
 
 
 const FavouritesList = () => {

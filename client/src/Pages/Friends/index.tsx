@@ -170,6 +170,27 @@ const handleReload = () => {
       </div>
 
 
+      <CustomTabPanel {...{className: "full-width"}} value={tabIndex} index={2}>
+      <SearchBar
+                style={{
+                    color: "black",
+                    backgroundColor: "white",
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                    margin: "20px auto 10px auto",                
+                    zIndex: "999",
+                }}
+                value={textFieldValue}
+                onChange={(newValue) => {
+                    setTextFieldValue(newValue);
+                }}
+                placeholder="Search Username"
+            />
+            
+        </CustomTabPanel>
+      <div className="content-section">
+
+
       <CustomTabPanel value={tabIndex} index={0}>
                     {errorFriends && <div>{errorFriends}</div>}
                     {isPendingFriends && <div><CircularProgress color="secondary" /></div>}
@@ -197,21 +218,6 @@ const handleReload = () => {
                         })}
       </CustomTabPanel>
       <CustomTabPanel value={tabIndex} index={2}>
-      <SearchBar
-                style={{
-                    color: "black",
-                    backgroundColor: "white",
-                    borderRadius: "8px",
-                    border: "1px solid #ccc",
-                    margin: "25px auto 25px auto",                
-                    zIndex: "999",
-                }}
-                value={textFieldValue}
-                onChange={(newValue) => {
-                    setTextFieldValue(newValue);
-                }}
-                placeholder="Search Username"
-            />
       {errorSearchUsers && <div>{errorSearchUsers}</div>}
                 {isPendingSearchUsers && <div>Loading...</div>}
                 {searchUsers &&
@@ -222,11 +228,12 @@ const handleReload = () => {
                             </>
                         );
                     })}
+                    
         
         </CustomTabPanel>
         </div>
         </div>
-         
+        </div>
         </div>
     );
 };

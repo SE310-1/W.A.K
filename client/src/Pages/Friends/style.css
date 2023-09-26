@@ -96,10 +96,26 @@
     margin: 0 auto;
 }
 
-.scroll-section {
+.content-section {
     scroll-behavior: smooth;
     padding: 0 0 20px 0;
-    margin: 20px 0 0 0;
+    margin: 0 0 0 0;
     height: 90%;
-    overflow-y:scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 5px;
+}
+
+.search-divider {
+   
+}
+
+hr.solid {
+    border-top: 4px solid greenyellow;
+    width: 100%;
+    margin: 0;
+  }
+
+.full-width {
+    width: 515px;
 }

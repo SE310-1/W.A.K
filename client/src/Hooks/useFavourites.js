@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuthContext } from './useAuthContext';
-import { BASE_URL, apiKey } from "../../env";
+import { BASE_URL } from "../../env";
 
 
 export const useFavourites = (username) => {
@@ -16,11 +16,14 @@ export const useFavourites = (username) => {
       setError(null);
       try {
         const response = await fetch(
-          `${BASE_URL}/api/${username}/favourites`
+          `${BASE_URL}/favorites`,
+          {
+            headers: { 'Authorization': `Bearer ${user.token}` } // add authorization header
+          }
         );
         const json = await response.json();
         if (response.ok) {
-          setFavourites(json.favourites); // update the favourites state with the array of movie ids
+          setFavourites(json); // update the favourites state with the array of movie ids
         } else {
           setError(json.error); // update the error state with the error message
         }
@@ -32,7 +35,7 @@ export const useFavourites = (username) => {
     if (user) {
       fetchFavourites();
     }
-  }, [user, username]); // run this effect whenever the user or the username changes
+  }, [user]); // run this effect whenever the user changes
 
   // create a function for adding a movie to the favourites list
   const addFavourite = async (movieId) => {
@@ -40,16 +43,15 @@ export const useFavourites = (username) => {
     setError(null);
     try {
       const response = await fetch(
-        `${BASE_URL}/api/${username}/favourites`,
+        `${BASE_URL}/favorites/add/${movieId}`, // change url parameter
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ movieId }),
+          headers: { 'Authorization': `Bearer ${user.token}` } // add authorization header
         }
       );
       const json = await response.json();
       if (response.ok) {
-        setFavourites(json.favourites); // update the favourites state with the array of movie ids
+        setFavourites(prev => [...prev, movieId]); // update the favourites state with the movie id
       } else {
         setError(json.error); // update the error state with the error message
       }
@@ -65,14 +67,15 @@ export const useFavourites = (username) => {
     setError(null);
     try {
       const response = await fetch(
-        `${BASE_URL}/api/${username}/favourites/${movieId}`,
+        `${BASE_URL}/favorites/remove/${movieId}`, // change url parameter
         {
           method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${user.token}` } // add authorization header
         }
       );
       const json = await response.json();
       if (response.ok) {
-        setFavourites(json.favourites); // update the favourites state with the array of movie ids
+        setFavourites(prev => prev.filter(id => id !== movieId)); // update the favourites state by filtering out the movie id
       } else {
         setError(json.error); // update the error state with the error message
       }
@@ -82,5 +85,26 @@ export const useFavourites = (username) => {
     setLoading(false);
   };
 
-  return { favourites, loading, error, addFavourite, removeFavourite }; // return the favourites list, the loading and error states, and the add and remove functions
+  // create a function for checking if a movie is in the favourites list
+  const isFavourite = async (movieId) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/favorites/isFavorite/${movieId}`,
+        {
+          headers: { 'Authorization': `Bearer ${user.token}` } // add authorization header
+        }
+      );
+      const json = await response.json();
+      if (response.ok) {
+        return json.message === "Movie in favorites"; // return true or false based on the message
+      } else {
+        throw new Error(json.error); // throw an error with the error message
+      }
+    } catch (err) {
+      console.error(err); // log the error
+      return false; // return false by default
+    }
+  };
+
+  return { favourites, loading, error, addFavourite, removeFavourite, isFavourite }; // return the favourites list, the loading and error states, and the add, remove, and isFavourite functions
 };

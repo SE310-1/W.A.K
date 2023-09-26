@@ -7,6 +7,7 @@ const User = require("./src/models/userModel");
 const Rating = require("./src/models/ratingModel");
 const jwt = require("jsonwebtoken");
 const userModel = require("./src/models/userModel");
+const requireAuth = require("./src/middleware/requireAuth");
 
 const createToken = (_id) => {
     return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
@@ -18,7 +19,7 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
         "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     );
     res.header(
         "Access-Control-Allow-Methods",
@@ -189,6 +190,77 @@ app.get("/friends/:myUsername", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+// Route to get all the favorite movies of a user
+app.get("/:myUsername/favorites", requireAuth, async (req, res) => {
+    const myUsername = req.params.myUsername;
+    try {
+        const result = await User.findOne({ username: myUsername });
+        res.json(result.favorites);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Route to add a movie to the favorites list
+app.post(
+    "/:myUsername/favorites/add/:movieId",
+    requireAuth,
+    async (req, res) => {
+        const movieId = req.params.movieId;
+        const myUsername = req.params.myUsername;
+
+        try {
+            const user = await User.findOne({ username: myUsername });
+            if (!user) return res.status(404).json({ error: "User not found" });
+            await user.addFavorite(movieId);
+            res.status(200).json({ message: "Movie added to favorites" });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+);
+
+// Route to delete a movie from the favorites list
+app.delete(
+    "/:myUsername/favorites/remove/:movieId",
+    requireAuth,
+    async (req, res) => {
+        const movieId = req.params.movieId;
+        const myUsername = req.params.myUsername;
+
+        try {
+            const user = await User.findOne({ username: myUsername });
+            if (!user) return res.status(404).json({ error: "User not found" });
+            await user.removeFavorite(movieId);
+            res.status(200).json({ message: "Movie removed from favorites" });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+);
+
+// Route to retrieve all favorite movies
+app.get(
+    "/:myUsername/favorites/isFavorite/:movieId",
+    requireAuth,
+    async (req, res) => {
+        const myUsername = req.params.myUsername;
+        const movieId = req.params.movieId;
+        try {
+            const user = await User.findOne({ username: myUsername });
+            if (!user) {
+                return res.status(404).json({ error: "User not found" });
+            }
+            const isFavorite = user.favorites.includes(String(movieId));
+            res.status(200).json({ isFavorite });
+        } catch (error) {
+            console.error("Error fetching favorite movie:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    }
+);
 
 mongoose
     .connect(process.env.MONGO_URI)

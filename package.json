@@ -5,5 +5,8 @@
   "scripts": {
     "removeModules": "rm -rf node_modules && cd client && rm -rf node_modules && cd ../server && rm -rf node_modules",
     "installAll": "npm install && cd client && npm install && cd ../server && npm install"
+  },
+  "dependencies": {
+    "typescript": "^5.2.2"
   }
 }

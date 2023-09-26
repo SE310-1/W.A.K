@@ -46,6 +46,12 @@ const FavouritesList = () => {
         fetchFavourites();
     }, []);
 
+    const handleMovieDeleted = (deletedMovieId) => {
+        setMoviesData(
+            moviesData.filter((movie) => movie.id !== deletedMovieId)
+        );
+    };
+
     return (
         <div className="favourites-page">
             <Grid container spacing={1} sx={{ marginRight: "-8px!important" }}>
@@ -55,7 +61,10 @@ const FavouritesList = () => {
                     moviesData.map((movie, index) => (
                         <Grid item xs={6} sm={4} md={3} key={index}>
                             <MovieCard movie={movie} />
-                            <DeleteButton movieId={movie.id} />
+                            <DeleteButton
+                                movieId={movie.id}
+                                onMovieDeleted={handleMovieDeleted}
+                            />
                         </Grid>
                     ))}
             </Grid>

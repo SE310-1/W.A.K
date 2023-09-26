@@ -2,7 +2,8 @@ import React from "react";
 import axios from "axios";
 import { useAuthContext } from "../../Hooks/useAuthContext";
 
-const DeleteButton = ({ movieId }) => {
+// This allows the deletion of a movie to be reflected in the UI
+const DeleteButton = ({ movieId, onMovieDeleted }) => {
     const { user } = useAuthContext();
 
     const handleDelete = async () => {
@@ -17,9 +18,7 @@ const DeleteButton = ({ movieId }) => {
                     },
                 }
             );
-            // After deleting, you might want to refetch the favorites or update the local state
-            // to reflect the change in the UI.
-            console.log("Movie removed from favorites");
+            onMovieDeleted(movieId);
         } catch (error) {
             console.error("Failed to remove movie from favorites", error);
         }

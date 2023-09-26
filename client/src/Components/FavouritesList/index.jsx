@@ -6,6 +6,7 @@ import { apiKey } from "../../../env.js";
 import axios from "axios";
 import MovieCard from "../../Components/MovieCard";
 import { Grid } from "@mui/material";
+import DeleteButton from "../DeleteFavoriteButton";
 
 const FavouritesList = () => {
     const { user } = useAuthContext();
@@ -54,6 +55,7 @@ const FavouritesList = () => {
                     moviesData.map((movie, index) => (
                         <Grid item xs={6} sm={4} md={3} key={index}>
                             <MovieCard movie={movie} />
+                            <DeleteButton movieId={movie.id} />
                         </Grid>
                     ))}
             </Grid>

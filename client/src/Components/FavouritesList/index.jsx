@@ -6,6 +6,7 @@ import { apiKey } from "../../../env.js";
 import axios from "axios";
 import MovieCard from "../../Components/MovieCard";
 import { Grid } from "@mui/material";
+import DeleteButton from "../DeleteFavoriteButton";
 
 const FavouritesList = () => {
     const { user } = useAuthContext();
@@ -45,15 +46,28 @@ const FavouritesList = () => {
         fetchFavourites();
     }, []);
 
+    const handleMovieDeleted = (deletedMovieId) => {
+        setMoviesData(
+            moviesData.filter((movie) => movie.id !== deletedMovieId)
+        );
+    };
+
     return (
         <div className="favourites-page">
             <Grid container spacing={1} sx={{ marginRight: "-8px!important" }}>
                 {error && <div>{error}</div>}
                 {isPending && <div>Loading...</div>}
+                {!isPending && moviesData.length === 0 && (
+                    <div>Nothing added to favorites yet!</div>
+                )}
                 {moviesData &&
                     moviesData.map((movie, index) => (
                         <Grid item xs={6} sm={4} md={3} key={index}>
                             <MovieCard movie={movie} />
+                            <DeleteButton
+                                movieId={movie.id}
+                                onMovieDeleted={handleMovieDeleted}
+                            />
                         </Grid>
                     ))}
             </Grid>

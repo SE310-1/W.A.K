@@ -1,61 +1,59 @@
-import React, { useEffect, useState } from 'react';
-import { useAuthContext } from '../../Hooks/useAuthContext';
-import { useFavourites } from '../../Hooks/useFavourites.js';
-import { useRating } from '../../Hooks/useRating';
-import MovieCard from '../../Components/MovieCard';
-import {apiKey} from '../../../env.js';
-
+import React, { useEffect, useState } from "react";
+import { useAuthContext } from "../../Hooks/useAuthContext";
+import { useFavourites } from "../../Hooks/useFavourites.js";
+import { useRating } from "../../Hooks/useRating";
+import MovieCard from "../../Components/MovieCard";
+import { apiKey } from "../../../env.js";
+import axios from "axios";
 
 const FavouritesList = () => {
-  const { user } = useAuthContext(); // get the user from the AuthContext
-  const { favourites, loading, error } = useFavourites(); // get the favourites list from the useFavourites hook
-  const { rating } = useRating(); // get the rating function from the useRating hook
-  const [movies, setMovies] = useState([]); // create a state for the movies array
+    const { user } = useAuthContext();
+    const [isPending, setIsPending] = useState(true);
+    const [error, setError] = useState(null);
+    const [moviesData, setMoviesData] = useState([]);
 
-  useEffect(() => {
-    // fetch the movie details for each movie id in the favourites list using the tmdb api
-    const fetchMovies = async () => {
-      try {
-        const promises = favourites.map((movieId) =>
-          fetch(
-            `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
-          )
-        );
-        const responses = await Promise.all(promises);
-        const jsons = await Promise.all(responses.map((response) => response.json()));
-        setMovies(jsons); // update the movies state with the movie objects
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    if (favourites.length > 0) {
-      fetchMovies();
-    }
-  }, [favourites]); // run this effect whenever the favourites list changes
+    useEffect(() => {
+        const fetchFavourites = async () => {
+            try {
+                const response = await axios.get(
+                    `${import.meta.env.VITE_BASE_API_URL}/${
+                        user.username
+                    }/favorites`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${user.token}`,
+                        },
+                    }
+                );
 
-  return (
-    <div className="favourites-list">
-      <h2>My Favourites</h2>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      {movies.length > 0 && (
-  <ul>
-    {movies.map((movie) => {
-      console.log('Movie:', movie);
-      console.log('Movie ID:', movie.id);
-      console.log('Rating:', rating);
+                const movieDetailsPromises = response.data.map((movieId) =>
+                    fetch(
+                        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
+                    ).then((response) => response.json())
+                );
 
-      return (
-        <li key={movie.id}>
-          <MovieCard movie={movie} rating={rating} />
-        </li>
-      );
-    })}
-  </ul>
-)}
+                const movieDetails = await Promise.all(movieDetailsPromises);
+                setMoviesData(movieDetails);
+                setIsPending(false);
+            } catch (err) {
+                setIsPending(false);
+                setError(err.message);
+            }
+        };
 
-    </div>
-  );
+        fetchFavourites();
+    }, []);
+
+    return (
+        <div className="favourites-page">
+            {error && <div>{error}</div>}
+            {isPending && <div>Loading...</div>}
+            {moviesData.map((movie) => (
+                <div key={movie.id}>{movie.title}</div>
+            ))}
+            <h1>Favourites Page</h1>
+        </div>
+    );
 };
 
 export default FavouritesList;

@@ -191,6 +191,7 @@ app.get("/friends/:myUsername", async (req, res) => {
     }
 });
 
+// Route to get all the favorite movies of a user
 app.get("/:myUsername/favorites", requireAuth, async (req, res) => {
     const myUsername = req.params.myUsername;
     try {
@@ -202,57 +203,64 @@ app.get("/:myUsername/favorites", requireAuth, async (req, res) => {
     }
 });
 
-app.post("/favorites/add/:movieId", requireAuth, async (req, res) => {
-    const { movieId } = req.params;
+// Route to add a movie to the favorites list
+app.post(
+    "/:myUsername/favorites/add/:movieId",
+    requireAuth,
+    async (req, res) => {
+        const movieId = req.params.movieId;
+        const myUsername = req.params.myUsername;
 
-    try {
-        const user = await User.findOne({ _id: req.user._id });
-        if (!user) return res.status(404).json({ error: "User not found" });
-        await user.addFavorite(movieId);
-        res.status(200).json({ message: "Movie added to favorites" });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
-app.delete("/favorites/remove/:movieId", requireAuth, async (req, res) => {
-    const { movieId } = req.params;
-
-    try {
-        const user = await User.findOne({ _id: req.user._id });
-        if (!user) return res.status(404).json({ error: "User not found" });
-        await user.removeFavorite(movieId);
-        res.status(200).json({ message: "Movie removed from favorites" });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
-app.get("/favorites/isFavorite/:movieId", requireAuth, async (req, res) => {
-    const userId = req.user._id;
-    const { movieId } = req.params;
-
-    try {
-        const user = await User.findById(userId);
-
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
+        try {
+            const user = await User.findOne({ username: myUsername });
+            if (!user) return res.status(404).json({ error: "User not found" });
+            await user.addFavorite(movieId);
+            res.status(200).json({ message: "Movie added to favorites" });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
         }
-
-        const isFavorite = user.favorites.find(
-            (favoriteMovieId) => String(favoriteMovieId) === String(movieId)
-        );
-
-        if (!isFavorite) {
-            return res.json({ message: "Movie not in favourites" });
-        }
-
-        res.status(200).json({ message: "Movie in favorites" });
-    } catch (error) {
-        console.error("Error fetching favorite movie:", error);
-        res.status(500).json({ error: "Internal server error" });
     }
-});
+);
+
+// Route to delete a movie from the favorites list
+app.delete(
+    "/:myUsername/favorites/remove/:movieId",
+    requireAuth,
+    async (req, res) => {
+        const movieId = req.params.movieId;
+        const myUsername = req.params.myUsername;
+
+        try {
+            const user = await User.findOne({ username: myUsername });
+            if (!user) return res.status(404).json({ error: "User not found" });
+            await user.removeFavorite(movieId);
+            res.status(200).json({ message: "Movie removed from favorites" });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+);
+
+// Route to retrieve all favorite movies
+app.get(
+    "/:myUsername/favorites/isFavorite/:movieId",
+    requireAuth,
+    async (req, res) => {
+        const myUsername = req.params.myUsername;
+        const movieId = req.params.movieId;
+        try {
+            const user = await User.findOne({ username: myUsername });
+            if (!user) {
+                return res.status(404).json({ error: "User not found" });
+            }
+            const isFavorite = user.favorites.includes(String(movieId));
+            res.status(200).json({ isFavorite });
+        } catch (error) {
+            console.error("Error fetching favorite movie:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    }
+);
 
 mongoose
     .connect(process.env.MONGO_URI)

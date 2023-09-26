@@ -4,6 +4,15 @@
   "description": "The W.A.K project",
   "scripts": {
     "removeModules": "rm -rf node_modules && cd client && rm -rf node_modules && cd ../server && rm -rf node_modules",
-    "installAll": "npm install && cd client && npm install && cd ../server && npm install"
+    "installAll": "npm install && cd client && npm install && cd ../server && npm install",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w"
+  },
+  "dependencies": {
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.7.0",
+    "@types/react": "^18.2.22",
+    "@types/react-dom": "^18.2.7",
+    "typescript": "^5.2.2"
   }
 }

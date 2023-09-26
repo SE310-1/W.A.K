@@ -11,10 +11,6 @@
 
 }
 
-.page{
-    
-}
-
 .overlay-search {
     position: absolute;
     top: 0;
@@ -85,14 +81,14 @@
     height: 800px;
     text-align: center;
     z-index: 1; 
-    display: flex;
     flex-wrap: wrap;
     overflow: wrap;
-    display: grid;
 }
 
 .tab-section {
+    display: flex;
     width: 100%;
+    height: 50px;
     margin: 0 auto;
 }
 
@@ -100,11 +96,23 @@
     scroll-behavior: smooth;
     padding: 0px 0 20px 0;
     margin: 10px auto 0 auto;
-    height: auto;
     overflow-y: auto;
     overflow-x: hidden;
     border-radius: 5px;
-    display: flex;
+    display: block; 
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    height: 650px;
+}
+
+
+.long-section {
+    height: 700px;
+}
+
+.shorter-section {
+    height: 500px;
 }
 
 .centralizer {

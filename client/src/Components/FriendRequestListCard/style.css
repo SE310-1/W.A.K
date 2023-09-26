@@ -62,6 +62,7 @@
 
 .profileImage {
     margin: auto;
+    display:block;
 }
 
 .card {
@@ -74,5 +75,9 @@
     color:white;
     font-weight: 'bold';
     font-size: 20px;
+}
+
+.remainingContent {
+  display:block;
 }
 

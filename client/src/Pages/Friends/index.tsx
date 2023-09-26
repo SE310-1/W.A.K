@@ -15,6 +15,7 @@ import { useFriends } from "../../Hooks/useFriends";
 import { useSearchFriends } from "../../Hooks/useSearchUsers";
 import SearchBar from "@mkyy/mui-search-bar";
 import backgroundImage from "./img/movies.jpeg";
+import NoResults from "../../Components/NoResults";
 
 // Create Custom Tab Panel Component That uses value to indicate its value
 
@@ -41,7 +42,12 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{  }}>
+        <Box sx={{ margin: '0 auto', justifyContent: 'center',
+        '& .MuiPaper-root': {
+     margin: '10px auto',
+        },
+        
+        }}>
           {children}
         </Box>
       )}
@@ -146,6 +152,7 @@ const handleReload = () => {
 };
     // Inspiration: https://mui.com/material-ui/react-tabs/
     return (
+      <> 
         <div className="home-container-search">
            
            <div className="background-image-search" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}></div>
@@ -168,7 +175,7 @@ const handleReload = () => {
         <StyledTab label="Add Friend"/>
       </StyledTabs>
       </div>
-
+      <div className = "remainingContent">
       <div className="centralizer">
       <CustomTabPanel {...{className: "full-width"}} value={tabIndex} index={2}>
       <SearchBar
@@ -232,10 +239,14 @@ const handleReload = () => {
                     
         
         </CustomTabPanel>
+
         </div>
         </div>
         </div>
         </div>
+       
+        </div>
+      <NoResults/></>
     );
 };
 

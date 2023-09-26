@@ -1,0 +1,15 @@
+.profileImage2 {
+  width: 200px;
+  margin: auto;
+  display: flex;
+}
+
+.test {
+  height: 80px;
+  margin: 0 auto;
+  width: 100px;
+}
+
+h3 {
+  margin: auto;
+}

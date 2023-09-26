@@ -47,9 +47,6 @@ function FriendListCard ({username, children}) {
         );
 }
 
-
-
-
 function FriendRequestListCard ({username, onAccept, onDecline}) {
     return <FriendListCard username={username}><AcceptDeclineButtons {...{onAccept, onDecline}}/></FriendListCard>;
 }

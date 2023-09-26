@@ -8,7 +8,7 @@ import {apiKey} from '../../../env.js';
 
 const FavouritesList = () => {
   const { user } = useAuthContext(); // get the user from the AuthContext
-  const { favourites, loading, error } = useFavourites(user.username); // get the favourites list from the useFavourites hook
+  const { favourites, loading, error } = useFavourites(); // get the favourites list from the useFavourites hook
   const { rating } = useRating(); // get the rating function from the useRating hook
   const [movies, setMovies] = useState([]); // create a state for the movies array
 

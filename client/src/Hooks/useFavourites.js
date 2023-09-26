@@ -3,14 +3,14 @@ import { useAuthContext } from './useAuthContext';
 import { BASE_URL } from "../../env";
 
 
-export const useFavourites = (username) => {
+export const useFavourites = () => {
   const [favourites, setFavourites] = useState([]); // create a state for the favourites list
   const [loading, setLoading] = useState(false); // create a state for the loading status
   const [error, setError] = useState(null); // create a state for the error message
   const { user } = useAuthContext(); // get the user from the AuthContext
 
   useEffect(() => {
-    // fetch the favourites list from the backend server using the username as a parameter
+    // fetch the favourites list from the backend server
     const fetchFavourites = async () => {
       setLoading(true);
       setError(null);

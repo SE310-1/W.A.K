@@ -106,6 +106,21 @@
     height: 650px;
 }
 
+.content-section::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .content-section {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+
+
+
+
+
 .long-section {
     height: 712px;
 }

@@ -20,7 +20,7 @@ const userSchema = new Schema({
     required: true,
   },
   favorites: {
-    type: Uint32Array, // storing IDs of the favourite movies
+    type: [Number], // storing IDs of the favourite movies
     default: [],
   },
   friends: {

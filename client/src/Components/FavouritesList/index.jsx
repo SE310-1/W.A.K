@@ -39,14 +39,21 @@ const FavouritesList = () => {
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       {movies.length > 0 && (
-        <ul>
-          {movies.map((movie) => (
-            <li key={movie.id}>
-              <MovieCard movie={movie} rating={rating} /> {/* render a MovieCard component for each movie */}
-            </li>
-          ))}
-        </ul>
-      )}
+  <ul>
+    {movies.map((movie) => {
+      console.log('Movie:', movie);
+      console.log('Movie ID:', movie.id);
+      console.log('Rating:', rating);
+
+      return (
+        <li key={movie.id}>
+          <MovieCard movie={movie} rating={rating} />
+        </li>
+      );
+    })}
+  </ul>
+)}
+
     </div>
   );
 };

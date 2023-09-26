@@ -1,13 +1,13 @@
 .profileImage2 {
   width: 200px;
-  margin: auto;
+  margin: 20px auto;
   display: flex;
 }
 
 .test {
   height: 80px;
   margin: 0 auto;
-  width: 100px;
+  width: 80px;
 }
 
 h3 {

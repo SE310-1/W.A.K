@@ -150,6 +150,9 @@ const Friends = () => {
 const handleReload = () => {
   setReload(!reload); // Toggle the reload state to trigger re-fetching
 };
+
+
+    console.log(searchUsers);
     // Inspiration: https://mui.com/material-ui/react-tabs/
     return (
       <> 
@@ -197,45 +200,44 @@ const handleReload = () => {
         </div>
       <div className={`content-section ${((tabIndex == 2)  ? `` : `long-section`)}`}>
 
-
       <CustomTabPanel value={tabIndex} index={0}>
                     {errorFriends && <div>{errorFriends}</div>}
                     {isPendingFriends && <div><CircularProgress color="secondary" /></div>}
-                    {friends &&
-                        friends.map((friend) => {
+                    {friends && friends.length ? (friends.map((friend) => {
                             return (
                                 <>
                                   <Card sx={{ width: 450, margin: 1.5, background: '#3b3e43', padding: 1.5, boxShadow: 5, borderRadius: 3 }}><FriendListCard username={friend}><></></FriendListCard></Card>
                                 </>
                             );
-                        })}
+                        })):(<NoResults message={"No Friends :("}/>)
+                        }
         
       </CustomTabPanel>
       <CustomTabPanel value={tabIndex} index={1}>
       {errorFriendRequests && <div>{errorFriendRequests}</div>}
                     {isPendingFriendRequests && <div><CircularProgress color="secondary" /></div>}
-                    {friendRequests &&
-                        friendRequests.map((friendRequest) => {
+                    {friendRequests && friendRequests.length ? (friendRequests.map((friendRequest) => {
                             console.log(friendRequest);
                             return (
                                 <>
                                     <Card sx={{ width: 450, margin: 1.5, background: '#3b3e43', padding: 1.5, boxShadow: 5, borderRadius: 3 }}><FriendRequestListCard onDecline={async () => {await declineFriendRequest(user.username, friendRequest); handleReload();}} onAccept={async () => {await acceptFriendRequest(user.username, friendRequest); handleReload();}} username={friendRequest}/></Card>
                                 </>
                             );
-                        })}
+                        })):(<NoResults message={"No Friend Requests"}/>)
+                        }
       </CustomTabPanel>
       <CustomTabPanel value={tabIndex} index={2}>
        
       {errorSearchUsers && <div>{errorSearchUsers}</div>}
                 {isPendingSearchUsers && <div>Loading...</div>}
-                {searchUsers &&
+                {searchUsers && searchUsers.length ? (
                     searchUsers.map((friend) => {
                         return (
                             <>
                                 <Card sx={{ width: 450, margin: 1.5, background: '#3b3e43', padding: 1.5, boxShadow: 5, borderRadius: 3 }}><SendRequestListCard onSend={() => {addFriend(user.username, friend.username); handleReload();}} username={friend.username}/></Card>
                             </>
                         );
-                    })}
+                    })):(  <NoResults message={"No Results"}/>)}
                     
         
         </CustomTabPanel>
@@ -244,9 +246,8 @@ const handleReload = () => {
         </div>
         </div>
         </div>
-       
         </div>
-      <NoResults/></>
+    </>
     );
 };
 

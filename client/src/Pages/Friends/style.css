@@ -1,0 +1,143 @@
+.movie-list {
+    width: 60%;
+    height: 100%;
+    margin: 80px auto auto;
+    z-index: 3;
+    overflow-y: scroll;
+
+    /* Hide the scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+
+}
+
+.overlay-search {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 0; /* Lower z-index to place the overlay beneath the content */
+}
+
+
+/* Home container */
+.home-container-search {
+    position: relative;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    z-index: 1;
+}
+
+.background-image-search {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(5px); /* Apply the blur effect */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.tabs {
+    margin:auto;
+}
+
+/* Featured heading */
+.featured-heading {
+    position: absolute;
+    top: 7vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    color: white;
+    z-index: 3;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.friends-card {
+    background-color: rgba(0, 0, 0, 0.7);
+    margin: 150px auto;
+    text-align: center;
+    overflow-wrap: initial;
+    z-index: 1;
+    width: 50%;
+    padding: 4vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+.friends-card-content {
+    margin: 5px auto;
+    width: 100%;
+    height: 800px;
+    text-align: center;
+    z-index: 1; 
+    flex-wrap: wrap;
+    overflow: wrap;
+}
+
+.tab-section {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    margin: 0 auto;
+}
+
+.content-section {
+    scroll-behavior: smooth;
+    padding: 0px 0 20px 0;
+    margin: 10px auto 0 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 5px;
+    display: block; 
+    justify-content: center;
+    width: auto;
+    text-align: center;
+    height: 650px;
+}
+
+.content-section::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .content-section {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+
+
+
+
+
+.long-section {
+    height: 712px;
+}
+
+.centralizer {
+   display: block;
+   width: 100%;
+   margin: 0 auto;
+}
+
+hr.solid {
+    border-top: 4px solid #00ff00;
+    width: 500px;
+    margin: 0 auto;
+  }
+
+.full-width {
+    width: 515px;
+    margin: 0 auto;
+}

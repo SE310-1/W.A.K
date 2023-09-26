@@ -1,0 +1,83 @@
+/* Updated shared buttons, main shapes positions and styles css */
+.share-btn-container {
+    background: #fff;
+    display: flex;
+    flex-direction: row; /* Change flex-direction to row for horizontal alignment */
+    align-items: center; /* Center the icons vertically */
+    padding: 2px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* Updated position to bottom right */
+    visibility: hidden; /* Initially hidden */
+    opacity: 0; /* Initially transparent */
+    transition: visibility 0s, opacity 0.5s;
+    transform: rotate(360deg); /* Rotate 90 degrees to the left */
+    transform-origin: bottom right; /* Set the transform origin */
+}
+
+
+.circle {
+    color:white;
+    display: flex;
+    width: 50px;
+    height: 50px;
+    border: 5px solid #2a2d32;
+    border-radius: 20%;
+  }
+
+  .circle2 {
+    align-self: right;
+    margin: auto 0;
+    color:white;
+    display: flex;
+    width: 35px;
+    height: 35px;
+    border: 4px solid red;
+    background-color: #dd7777;
+    border-radius: 20%;
+    box-shadow: 0px 2px 5px 1px #2a2d32;
+  }
+
+  .circle3 {
+    align-self: right;
+    margin: auto 0;
+    color:white;
+    display: flex;
+    width: 35px;
+    height: 35px;
+    border: 4px solid green;
+    border-radius: 20%;
+    background-color: #77dd77;
+    margin-left: 10px;
+    box-shadow: 0px 2px 5px 1px #2a2d32;
+    
+  }
+
+  .right-elements {
+    display:flex;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+
+.profileImage {
+    margin: auto;
+    display:block;
+}
+
+.card {
+    display: flex;
+    padding: 0px;
+}
+
+.text {
+    margin: auto 20px;
+    color:white;
+    font-weight: 'bold';
+    font-size: 20px;
+}
+
+.remainingContent {
+  display:block;
+}
+

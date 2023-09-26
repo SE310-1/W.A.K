@@ -57,6 +57,9 @@ const FavouritesList = () => {
             <Grid container spacing={1} sx={{ marginRight: "-8px!important" }}>
                 {error && <div>{error}</div>}
                 {isPending && <div>Loading...</div>}
+                {!isPending && moviesData.length === 0 && (
+                    <div>Nothing added to favorites yet!</div>
+                )}
                 {moviesData &&
                     moviesData.map((movie, index) => (
                         <Grid item xs={6} sm={4} md={3} key={index}>

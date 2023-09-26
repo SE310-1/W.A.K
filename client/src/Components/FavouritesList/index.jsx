@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../../Hooks/useAuthContext";
 import { useFavourites } from "../../Hooks/useFavourites.js";
 import { useRating } from "../../Hooks/useRating";
-import MovieCard from "../../Components/MovieCard";
 import { apiKey } from "../../../env.js";
 import axios from "axios";
+import MovieCard from "../../Components/MovieCard";
+import { Grid } from "@mui/material";
 
 const FavouritesList = () => {
     const { user } = useAuthContext();
@@ -46,12 +47,16 @@ const FavouritesList = () => {
 
     return (
         <div className="favourites-page">
-            {error && <div>{error}</div>}
-            {isPending && <div>Loading...</div>}
-            {moviesData.map((movie) => (
-                <div key={movie.id}>{movie.title}</div>
-            ))}
-            <h1>Favourites Page</h1>
+            <Grid container spacing={1} sx={{ marginRight: "-8px!important" }}>
+                {error && <div>{error}</div>}
+                {isPending && <div>Loading...</div>}
+                {moviesData &&
+                    moviesData.map((movie, index) => (
+                        <Grid item xs={6} sm={4} md={3} key={index}>
+                            <MovieCard movie={movie} />
+                        </Grid>
+                    ))}
+            </Grid>
         </div>
     );
 };

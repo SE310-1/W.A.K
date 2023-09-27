@@ -5,6 +5,7 @@ import MediaGrid from "../../Components/MediaGrid";
 import "./style.css";
 import { apiKey, BASE_URL } from "../../../env.js";
 import backgroundImage from "./img/movies.jpeg";
+import React from "react";
 
 const Search = () => {
   const [backendData, setBackendData] = useState({ movies: [] });

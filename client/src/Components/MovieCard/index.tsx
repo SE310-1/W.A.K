@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 interface Movie {
   id: number;
-  vote_average: number;
-  poster_path: string;
   title: string;
+  poster_path: string;
+  vote_average: number;
   release_date: string;
 }
 
@@ -14,6 +14,7 @@ interface MovieCardProps {
   movie: Movie;
 }
 
+// Card that displays movie information, used on the movie details page
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   const rating = movie.vote_average;
   const filledStars = Math.round((rating / 10) * 5);

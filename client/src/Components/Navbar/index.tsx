@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useLogout } from "../../Hooks/useLogout";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { useLogout } from "../../Hooks/useLogout.js";
+import { useAuthContext } from "../../Hooks/useAuthContext.js";
 import "./style.css";
 import React from "react";
 
@@ -23,11 +23,18 @@ const Navbar: React.FC = () => {
             <div>
               <span>Welcome {user.username}</span>
               <button className="button-13">
-                <Link to="/favourites">Favourites</Link>
+                <Link to="/favourites">
+                  <i className="fas fa-star"></i> Favourites
+                </Link>
               </button>
               <button className="button-13">
                 <Link to="/search" className="search-button">
                   <i className="fas fa-search"></i> Search
+                </Link>
+              </button>
+              <button className="button-13">
+                <Link to="/friends" className="search-button">
+                  <i className="fa-solid fa-user-group"></i> Friends
                 </Link>
               </button>
               <button className="button-13" onClick={handleClick}>

@@ -1,6 +1,7 @@
 import {Grid} from "@mui/material";
 import MovieCard from "../MovieCard";
 
+// Displays List of Media in Grid Format
 const MediaGrid = ({medias}) => {
     return (
         <Grid container spacing={1} sx={{marginRight: "-8px!important"}}>

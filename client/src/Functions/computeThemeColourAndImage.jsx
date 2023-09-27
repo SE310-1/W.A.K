@@ -1,7 +1,16 @@
 import { apiKey } from "../../env.js";
 import ColorThief from "colorthief";
 
+/**
+ * This function uses the user's first favorite movie to update the app theming.
+ * 
+ * @param {User} user The current user context
+ * @param {Function} setThemeColour Function to update theme colour state
+ * @param {Function} setThemeImage Function to update 
+ */
+
 export const computeThemeColourAndImage = async (user, setThemeColour, setThemeImage) => {
+  // The user must be authenticated to access their favourites list
   const favFetchOptions = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -14,6 +23,7 @@ export const computeThemeColourAndImage = async (user, setThemeColour, setThemeI
   );
   const favJson = await favRes.json();
 
+  // Use TMDB to grab the poster image
   const movieDetailsPromises = favJson.map(async (movieId) => {
     const detailsRes = await fetch(
       `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
@@ -23,18 +33,22 @@ export const computeThemeColourAndImage = async (user, setThemeColour, setThemeI
 
   const movieDetails = await Promise.all(movieDetailsPromises);
 
+  // Check that there actually is at least one favorite
   if (movieDetails != null && movieDetails.length > 0) {
     const themeImageUrl = `https://image.tmdb.org/t/p/w500/${movieDetails[0].backdrop_path}`;
     setThemeImage(themeImageUrl);
 
     const colorThief = new ColorThief();
 
+    // Mock creating an image
+    // Color thief requires an img element to determine to dominant colour
     const image = document.createElement("img");
     image.setAttribute("crossOrigin", "Anonymous");
     image.setAttribute("src", themeImageUrl);
     image.style.display = "none";
     document.body.appendChild(image);
     image.addEventListener("load", async () => {
+      // Colour is provided as a RGB array
       const colour = await colorThief.getColor(image);
 
       const hexBody = colour.map(x => {
@@ -44,6 +58,8 @@ export const computeThemeColourAndImage = async (user, setThemeColour, setThemeI
       const hex = `#${hexBody}`;
       setThemeColour(hex);
       console.log(hex);
+
+      // Clean up
       document.body.removeChild(image);
     });
   }

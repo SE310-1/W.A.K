@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useAuthContext } from "../../Hooks/useAuthContext";
+import "./style.css";
 
 interface DeleteButtonProps {
   movieId: number; // Correct the type to match your movie ID type

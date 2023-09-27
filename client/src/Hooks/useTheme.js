@@ -1,17 +1,23 @@
-import { useState } from "react";
-import { useFavourites } from "./useFavourites";
+import { useEffect, useState } from "react";
+import { useAuthContext } from "./useAuthContext";
+import { computeThemeColourAndImage } from "../Functions/computeThemeColourAndImage";
+
 
 export const useTheme = () => {
-    const { favourites } = useFavourites();
 
-    if (favourites == null || favourites.length == 0) {
+    const { user } = useAuthContext();
 
-    } else {
-        console.log(favourites);
+    const [themeColour, setThemeColour] = useState("#FFFFFF");
+    const [themeImage, setThemeImage] = useState("https://cdn.shopify.com/s/files/1/0307/6161/5496/files/dreamstime_xxl_96711049.jpg")
+
+
+    // Check if the user is logged in
+    if (user) {
+        // Only can get favorites if the user is logged in
+        // Even if the user is logged in their favorites list may still be empty
+        computeThemeColourAndImage(user, setThemeColour, setThemeImage);
+
     }
-
-    const [themeColour, setThemeColour] = useState("green");
-    const [themeImage, setThemeImage] = useState("https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg");
 
     return { themeColour, themeImage };
 };

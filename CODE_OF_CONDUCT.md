@@ -59,8 +59,18 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-[INSERT CONTACT METHOD].
+reported to the community leaders responsible for enforcement by contacting one
+of the developers here:
+
+| Name            | Email                     |
+|-----------------|---------------------------|
+| Dhruvkanth Puli | dpul133@aucklanduni.ac.nz |
+| Kevin Jin       | kjin505@aucklanduni.ac.nz |
+| Aditya Sohani   | asoh038@aucklanduni.ac.nz |
+| Adwait Mane     | aman901@aucklanduni.ac.nz |
+| Young Min Kim   | ykim583@aucklanduni.ac.nz |
+| Eric Jiang      | ejia362@aucklanduni.ac.nz |
+
 All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the

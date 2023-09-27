@@ -4,6 +4,7 @@ import { useAuthContext } from '../../Hooks/useAuthContext';
 import './style.css';
 import { useTheme } from '../../Hooks/useTheme.js';
 import { useEffect } from 'react';
+import React from 'react';
 
 const Navbar = () => {
     const { logout } = useLogout();

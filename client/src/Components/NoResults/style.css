@@ -1,10 +1,10 @@
-.profileImage2 {
+.wrapper {
   width: 200px;
   margin: 20px auto;
   display: flex;
 }
 
-.test {
+.search-icon {
   height: 80px;
   margin: 0 auto;
   width: 80px;

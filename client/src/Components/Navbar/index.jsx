@@ -34,14 +34,13 @@ const Navbar = () => {
                         <div>
                             <span>Welcome {user.username}</span>
                             <button className="button-13">
-                                <Link to="/favourites">Favourites</Link>
+                                <Link to="/favourites"><i className="fas fa-star"></i> Favourites</Link>
                             </button>
                             <button className="button-13">
                                 <Link to="/search" className="search-button">
                                     <i className="fas fa-search"></i> Search
                                 </Link>
                             </button>
-
                             <button className="button-13">
                                 <Link to="/friends" className="search-button">
                                     <i className="fa-solid fa-user-group"></i> Friends

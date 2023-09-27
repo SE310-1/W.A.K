@@ -1,6 +1,7 @@
     import './style.css';
     import {useNavigate} from 'react-router-dom';
 
+    // Card that displays movie information, used on the movie details page
     const MovieCard = ({movie}) => {
         const rating = movie.vote_average;
         const filledStars = Math.round((rating / 10) * 5);

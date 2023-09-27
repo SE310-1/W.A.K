@@ -57,7 +57,6 @@ export const computeThemeColourAndImage = async (user, setThemeColour, setThemeI
       }).join("");
       const hex = `#${hexBody}`;
       setThemeColour(hex);
-      console.log(hex);
 
       // Clean up
       document.body.removeChild(image);

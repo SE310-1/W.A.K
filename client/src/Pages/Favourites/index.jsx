@@ -13,8 +13,6 @@ const Favourites = () => {
 
   const { themeColour, themeImage } = useTheme();
 
-  console.log(themeImage);
-
   return (
     <div className="home-container-search">
       <div

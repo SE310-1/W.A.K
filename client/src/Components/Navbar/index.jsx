@@ -27,7 +27,7 @@ const Navbar = () => {
         <header>
             <div className="container">
                 <Link to="/">
-                    <h1 style={titleStyle}>W.A.K</h1>
+                    <h1 className="logo" style={titleStyle}>W.A.K</h1>
                 </Link>
                 <nav>
                     {user ? (

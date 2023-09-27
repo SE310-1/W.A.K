@@ -24,7 +24,8 @@ export const computeThemeColourAndImage = async (user, setThemeColour, setThemeI
   const movieDetails = await Promise.all(movieDetailsPromises);
 
   if (movieDetails != null && movieDetails.length > 0) {
-    const themeImageUrl = `https://image.tmdb.org/t/p/w500/${movieDetails[0].poster_path}`;
+    const themeImageUrl = `https://image.tmdb.org/t/p/w500/${movieDetails[0].backdrop_path}`;
+    setThemeImage(themeImageUrl);
 
     const colorThief = new ColorThief();
 

@@ -3,15 +3,22 @@ import { useLogin } from "../../Hooks/useLogin.js";
 import "./style.css";
 
 import backgroundImage from "./img/movies.jpeg";
-import React from "react";
 
 const Index = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [validationError, setValidationError] = useState("");
   const { login, error, isLoading } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Check if username or password fields are empty and set validation error if true
+    if (username.trim() === "" || password.trim() === "") {
+      setValidationError("Please enter your credentials to login");
+      return;
+    } else {
+      setValidationError("");
+    }
     await login(username, password);
   };
 
@@ -46,6 +53,7 @@ const Index = () => {
           <button className="login-button" disabled={isLoading}>
             Log in
           </button>
+          {validationError && <div className="error">{validationError}</div>}
           {error && <div className="error">{error}</div>}
         </form>
       </div>

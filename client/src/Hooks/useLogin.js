@@ -19,34 +19,31 @@ export const useLogin = () => {
         setError(null);
 
         // Sending a POST request to the login endpoint with the username and password
-        const response = await fetch(
-            `${import.meta.env.VITE_BASE_API_URL}/login`,
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password }),
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_BASE_API_URL}/login`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password }),
+                }
+            );
+
+            const json = await response.json();
+
+            if (!response.ok) {
+                setError(
+                    json.message ||
+                        "Incorrect username or password, please try again"
+                );
+                return;
             }
-        );
 
-        // Parsing the response to JSON
-        const json = await response.json();
-
-        // Checking the response status
-        if (!response.ok) {
-            // If response is not OK, storing user data to localStorage
-            // and dispatching LOGIN action with received user data
             localStorage.setItem("user", JSON.stringify(json));
             dispatch({ type: "LOGIN", payload: json });
-            // Setting loading state to false
-            setIsLoading(false);
-        }
-
-        if (response.ok) {
-            // If response is OK, storing user data to localStorage
-            // and dispatching LOGIN action with received user data
-            localStorage.setItem("user", JSON.stringify(json));
-            dispatch({ type: "LOGIN", payload: json });
-            // Setting loading state to false
+        } catch (error) {
+            setError("Unexpected error occurred. Please try again.");
+        } finally {
             setIsLoading(false);
         }
     };

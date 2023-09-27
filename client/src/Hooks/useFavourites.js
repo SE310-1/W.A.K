@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { BASE_URL } from "../../env";
 
+// Custom hook for managing user favorites
 export const useFavourites = () => {
     const [favourites, setFavourites] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { user } = useAuthContext();
 
+    // Function to fetch data from the server with error handling
     const fetchData = async (url, options = {}, onSuccess) => {
         setLoading(true);
         setError(null);
@@ -29,6 +31,7 @@ export const useFavourites = () => {
         }
     };
 
+    // Fetch user favorites when the 'user' context changes
     useEffect(() => {
         if (user) {
             fetchData(`${BASE_URL}/favorites`, {}, (json) =>
@@ -37,6 +40,7 @@ export const useFavourites = () => {
         }
     }, [user]);
 
+    // Function to add a movie to favorites
     const addFavourite = async (movieId) => {
         await fetchData(
             `${BASE_URL}/favorites/add/${movieId}`,
@@ -45,6 +49,7 @@ export const useFavourites = () => {
         );
     };
 
+    // Function to remove a movie from favorites
     const removeFavourite = async (movieId) => {
         await fetchData(
             `${BASE_URL}/favorites/remove/${movieId}`,
@@ -53,6 +58,7 @@ export const useFavourites = () => {
         );
     };
 
+    // Function to check if a movie is in favorites
     const isFavourite = async (movieId) => {
         try {
             const response = await fetch(
@@ -68,6 +74,7 @@ export const useFavourites = () => {
         }
     };
 
+    // Expose favorites, loading state, error state, and functions
     return {
         favourites,
         loading,

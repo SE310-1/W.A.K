@@ -9,9 +9,11 @@ import {
   faReddit,
 } from "@fortawesome/free-brands-svg-icons";
 
+// Define the ShareButtons component
 const ShareButtons: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false); // State to track visibility
 
+  // Get the URL, title, and image of the current web page for sharing
   const postUrl = encodeURIComponent(window.location.href);
   const postTitle = document.title;
   const postImgElement = document.querySelector('meta[property="og:image"]');
@@ -19,6 +21,7 @@ const ShareButtons: React.FC = () => {
 
   const iconSize = "2x"; // You can adjust the size (e.g., 'lg', '2x', '3x', '4x', '5x', etc.)
 
+  // Generate share links for various social media platforms
   const facebookShareLink = `https://www.facebook.com/sharer.php?u=${postUrl}`;
   const twitterShareLink = `https://twitter.com/share?url=${postUrl}&text=${postTitle}`;
   const pinterestShareLink = `https://pinterest.com/pin/create/bookmarklet/?media=${postImg}&url=${postUrl}&description=${postTitle}`;
@@ -26,7 +29,7 @@ const ShareButtons: React.FC = () => {
   const redditShareLink = `https://reddit.com/submit?url=${postUrl}&title=${postTitle}`;
 
   useEffect(() => {
-    // Simulate the delay before showing the share buttons
+    // Simulate a delay before showing the share buttons
     const timer = setTimeout(() => {
       setIsVisible(true); // Show the share buttons after the delay
     }, 500); // Adjust the time in milliseconds as needed
@@ -36,6 +39,7 @@ const ShareButtons: React.FC = () => {
 
   return (
     <div className={`share-btn-container ${isVisible ? "visible" : ""}`}>
+      {/* Create anchor elements for each share button */}
       <a id="facebook-share" href={facebookShareLink}>
         <FontAwesomeIcon icon={faFacebook} size={iconSize} />
       </a>

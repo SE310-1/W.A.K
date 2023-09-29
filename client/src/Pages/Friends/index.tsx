@@ -1,3 +1,4 @@
+// Importing necessary dependencies and components
 import "./style.css";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -20,18 +21,20 @@ import SearchBar from "@mkyy/mui-search-bar";
 import backgroundImage from "./img/movies.jpeg";
 import NoResults from "../../Components/NoResults";
 
-// Significant Inspiration from the use of the Material UI Tab Component here: https://mui.com/material-ui/react-tabs/
+// Interface definitions
 interface PanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
 interface StyleProps {
   children?: React.ReactNode;
   value: number;
   onChange: (event: React.SyntheticEvent, newValue: number) => void;
 }
 
+// TabPanel component for rendering tab content
 function TabPanel(props: PanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -58,6 +61,7 @@ function TabPanel(props: PanelProps) {
   );
 }
 
+// Styles for the Tabs and Tab components
 const tabsStyleAttributes = {
   margin: "0 auto",
   backgroundColor: "transparent",
@@ -80,6 +84,7 @@ const tabsStyleAttributes = {
   },
 };
 
+// StyledTabs component
 const StyledTabs = styled((props: StyleProps) => (
   <Tabs
     {...props}
@@ -87,6 +92,7 @@ const StyledTabs = styled((props: StyleProps) => (
   />
 ))(tabsStyleAttributes);
 
+// StyledTab component
 const StyledTab = styled((props: {
   label: string;
 }) => (
@@ -117,6 +123,7 @@ const StyledTab = styled((props: {
   },
 }));
 
+// Common card styles
 const commonCardStyles = {
   width: 450,
   margin: 1.5,
@@ -126,12 +133,15 @@ const commonCardStyles = {
   borderRadius: 3,
 }
 
+// Friends component
 const Friends = () => {
+  // State and context variables
   const [tabIndex, setTabIndex] = React.useState(0);
   const [reload, setReload] = useState(false);
   const { user } = useAuthContext();
   const [textFieldValue, setTextFieldValue] = useState("");
 
+  // Custom hooks for fetching friend requests, friends, and searching users
   const {
     friendRequests,
     isPending: isPendingFriendRequests,
@@ -150,6 +160,7 @@ const Friends = () => {
     error: errorSearchUsers,
   } = useSearchFriends(textFieldValue);
 
+  // Function to trigger reloading of data
   const handleReload = () => {
     setReload(!reload); // Toggle the reload state to trigger re-fetching
   };

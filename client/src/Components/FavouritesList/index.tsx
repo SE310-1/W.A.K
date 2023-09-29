@@ -8,18 +8,23 @@ import MovieCard from "../MovieCard";
 import { Grid } from "@mui/material";
 import DeleteButton from "../DeleteFavoriteButton";
 
+// Define the Movie interface with relevant properties
 interface Movie {
   id: number;
   // Add more properties as needed
 }
 
 const FavouritesList: React.FC = () => {
+  // Access user data from the authentication context
   const { user } = useAuthContext();
+
+  // State variables to manage loading, errors, and movie data
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [moviesData, setMoviesData] = useState<Movie[]>([]);
 
   useEffect(() => {
+    // Function to fetch user's favorite movies
     const fetchFavourites = async () => {
       try {
         const response = await axios.get(
@@ -31,12 +36,14 @@ const FavouritesList: React.FC = () => {
           }
         );
 
+        // Fetch details for each favorite movie using promises
         const movieDetailsPromises = response.data.map((movieId: number) =>
           fetch(
             `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
           ).then((response) => response.json())
         );
 
+        // Wait for all movie details promises to resolve
         const movieDetails = await Promise.all(movieDetailsPromises);
         setMoviesData(movieDetails);
         setIsPending(false);
@@ -46,9 +53,10 @@ const FavouritesList: React.FC = () => {
       }
     };
 
-    fetchFavourites();
+    fetchFavourites(); // Invoke the fetchFavourites function when the component mounts
   }, []);
 
+  // Function to handle movie deletion from favorites
   const handleMovieDeleted = (deletedMovieId: number) => {
     setMoviesData(moviesData.filter((movie) => movie.id !== deletedMovieId));
   };

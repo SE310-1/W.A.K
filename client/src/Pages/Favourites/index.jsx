@@ -24,7 +24,7 @@ const Favourites = () => {
         }}
       ></div>
       <div className="favourites-list">
-        <h1>Favourites</h1>
+        <h1 className="featured-heading">Favourites</h1>
         {user ? ( // check if user is not null
           <FavouritesList /> // render the FavouritesList component
         ) : (

@@ -114,7 +114,7 @@ const FavouritesList: React.FC = () => {
       <br></br>
       <br></br>
       <br></br>
-      <h1>Reccomended For You</h1>
+      <h1  className="featured-heading">Reccomended For You</h1>
       <Grid container spacing={1} sx={{ marginRight: "-8px!important" }}>
         {error && <div>{error}</div>}
         {isPending && <div>Loading...</div>}

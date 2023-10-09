@@ -8,13 +8,12 @@
 }
 
 .actionButton {
-  align-self: right;
   margin: auto 0;
   color: white;
+  padding: 0;
   display: flex;
   width: 35px;
   height: 35px;
-  margin-left: 10px;
   border-radius: 20%;
   box-shadow: 0px 2px 5px 1px #2a2d32;
 }
@@ -39,6 +38,8 @@
 .icon {
   margin: auto;
   display: block;
+  width: 15px;
+  padding: 0;
 }
 
 .card {

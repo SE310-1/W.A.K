@@ -98,10 +98,11 @@ const StyledTab = styled((props: {
 }) => (
   <Tab disableRipple {...props} />
 ))(({ theme }) => ({
+  boxShadow: "none",
   textTransform: "none",
   fontWeight: "bold",
   fontSize: "20px",
-  marginRight: theme.spacing(1),
+  // marginRight: theme.spacing(1),
   color: "rgba(255, 255, 255, 0.7)",
   "&.Mui-selected": {
     color: "#fff",
@@ -224,7 +225,7 @@ const Friends = () => {
                       <CircularProgress color="secondary" />
                     </div>
                   )}
-                  {friends && friends.length ? (
+                  {friends && friends.length && !isPendingFriends ? (
                     friends.map((friend) => {
                       return (
                         <>
@@ -249,7 +250,7 @@ const Friends = () => {
                       <CircularProgress color="secondary" />
                     </div>
                   )}
-                  {friendRequests && friendRequests.length ? (
+                  {friendRequests && friendRequests.length && !isPendingFriendRequests ? (
                     friendRequests.map((friendRequest) => {
                       return (
                         <>
@@ -284,7 +285,7 @@ const Friends = () => {
                 <TabPanel value={tabIndex} index={2}>
                   {errorSearchUsers && <div>{errorSearchUsers}</div>}
                   {isPendingSearchUsers && <div><CircularProgress color="secondary" /></div>}
-                  {searchUsers && searchUsers.length ? (
+                  {searchUsers && searchUsers.length && !isPendingSearchUsers ? (
                     searchUsers.map((friend) => {
                       return (
                         <>

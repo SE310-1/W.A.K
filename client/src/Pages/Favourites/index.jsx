@@ -24,12 +24,13 @@ const Favourites = () => {
         }}
       ></div>
       <div className="favourites-list">
-        <h1>Favourites Page</h1>
+        <h1>Favourites</h1>
         {user ? ( // check if user is not null
           <FavouritesList /> // render the FavouritesList component
         ) : (
           <p>Please log in to see your favourites list.</p> // show a message asking the user to log in
         )}
+        <h1>Reccomended</h1>
       </div>
     </div>
   );

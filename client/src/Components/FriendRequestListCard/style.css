@@ -29,6 +29,12 @@
   margin-left: 10px;
 }
 
+.blue {
+  border: 4px solid blue;
+  background-color: #7777dd;
+  margin-left: 10px;
+}
+
 .right-elements {
   display: flex;
   margin-left: auto;

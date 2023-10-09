@@ -8,6 +8,7 @@ const Rating = require("./src/models/ratingModel");
 const jwt = require("jsonwebtoken");
 const userModel = require("./src/models/userModel");
 const requireAuth = require("./src/middleware/requireAuth");
+const { resolveSoa } = require("dns");
 
 const createToken = (_id) => {
     return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
@@ -109,8 +110,16 @@ app.put("/user/:myUsername/add-friend/:friendUsername", async (req, res) => {
         const result = await User.findOneAndUpdate(
             { username: friendUsername },
             { $addToSet: { friendsRequests: myUsername } }
-        );
-        res.send(result);
+        ).exec();
+
+        
+
+        const result2 = await User.findOneAndUpdate(
+            { username: myUsername },
+            { $addToSet: { outgoingRequests: friendUsername } }
+        ).exec();
+        res.status(200).json({ success: true });
+        
     } catch (error) {
         console.error("Error updating user:", error);
         res.status(500).json({ error: error.message });
@@ -122,7 +131,7 @@ app.get("/friend-requests/:myUsername", async (req, res) => {
     const myUsername = req.params.myUsername;
     try {
         const result = await User.findOne({ username: myUsername });
-        res.json(result.friendsRequests);
+        res.json({incoming: result?.friendsRequests, outgoing: result?.outgoingRequests});
     } catch (error) {
         console.error("Error fetching users:", error);
         res.status(500).json({ error: error.message });
@@ -134,7 +143,7 @@ app.get("/user/:myUsername", async (req, res) => {
     const myUsername = req.params.myUsername;
     try {
         const result = await User.findOne({ username: myUsername });
-        res.json(result.username);
+        res.json(result?.username);
     } catch (error) {
         console.error("Error fetching users:", error);
         res.status(500).json({ error: error.message });
@@ -151,8 +160,14 @@ app.put(
             const result = await User.findOneAndUpdate(
                 { username: myUsername },
                 { $pull: { friendsRequests: friendUsername } }
-            );
-            res.send(result);
+            ).exec();
+
+            const result2 = await User.findOneAndUpdate(
+                { username: friendUsername },
+                { $pull: { outgoingRequests: myUsername } }
+            ).exec();
+            
+            res.status(200).json({ success: true });
         } catch (error) {
             console.error("Error decline friend request:", error);
             res.status(500).json({ error: error.message });
@@ -170,8 +185,14 @@ app.put(
             const result = await User.findOneAndUpdate(
                 { username: myUsername },
                 { $addToSet: { friends: friendUsername } }
-            );
-            res.send(result);
+            ).exec();
+
+            const result2 = User.findOneAndUpdate(
+                { username: friendUsername },
+                { $pull: { outgoingRequests: myUsername } }
+            ).exec();
+            
+            res.status(200).json({ success: true });
         } catch (error) {
             console.error("Error accepting friend request:", error);
             res.status(500).json({ error: error.message });

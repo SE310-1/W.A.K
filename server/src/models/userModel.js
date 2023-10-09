@@ -31,6 +31,9 @@ const userSchema = new Schema({
     friendsRequests: {
         type: Array,
     },
+    outgoingRequests: {
+        type: Array,
+    }
 });
 
 // Static method to signup a new user

@@ -102,7 +102,6 @@ const StyledTab = styled((props: {
   textTransform: "none",
   fontWeight: "bold",
   fontSize: "20px",
-  // marginRight: theme.spacing(1),
   color: "rgba(255, 255, 255, 0.7)",
   "&.Mui-selected": {
     color: "#fff",
@@ -144,7 +143,8 @@ const Friends = () => {
 
   // Custom hooks for fetching friend requests, friends, and searching users
   const {
-    friendRequests,
+    incoming,
+    outgoing,
     isPending: isPendingFriendRequests,
     error: errorFriendRequests,
   } = useFriendRequests(user.username, reload);
@@ -165,7 +165,7 @@ const Friends = () => {
   const handleReload = () => {
     setReload(!reload); // Toggle the reload state to trigger re-fetching
   };
-
+  
   return (
     <>
       <div className="home-container-search">
@@ -186,7 +186,7 @@ const Friends = () => {
             <div className="tab-section">
               <StyledTabs
                 value={tabIndex}
-                onChange={(e, index) => setTabIndex(index)}
+                onChange={(e, index) => {setTabIndex(index); handleReload();}}
               >
                 <StyledTab label="Friends" />
                 <StyledTab label="Requests" />
@@ -250,8 +250,8 @@ const Friends = () => {
                       <CircularProgress color="secondary" />
                     </div>
                   )}
-                  {friendRequests && friendRequests.length && !isPendingFriendRequests ? (
-                    friendRequests.map((friendRequest) => {
+                  {incoming && incoming.length && !isPendingFriendRequests ? (
+                    incoming.map((friendRequest) => {
                       return (
                         <>
                           <Card
@@ -284,9 +284,11 @@ const Friends = () => {
                 </TabPanel>
                 <TabPanel value={tabIndex} index={2}>
                   {errorSearchUsers && <div>{errorSearchUsers}</div>}
-                  {isPendingSearchUsers && <div><CircularProgress color="secondary" /></div>}
-                  {searchUsers && searchUsers.length && !isPendingSearchUsers ? (
+                  {(isPendingSearchUsers || isPendingFriendRequests) && <div><CircularProgress color="secondary" /></div>}
+                  {searchUsers && searchUsers.length && !isPendingSearchUsers && !isPendingFriendRequests ? (
                     searchUsers.map((friend) => {
+                      const status = outgoing.includes(friend.username);
+                      
                       return (
                         <>
                           <Card
@@ -298,6 +300,7 @@ const Friends = () => {
                                 handleReload();
                               }}
                               username={friend.username}
+                              status={status}
                             />
                           </Card>
                         </>

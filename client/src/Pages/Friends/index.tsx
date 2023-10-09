@@ -165,7 +165,7 @@ const Friends = () => {
   const handleReload = () => {
     setReload(!reload); // Toggle the reload state to trigger re-fetching
   };
-  
+
   return (
     <>
       <div className="home-container-search">
@@ -284,11 +284,11 @@ const Friends = () => {
                 </TabPanel>
                 <TabPanel value={tabIndex} index={2}>
                   {errorSearchUsers && <div>{errorSearchUsers}</div>}
-                  {(isPendingSearchUsers || isPendingFriendRequests) && <div><CircularProgress color="secondary" /></div>}
-                  {searchUsers && searchUsers.length && !isPendingSearchUsers && !isPendingFriendRequests ? (
-                    searchUsers.map((friend) => {
+                  {(isPendingSearchUsers || isPendingFriendRequests || isPendingFriends) && <div><CircularProgress color="secondary" /></div>}
+                  {searchUsers && searchUsers.length && !isPendingSearchUsers && !isPendingFriendRequests && !isPendingFriends && friends ? (
+                      searchUsers.filter(user => !friends.includes(user.username)).map((friend) => {
                       const status = outgoing.includes(friend.username);
-                      
+
                       return (
                         <>
                           <Card

@@ -48,6 +48,12 @@ const FavouritesList: React.FC = () => {
           `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${apiKey}&language=en-US`
         ).then((response) => response.json())
       );
+
+      const popular = await fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US`
+      ).then((response) => response.json())
+
+      console.log(popular);
       
       /**
       
@@ -60,14 +66,15 @@ const FavouritesList: React.FC = () => {
         const movieDetails = await Promise.all(movieDetailsPromises);
         const recDetails = await Promise.all(firstRec);
 
-        console.log(recDetails);
-        console.log(recDetails[0]);
-        console.log(recDetails[0].results);
-        console.log(recDetails[0].results.map(result => result.id));
-        const recIds = recDetails[0].results.slice(0, 8);
+
+        // console.log(recDetails);
+        // console.log(recDetails[0]);
+        // console.log(recDetails[0].results);
+        // console.log(recDetails[0].results.map(result => result.id));
+       // const recIds = recDetails[0].results.slice(0, 8);
         
         setMoviesData(movieDetails);
-        setReccomendations(recIds);
+       // setReccomendations(recIds);
         setIsPending(false);
       } catch (err: any) {
         setIsPending(false);
@@ -102,6 +109,11 @@ const FavouritesList: React.FC = () => {
             </Grid>
           ))}
       </Grid>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
       <h1>Reccomended For You</h1>
       <Grid container spacing={1} sx={{ marginRight: "-8px!important" }}>
         {error && <div>{error}</div>}
@@ -113,10 +125,6 @@ const FavouritesList: React.FC = () => {
           reccomendations.map((movie1, index) => (
             <Grid item xs={6} sm={4} md={3} key={index}>
               <MovieCard movie={movie1} />
-              <DeleteButton
-                movieId={movie1.id}
-                onMovieDeleted={handleMovieDeleted}
-              />
             </Grid>
           ))}
       </Grid>

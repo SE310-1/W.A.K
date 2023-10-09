@@ -30,7 +30,6 @@ const Favourites = () => {
         ) : (
           <p>Please log in to see your favourites list.</p> // show a message asking the user to log in
         )}
-        <h1>Reccomended</h1>
       </div>
     </div>
   );

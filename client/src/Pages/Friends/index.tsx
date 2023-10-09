@@ -314,12 +314,12 @@ const Friends = () => {
                             {allDefined && searchUsers.length ? (
                               searchUsers
                                 .filter(
-                                  (user) => !friends.includes(user.username)
+                                  (user1) => !(friends.includes(user1.username) || user.username ===user1.username)
                                 )
                                 .map((friend) => {
                                   const status = outgoing.includes(
                                     friend.username
-                                  );
+                                  )
                                   return (
                                     <>
                                       <Card sx={commonCardStyles}>

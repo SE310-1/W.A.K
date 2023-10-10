@@ -37,7 +37,6 @@
   align-items: center;
   background: none;
   z-index: 1;
-  overflow-y: scroll;
   /* Hide scrollbar for Chrome, Safari and Opera */
 }
 

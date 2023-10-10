@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../../Hooks/useAuthContext";
-import { useFavourites } from "../../Hooks/useFavourites.js";
-import { useRating } from "../../Hooks/useRating";
-import { BASE_URL, apiKey } from "../../../env.js";
+import { apiKey } from "../../../env.js";
 import axios from "axios";
 import MovieCard from "../MovieCard";
 import { Grid } from "@mui/material";
 import DeleteButton from "../DeleteFavoriteButton";
-import { TailSpin } from "react-loader-spinner";
-import { Spinner } from "../spinner";
-import { get } from "http";
+import Spinner from "../../Components/Spinner";
 // Define the Movie interface with relevant properties
 interface Movie {
   id: number;
@@ -143,8 +139,8 @@ const FavouritesList: React.FC = () => {
             <>
               {!moviesData.length ? (
                 <div>
-                  Nothing added to favorites yet! Check out the Reccomendations
-                  Below!
+                  <p className = "text-shadow">Nothing added to favorites yet! Check out the Reccomendations
+                  Below!</p>
                 </div>
               ) : (
                 <Grid

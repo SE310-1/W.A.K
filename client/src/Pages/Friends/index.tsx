@@ -169,7 +169,7 @@ const Friends = () => {
     <>
       <div className="home-container-search">
         <div
-          className="background-image-search"
+          className="background-image-friends"
           style={{
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: "cover",
@@ -177,7 +177,7 @@ const Friends = () => {
           }}
         ></div>
 
-        <div className="overlay-search"></div>
+        <div className="overlay-friends"></div>
         <h1 className="featured-heading">Movies are better with friends.</h1>
 
         <div className="friends-card">

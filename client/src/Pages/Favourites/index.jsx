@@ -28,7 +28,7 @@ const Favourites = () => {
         {user ? ( // check if user is not null
           <FavouritesList /> // render the FavouritesList component
         ) : (
-          <p>Please log in to see your favourites list.</p> // show a message asking the user to log in
+          <p className = "text-shadow">Please log in to see your favourites list.</p> // show a message asking the user to log in
         )}
       </div>
     </div>

@@ -23,8 +23,79 @@ const FavouritesList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [moviesData, setMoviesData] = useState<Movie[]>([]);
   const [reccomendations, setReccomendations] = useState<Movie[]>([]);
+  const [reload, triggerReload] = useState(false);
+
+  async function getReccomendations (favourites: string[]) {
+      if (favourites.length) {
+        
+        // Check how many favourites the user has
+
+        const selectedFavs = favourites.slice(0, Math.min(12, favourites.length));
+
+        const requests = selectedFavs.map(movieId => fetch(
+            `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${apiKey}&language=en-US`
+          ).then(x => x.json()));
+        
+
+        const resolved = await Promise.all(requests);
+        const films = resolved.map(resp => {
+          console.log("About to reference results");
+          console.log(resp);
+          return resp.results.slice(0, 20);
+        })
+
+        var finalList: any[] = [];
+        var current = 0;
+
+        // create merged list of all films
+
+        for (let i  = 0; i < 20; i++) {
+          
+          films.map((movieList: any[]) => {
+
+            finalList[current] = movieList[i];
+            current++;
+          });
+
+        }
+
+
+        const filterUndefiend = finalList.filter(x => !!x);
+        const filterFavourites = filterUndefiend.filter(x => {
+          
+  
+          return !favourites.includes(`${x.id}`)});
+
+    
+        const ids = filterFavourites.map(x => x.id);
+
+        const filterDuplicates = filterFavourites.filter((x, index) => ids.indexOf(x.id) === index);
+
+        const selected = filterDuplicates.slice(0, 12);
+        
+        console.log(selected);
+
+        return selected;
+        
+        // For each favourite (up to a max of 12), generate their favourites
+        // Iterate through these lists and add 1 from each to the reccomendations array
+        // Before adding them, make sure they are not the user's favourite already
+        // Repeat this until 12 reccomendations have been generated
+
+        // return the list of 12 favourites
+      } 
+      // If they have none, return the 12 most popular
+      const popular = await fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US`
+      ).then((response) => response.json())
+      
+      const reccomendedFilms = popular.results.slice(0, 12);
+      return reccomendedFilms;
+  }
+
 
   useEffect(() => {
+
     // Function to fetch user's favorite movies
     const fetchFavourites = async () => {
       try {
@@ -44,37 +115,13 @@ const FavouritesList: React.FC = () => {
           ).then((response) => response.json())
         );
 
-        const firstRec = response.data.map((movieId: number)=> fetch(
-          `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${apiKey}&language=en-US`
-        ).then((response) => response.json())
-      );
-
-      const popular = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US`
-      ).then((response) => response.json())
-
-      console.log(popular);
-      
-      /**
-      
-      const response = await axios.get(
-        `${BASE_URL}/mo/movie?api_key=${apiKey}&query=${query}`
-      );
-       */
+        const reccomendations = await getReccomendations(response.data);
       
         // Wait for all movie details promises to resolve
         const movieDetails = await Promise.all(movieDetailsPromises);
-        const recDetails = await Promise.all(firstRec);
 
-
-        // console.log(recDetails);
-        // console.log(recDetails[0]);
-        // console.log(recDetails[0].results);
-        // console.log(recDetails[0].results.map(result => result.id));
-       // const recIds = recDetails[0].results.slice(0, 8);
-        
         setMoviesData(movieDetails);
-       // setReccomendations(recIds);
+        setReccomendations(reccomendations);
         setIsPending(false);
       } catch (err: any) {
         setIsPending(false);
@@ -83,12 +130,18 @@ const FavouritesList: React.FC = () => {
     };
 
     fetchFavourites(); // Invoke the fetchFavourites function when the component mounts
-  }, []);
+  }, [reload]);
 
   // Function to handle movie deletion from favorites
   const handleMovieDeleted = (deletedMovieId: number) => {
+    setIsPending(true);
     setMoviesData(moviesData.filter((movie) => movie.id !== deletedMovieId));
+    triggerReload(!reload);
   };
+
+  console.log("Initial Values");
+  console.log(moviesData);
+  console.log(reccomendations);
 
   return (
     <div className="favourites-page">
@@ -98,7 +151,7 @@ const FavouritesList: React.FC = () => {
         {!isPending && moviesData.length === 0 && (
           <div>Nothing added to favorites yet!</div>
         )}
-        {moviesData &&
+        {!isPending && moviesData &&
           moviesData.map((movie, index) => (
             <Grid item xs={6} sm={4} md={3} key={index}>
               <MovieCard movie={movie} />
@@ -111,17 +164,11 @@ const FavouritesList: React.FC = () => {
       </Grid>
       <br></br>
       <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <h1  className="featured-heading">Reccomended For You</h1>
+      <h1  className="favourites-section-title">Reccomended For You</h1>
       <Grid container spacing={1} sx={{ marginRight: "-8px!important" }}>
         {error && <div>{error}</div>}
         {isPending && <div>Loading...</div>}
-        {!isPending && moviesData.length === 0 && (
-          <div>Nothing added to favorites yet!</div>
-        )}
-        {reccomendations &&
+        {!isPending && reccomendations && moviesData &&
           reccomendations.map((movie1, index) => (
             <Grid item xs={6} sm={4} md={3} key={index}>
               <MovieCard movie={movie1} />

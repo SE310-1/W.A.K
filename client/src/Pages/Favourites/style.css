@@ -29,3 +29,10 @@
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.favourites-section-title {
+    font-size: 3rem;
+    color: white;
+    z-index: 3;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}

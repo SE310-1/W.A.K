@@ -30,10 +30,22 @@ function AcceptDeclineButtons({ onAccept, onDecline }) {
 }
 
 // Sends Friend Request
-function SendRequestButton({ onSend }) {
-  const [hasBeenRequested, setHasBeenRequested] = useState(false);
+function SendRequestButton({ onSend, status }) {
+  const [hasBeenRequested, setHasBeenRequested] = useState(status);
   return (
-    <button
+    <>
+    {hasBeenRequested ? (<button
+      className="actionButton blue"
+      onClick={() => {
+        onSend();
+        setHasBeenRequested(true);
+      }}
+    >
+      <div className="icon">
+          <i className="fas fa-clock"></i>
+      </div>
+    </button>) : (
+      <button
       className="actionButton green"
       onClick={() => {
         onSend();
@@ -41,13 +53,11 @@ function SendRequestButton({ onSend }) {
       }}
     >
       <div className="icon">
-        {hasBeenRequested ? (
-          <i className="fas fa-clock"></i>
-        ) : (
           <i className="fas fa-plus"></i>
-        )}
       </div>
     </button>
+    )}
+    </>
   );
 }
 
@@ -76,10 +86,10 @@ function FriendRequestListCard({ username, onAccept, onDecline }) {
 }
 
 // Card that appears in user search, allows them to send a request
-function SendRequestListCard({ username, onSend }) {
+function SendRequestListCard({ username, onSend, status }) {
   return (
     <FriendListCard username={username}>
-      <SendRequestButton {...{ onSend }} />
+      <SendRequestButton {...{ onSend, status }} />
     </FriendListCard>
   );
 }

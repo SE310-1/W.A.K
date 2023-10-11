@@ -93,15 +93,13 @@ const StyledTabs = styled((props: StyleProps) => (
 ))(tabsStyleAttributes);
 
 // StyledTab component
-const StyledTab = styled((props: {
-  label: string;
-}) => (
+const StyledTab = styled((props: { label: string }) => (
   <Tab disableRipple {...props} />
 ))(({ theme }) => ({
+  boxShadow: "none",
   textTransform: "none",
   fontWeight: "bold",
   fontSize: "20px",
-  marginRight: theme.spacing(1),
   color: "rgba(255, 255, 255, 0.7)",
   "&.Mui-selected": {
     color: "#fff",
@@ -131,7 +129,7 @@ const commonCardStyles = {
   padding: 1.5,
   boxShadow: 5,
   borderRadius: 3,
-}
+};
 
 // Friends component
 const Friends = () => {
@@ -143,7 +141,8 @@ const Friends = () => {
 
   // Custom hooks for fetching friend requests, friends, and searching users
   const {
-    friendRequests,
+    incoming,
+    outgoing,
     isPending: isPendingFriendRequests,
     error: errorFriendRequests,
   } = useFriendRequests(user.username, reload);
@@ -165,6 +164,10 @@ const Friends = () => {
     setReload(!reload); // Toggle the reload state to trigger re-fetching
   };
 
+  const pending =
+    isPendingFriendRequests || isPendingFriendRequests || isPendingSearchUsers;
+  const allDefined = friends && searchUsers && incoming && outgoing;
+
   return (
     <>
       <div className="home-container-search">
@@ -178,134 +181,172 @@ const Friends = () => {
         ></div>
 
         <div className="overlay-search"></div>
-        <h1 className="featured-heading">Movies are better with friends.</h1>
+        <div className="friends-wrapper">
+          <h1 className="featured-heading">Movies are better with friends.</h1>
 
-        <div className="friends-card">
-          <div className="friends-card-content">
-            <div className="tab-section">
-              <StyledTabs
-                value={tabIndex}
-                onChange={(e, index) => setTabIndex(index)}
-              >
-                <StyledTab label="Friends" />
-                <StyledTab label="Requests" />
-                <StyledTab label="Add Friend" />
-              </StyledTabs>
-            </div>
-            <div className="remainingContent">
-              <div className="centralizer">
-                <TabPanel value={tabIndex} index={2}>
-                  <SearchBar
-                    style={{
-                      color: "black",
-                      backgroundColor: "white",
-                      borderRadius: "8px",
-                      border: "1px solid #ccc",
-                      margin: "20px auto 10px auto",
-                      zIndex: "999",
-                    }}
-                    value={textFieldValue}
-                    onChange={(newValue) => {
-                      setTextFieldValue(newValue);
-                    }}
-                    placeholder="Search Username"
-                  />
-                </TabPanel>
+          <div className="friends-card">
+            <div className="friends-card-content">
+              <div className="tab-section">
+                <StyledTabs
+                  value={tabIndex}
+                  onChange={(e, index) => {
+                    setTabIndex(index);
+                    handleReload();
+                  }}
+                >
+                  <StyledTab label="Friends" />
+                  <StyledTab label="Requests" />
+                  <StyledTab label="Add Friend" />
+                </StyledTabs>
               </div>
-              <div
-                className={`content-section ${
-                  tabIndex == 2 ? `` : `long-section`
-                }`}
-              >
-                <TabPanel value={tabIndex} index={0}>
-                  {errorFriends && <div>{errorFriends}</div>}
-                  {isPendingFriends && (
-                    <div>
-                      <CircularProgress color="secondary" />
-                    </div>
-                  )}
-                  {friends && friends.length ? (
-                    friends.map((friend) => {
-                      return (
-                        <>
-                          <Card
-                            sx={commonCardStyles}
-                          >
-                            <FriendListCard username={friend}>
-                              <></>
-                            </FriendListCard>
-                          </Card>
-                        </>
-                      );
-                    })
-                  ) : (
-                    <NoResults message={"No Friends :("} />
-                  )}
-                </TabPanel>
-                <TabPanel value={tabIndex} index={1}>
-                  {errorFriendRequests && <div>{errorFriendRequests}</div>}
-                  {isPendingFriendRequests && (
-                    <div>
-                      <CircularProgress color="secondary" />
-                    </div>
-                  )}
-                  {friendRequests && friendRequests.length ? (
-                    friendRequests.map((friendRequest) => {
-                      return (
-                        <>
-                          <Card
-                            sx={commonCardStyles}
-                          >
-                            <FriendRequestListCard
-                              onDecline={async () => {
-                                await declineFriendRequest(
-                                  user.username,
-                                  friendRequest
+              <div className="remainingContent">
+                <div className="centralizer">
+                  <TabPanel value={tabIndex} index={2}>
+                    <SearchBar
+                      style={{
+                        color: "black",
+                        backgroundColor: "white",
+                        borderRadius: "8px",
+                        border: "1px solid #ccc",
+                        margin: "20px auto 10px auto",
+                        zIndex: "999",
+                      }}
+                      value={textFieldValue}
+                      onChange={(newValue) => {
+                        setTextFieldValue(newValue);
+                      }}
+                      placeholder="Search Username"
+                    />
+                  </TabPanel>
+                </div>
+                <div
+                  className={`content-section ${
+                    tabIndex == 2 ? `` : `long-section`
+                  }`}
+                >
+                  <TabPanel value={tabIndex} index={0}>
+                    {errorFriends ? (
+                      <div>{errorFriends}</div>
+                    ) : (
+                      <>
+                        {isPendingFriends ? (
+                          <div>
+                            <CircularProgress color="secondary" />
+                          </div>
+                        ) : (
+                          <>
+                            {friends && friends.length ? (
+                              friends.map((friend) => {
+                                return (
+                                  <>
+                                    <Card sx={commonCardStyles}>
+                                      <FriendListCard username={friend}>
+                                        <></>
+                                      </FriendListCard>
+                                    </Card>
+                                  </>
                                 );
-                                handleReload();
-                              }}
-                              onAccept={async () => {
-                                await acceptFriendRequest(
-                                  user.username,
-                                  friendRequest
+                              })
+                            ) : (
+                              <NoResults message={"No Friends :("} />
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </TabPanel>
+                  <TabPanel value={tabIndex} index={1}>
+                    {errorFriendRequests ? (
+                      <div>{errorFriendRequests}</div>
+                    ) : (
+                      <>
+                        {isPendingFriendRequests ? (
+                          <div>
+                            <CircularProgress color="secondary" />
+                          </div>
+                        ) : (
+                          <>
+                            {incoming && incoming.length ? (
+                              incoming.map((friendRequest) => {
+                                return (
+                                  <>
+                                    <Card sx={commonCardStyles}>
+                                      <FriendRequestListCard
+                                        onDecline={async () => {
+                                          await declineFriendRequest(
+                                            user.username,
+                                            friendRequest
+                                          );
+                                          handleReload();
+                                        }}
+                                        onAccept={async () => {
+                                          await acceptFriendRequest(
+                                            user.username,
+                                            friendRequest
+                                          );
+                                          handleReload();
+                                        }}
+                                        username={friendRequest}
+                                      />
+                                    </Card>
+                                  </>
                                 );
-                                handleReload();
-                              }}
-                              username={friendRequest}
-                            />
-                          </Card>
-                        </>
-                      );
-                    })
-                  ) : (
-                    <NoResults message={"No Friend Requests"} />
-                  )}
-                </TabPanel>
-                <TabPanel value={tabIndex} index={2}>
-                  {errorSearchUsers && <div>{errorSearchUsers}</div>}
-                  {isPendingSearchUsers && <div><CircularProgress color="secondary" /></div>}
-                  {searchUsers && searchUsers.length ? (
-                    searchUsers.map((friend) => {
-                      return (
-                        <>
-                          <Card
-                            sx={commonCardStyles}
-                          >
-                            <SendRequestListCard
-                              onSend={() => {
-                                addFriend(user.username, friend.username);
-                                handleReload();
-                              }}
-                              username={friend.username}
-                            />
-                          </Card>
-                        </>
-                      );
-                    })
-                  ) : (
-                    <NoResults message={"No Results"} />
-                  )}
-                </TabPanel>
+                              })
+                            ) : (
+                              <NoResults message={"No Friend Requests"} />
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </TabPanel>
+                  <TabPanel value={tabIndex} index={2}>
+                    {errorSearchUsers ? (
+                      <div>{errorSearchUsers}</div>
+                    ) : (
+                      <>
+                        {pending ? (
+                          <div>
+                            <CircularProgress color="secondary" />
+                          </div>
+                        ) : (
+                          <>
+                            {allDefined && searchUsers.length ? (
+                              searchUsers
+                                .filter(
+                                  (user1) => !(friends.includes(user1.username) || user.username ===user1.username)
+                                )
+                                .map((friend) => {
+                                  const status = outgoing.includes(
+                                    friend.username
+                                  )
+                                  return (
+                                    <>
+                                      <Card sx={commonCardStyles}>
+                                        <SendRequestListCard
+                                          onSend={() => {
+                                            addFriend(
+                                              user.username,
+                                              friend.username
+                                            );
+                                            handleReload();
+                                          }}
+                                          username={friend.username}
+                                          status={status}
+                                        />
+                                      </Card>
+                                    </>
+                                  );
+                                })
+                            ) : (
+                              <NoResults message={"No Results"} />
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </TabPanel>
+                </div>
               </div>
             </div>
           </div>

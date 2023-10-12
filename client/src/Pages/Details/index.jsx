@@ -7,6 +7,8 @@ import ShareButtons from "../../Components/Sharebutton";
 import { useAuthContext } from "../../Hooks/useAuthContext";
 import { useRating } from "../../Hooks/useRating";
 import FavoriteButton from "../../Components/FavoriteButton";
+import React from "react";
+import Spinner from "../../Components/Spinner";
 
 const MovieDetailsPage = () => {
   const [movieData, setMovieData] = useState(null);
@@ -73,7 +75,7 @@ const MovieDetailsPage = () => {
   }, []);
 
   if (!movieData) {
-    return <div>Loading...</div>;
+    return <div><Spinner/></div>;
   }
 
   const backdropUrl = `https://image.tmdb.org/t/p/original${movieData.backdrop_path}`;

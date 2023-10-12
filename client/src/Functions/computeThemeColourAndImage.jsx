@@ -24,11 +24,13 @@ export const computeThemeColourAndImage = async (user, setThemeColour, setThemeI
   const favJson = await favRes.json();
 
   // Use TMDB to grab the poster image
-  const movieDetailsPromises = favJson.map(async (movieId) => {
-    const detailsRes = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
-    );
-    return await detailsRes.json();
+  const movieDetailsPromises = favJson.map(async (movie) => {
+
+    const id = movie.movieId || movie; // Movie Id could be in the form of a movie object (new) or movie id string (old)
+
+    return fetch(
+      `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en-US`
+    ).then(resp => resp.json());
   });
 
   const movieDetails = await Promise.all(movieDetailsPromises);

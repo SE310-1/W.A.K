@@ -20,6 +20,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: none;
 }
 
 .carousel.carousel-slider .control-arrow.prev {

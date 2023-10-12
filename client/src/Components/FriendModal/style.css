@@ -1,0 +1,88 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center; /* This vertically centers the modal */
+    justify-content: center; /* This horizontally centers the modal */
+    background-color: rgba(
+        0,
+        0,
+        0,
+        0.5
+    ); /* Optional: Gives a darkened background */
+    z-index: 1000; /* Ensures the modal is on top of other content */
+}
+
+.modal {
+    position: absolute;
+    width: 80%; /* Adjust according to your preference */
+    max-width: 600px; /* Adjust according to your preference */
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1010; /* Higher than the overlay to ensure it appears on top */
+}
+
+.modal .user-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 20px;
+}
+
+.modal .favorite-movie {
+    flex: 1;
+    position: relative;
+}
+
+.modal .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 50px;
+    width: 40px;
+    background-color: blue;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal .arrow.left {
+    left: 0;
+}
+
+.modal .arrow.right {
+    right: 0;
+}
+
+.modal .movie-image {
+    width: 100%;
+    height: 200px; /* adjust height if needed */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.modal .indicators {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.modal .indicators .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0.5;
+}
+
+.modal .indicators .dot.active {
+    opacity: 1;
+}

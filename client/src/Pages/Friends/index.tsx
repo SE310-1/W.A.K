@@ -4,7 +4,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import React, { useState } from "react";
-import { Card, CardContent, CircularProgress, styled } from "@mui/material";
+import { Card, styled } from "@mui/material";
 import {
   FriendRequestListCard,
   SendRequestListCard,
@@ -20,6 +20,7 @@ import { useSearchFriends } from "../../Hooks/useSearchUsers";
 import SearchBar from "@mkyy/mui-search-bar";
 import backgroundImage from "./img/movies.jpeg";
 import NoResults from "../../Components/NoResults";
+import Spinner from "../../Components/Spinner";
 
 // Interface definitions
 interface PanelProps {
@@ -229,9 +230,7 @@ const Friends = () => {
                     ) : (
                       <>
                         {isPendingFriends ? (
-                          <div>
-                            <CircularProgress color="secondary" />
-                          </div>
+                          <Spinner />
                         ) : (
                           <>
                             {friends && friends.length ? (
@@ -261,7 +260,7 @@ const Friends = () => {
                       <>
                         {isPendingFriendRequests ? (
                           <div>
-                            <CircularProgress color="secondary" />
+                            <Spinner />
                           </div>
                         ) : (
                           <>
@@ -306,19 +305,23 @@ const Friends = () => {
                       <>
                         {pending ? (
                           <div>
-                            <CircularProgress color="secondary" />
+                            <Spinner />
                           </div>
                         ) : (
                           <>
                             {allDefined && searchUsers.length ? (
                               searchUsers
                                 .filter(
-                                  (user1) => !(friends.includes(user1.username) || user.username ===user1.username)
+                                  (user1) =>
+                                    !(
+                                      friends.includes(user1.username) ||
+                                      user.username === user1.username
+                                    )
                                 )
                                 .map((friend) => {
                                   const status = outgoing.includes(
                                     friend.username
-                                  )
+                                  );
                                   return (
                                     <>
                                       <Card sx={commonCardStyles}>

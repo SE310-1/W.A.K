@@ -37,10 +37,10 @@ const FavouritesList: React.FC = () => {
       const selectedFavs = favourites.slice(0, Math.min(12, favourites.length));
 
       // Fetch Reccomendations for Each of them
-      const requests = selectedFavs.map((movieId) =>
+      const requests = selectedFavs.map((movie) =>
         fetch(
-          `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${apiKey}&language=en-US`
-        ).then((x) => x.json())
+          `https://api.themoviedb.org/3/movie/${movie}/recommendations?api_key=${apiKey}&language=en-US`
+        ).then((resp) => resp.json())
       );
 
       const resolved = await Promise.all(requests);
@@ -76,8 +76,6 @@ const FavouritesList: React.FC = () => {
         (x, index) => ids.indexOf(x.id) === index
       );
 
-      console.log(filterDuplicates);
-
       return filterDuplicates.slice(0, 12); // Only return 12 reccomendations
     }
     // If they have none, return the 12 most popular
@@ -97,15 +95,18 @@ const FavouritesList: React.FC = () => {
           }
         );
 
+        const favIds = response.data.map((x) => x.movieId);
+
         // Fetch details for each favorite movie using promises
-        const movieDetailsPromises = response.data.map((movieId: number) =>
+        const movieDetailsPromises = favIds.map((movieId: number) =>
           fetch(
             `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
           ).then((response) => response.json())
         );
 
-        const reccomendations = await getReccomendations(response.data);
+        const reccomendations = await getReccomendations(favIds);
         // Wait for all movie details promises to resolve
+
         const movieDetails = await Promise.all(movieDetailsPromises);
 
         setMoviesData(movieDetails);
@@ -139,8 +140,10 @@ const FavouritesList: React.FC = () => {
             <>
               {!moviesData.length ? (
                 <div>
-                  <p className = "text-shadow">Nothing added to favorites yet! Check out the Reccomendations
-                  Below!</p>
+                  <p className="text-shadow">
+                    Nothing added to favorites yet! Check out the
+                    Reccomendations Below!
+                  </p>
                 </div>
               ) : (
                 <Grid

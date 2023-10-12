@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
  */
 export const useFriendRequests = (myUsername, reload) => {
     // State for storing friend requests, loading state, and errors.
-    const [friendRequests, setFriendRequests] = useState();
+    const [incoming, setFriendRequests] = useState();
+    const [outgoing, setOutgoing] = useState();
     const [isPending, setIsPending] = useState(true);
     const [error, setError] = useState(null);
 
@@ -25,7 +26,8 @@ export const useFriendRequests = (myUsername, reload) => {
             )
             .then((friendRequests) => {
                 // On success, updating the state with the received data.
-                setFriendRequests(friendRequests.data);
+                setFriendRequests(friendRequests.data.incoming);
+                setOutgoing(friendRequests.data.outgoing);
                 setIsPending(false);
             })
             .catch((err) => {
@@ -36,5 +38,5 @@ export const useFriendRequests = (myUsername, reload) => {
     }, [reload]); // Re-run the effect when the 'reload' dependency changes.
 
     // Returning the result.
-    return { friendRequests, isPending, error };
+    return { incoming, outgoing, isPending, error };
 };

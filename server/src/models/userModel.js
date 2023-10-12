@@ -22,9 +22,22 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    favorites: {
-        type: [String], // storing IDs of the favourite movies
-    },
+    favorites: [
+        {
+            movieId: {
+                type: String, // storing the ID of the movie according to TMDB
+                required: true,
+            },
+            addedAt: {
+                type: Date, // date when it was added to favourites
+            },
+            movieTitle: {
+                type: String,
+                required: true,
+            },
+        },
+    ],
+
     friends: {
         type: Array,
     },
@@ -33,7 +46,7 @@ const userSchema = new Schema({
     },
     outgoingRequests: {
         type: Array,
-    }
+    },
 });
 
 // Static method to signup a new user
@@ -46,7 +59,7 @@ userSchema.statics.signup = async function (email, username, password) {
     if (!validator.isEmail(email)) {
         throw Error("Email not valid");
     }
-  
+
     // Check if email already exists in the database
     const [exists] = await Promise.all([this.findOne({ email })]);
 
@@ -85,17 +98,21 @@ userSchema.statics.login = async function (username, password) {
 };
 
 // Method to add a movie to the user's favorites
-userSchema.methods.addFavorite = async function (movieId) {
-    if (this.favorites.includes(movieId)) {
+userSchema.methods.addFavorite = async function (movieId, movieTitle) {
+    if (this.favorites.some((fav) => fav.movieId === movieId)) {
         throw Error("Movie already in favorites");
     }
-    this.favorites.push(movieId);
+    this.favorites.push({
+        movieId: movieId,
+        movieTitle: movieTitle,
+        addedAt: new Date(),
+    });
     return this.save();
 };
 
 // Method to remove a movie from the user's favorites
 userSchema.methods.removeFavorite = async function (movieId) {
-    const index = this.favorites.indexOf(movieId);
+    const index = this.favorites.findIndex((fav) => fav.movieId === movieId);
     if (index === -1) {
         throw Error("Movie not found in favorites");
     }

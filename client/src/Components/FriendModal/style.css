@@ -2,7 +2,7 @@
     position: relative; /* To position child elements absolutely */
     width: 100%;
     height: 70%;
-    background-color: aquamarine;
+    background-color: rgb(0, 201, 161);
     border-radius: 100px;
 }
 
@@ -19,8 +19,8 @@
 
 .close-btn {
     position: absolute; /* Absolute positioning inside the .modal */
-    top: 8%; /* Position close button closer to the top */
-    right: 8%; /* Position close button closer to the right */
+    top: 6%; /* Position close button closer to the top */
+    right: 6%; /* Position close button closer to the right */
     cursor: pointer;
     width: 50px; /* Adjust this for the size you want */
     height: 50px; /* Adjust this for the size you want */
@@ -37,8 +37,8 @@
     align-items: center; /* Center items horizontally */
     justify-content: flex-start; /* Start from the top */
     position: absolute; /* Position it inside the modal */
-    top: 35%; /* Adjust as needed */
-    left: 10%; /* Adjust as needed */
+    top: 30%; /* Adjust as needed */
+    left: 15%; /* Adjust as needed */
 }
 
 .user-avatar {
@@ -58,12 +58,12 @@
 
 .user-name {
     text-align: center;
-    font-size: 1.2rem; /* adjust as necessary */
+    font-size: 2rem; /* adjust as necessary */
     margin-top: 20px;
 }
 
 .movie-slider-container {
     position: absolute; /* Absolute positioning inside the .modal */
-    top: 20%;
+    top: 15%;
     right: 5%;
 }

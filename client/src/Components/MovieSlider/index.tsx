@@ -59,6 +59,7 @@ const MovieSlider: React.FC<MovieSliderProps> = ({ movies }) => {
                     className="movie-image"
                     src={`https://image.tmdb.org/t/p/w300/${movies[imageIndex].poster_path}`}
                     alt={movies[imageIndex].title || "Movie Poster"}
+                    style={{ borderRadius: "50px" }}
                 />
                 <button
                     className="slider-button slider-button-right"

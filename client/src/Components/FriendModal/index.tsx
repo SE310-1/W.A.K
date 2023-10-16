@@ -78,7 +78,7 @@ export const FriendModal: React.FC<FriendModalProps> = ({
                     <div className="user-avatar">
                         <img src={images.profile_image} alt={username} />
                     </div>
-                    <div className="user-name">{username}</div>
+                    <h1 className="user-name">{username}</h1>
                 </div>
 
                 <div className="movie-slider-container">

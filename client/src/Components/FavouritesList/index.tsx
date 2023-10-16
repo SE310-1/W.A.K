@@ -101,13 +101,6 @@ const FavouritesList: React.FC = () => {
 
                 const favIds = response.data.map((x) => x.movieId);
 
-                // Fetch details for each favorite movie using promises
-                // const movieDetailsPromises = favIds.map((movieId: number) =>
-                //   fetch(
-                //     `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
-                //   ).then((response) => response.json())
-                // );
-
                 const movieDetailsPromises = response.data.map(
                     async (favorite: Movie) => {
                         const movieDetailRes = await fetch(
@@ -128,14 +121,12 @@ const FavouritesList: React.FC = () => {
                 // }
 
                 const reccomendations = await getReccomendations(favIds);
-                // Wait for all movie details promises to resolve
 
-                //const movieDetails = await Promise.all(movieDetailsPromises);
+                // Wait for all movie details promises to resolve
                 const movieDetailsWithRating = await Promise.all(
                     movieDetailsPromises
                 );
 
-                //setMoviesData(movieDetails);
                 setMoviesData(movieDetailsWithRating);
                 setReccomendations(reccomendations);
                 setIsPending(false);
@@ -146,7 +137,7 @@ const FavouritesList: React.FC = () => {
         };
 
         fetchFavourites(); // Invoke the fetchFavourites function when the component mounts
-    }, [reload]);
+    }, [reload, sortOrder]);
 
     // Function to handle movie deletion from favorites
     const handleMovieDeleted = (deletedMovieId: number) => {

@@ -204,6 +204,14 @@ const FavouritesList: React.FC = () => {
                                                 key={index}
                                             >
                                                 <MovieCard movie={movie} />
+
+                                                <div className="rating-div">
+                                                    {" "}
+                                                    {movie.rating > 0
+                                                        ? `You rated : ${movie.rating}/5`
+                                                        : "Not rated yet"}
+                                                </div>
+
                                                 <DeleteButton
                                                     movieId={movie.id} // This is the TMDB movie object
                                                     onMovieDeleted={

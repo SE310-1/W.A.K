@@ -21,6 +21,7 @@ import SearchBar from "@mkyy/mui-search-bar";
 import backgroundImage from "./img/movies.jpeg";
 import NoResults from "../../Components/NoResults";
 import Spinner from "../../Components/Spinner";
+import FriendModal from "../../Components/FriendModal";
 
 // Interface definitions
 interface PanelProps {
@@ -173,6 +174,14 @@ const Friends = () => {
         isPendingSearchUsers;
     const allDefined = friends && searchUsers && incoming && outgoing;
 
+    const [isModalOpen, setModalState] = React.useState(false);
+
+    const toggleModal = () => {
+        setModalState(!isModalOpen);
+        console.log("close");
+        console.log(isModalOpen);
+    };
+
     return (
         <>
             <div className="home-container-search">
@@ -254,7 +263,20 @@ const Friends = () => {
                                                                                     username={
                                                                                         friend
                                                                                     }
+                                                                                    onClick={
+                                                                                        toggleModal
+                                                                                    } // handleCardClick should be a function you define
                                                                                 >
+                                                                                    {isModalOpen && (
+                                                                                        <FriendModal
+                                                                                            username={
+                                                                                                friend
+                                                                                            }
+                                                                                            onClose={
+                                                                                                toggleModal
+                                                                                            }
+                                                                                        />
+                                                                                    )}
                                                                                     <>
 
                                                                                     </>

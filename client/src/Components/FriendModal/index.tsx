@@ -1,63 +1,96 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "./style.css";
+import { images } from "../../Constants";
+import axios from "axios";
+import { apiKey } from "../../../env";
+import MovieSlider from "../MovieSlider";
 
-function FriendModal({
-    username,
-    onClose,
-}: {
+interface Movie {
+    id: number;
+    title: string;
+    poster_path: string;
+    vote_average: number;
+    release_date: string;
+}
+
+interface FriendModalProps {
     username: string;
     onClose: () => void;
-}) {
+}
+
+export const FriendModal: React.FC<FriendModalProps> = ({
+    username,
+    onClose,
+}) => {
+    const [isPending, setIsPending] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    const [moviesData, setMoviesData] = useState<Movie[]>([]);
+    const [reload, triggerReload] = useState(false);
+    const [isCloseButtonHovered, setCloseButtonHovered] = useState(false);
+    useEffect(() => {
+        console.log(username);
+        // Function to fetch user's favorite movies
+        const fetchFavourites = async () => {
+            try {
+                const response = await axios.get(
+                    `${import.meta.env.VITE_BASE_API_URL}/${username}/favorites`
+                );
+
+                const favIds = response.data.map((x) => x.movieId);
+
+                // Fetch details for each favorite movie using promises
+                const movieDetailsPromises = favIds.map((movieId: number) =>
+                    fetch(
+                        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
+                    ).then((response) => response.json())
+                );
+
+                const movieDetails = await Promise.all(movieDetailsPromises);
+
+                setMoviesData(movieDetails);
+                setIsPending(false);
+            } catch (err: any) {
+                setIsPending(false);
+                setError(err.message);
+            }
+        };
+
+        fetchFavourites(); // Invoke the fetchFavourites function when the component mounts
+    }, [reload]);
+
     return (
-        <div className="modal-overlay">
+        <div className="modal-overlay" onClick={(e) => e.stopPropagation()}>
             <div className="modal">
+                <p className="close-btn" onClick={onClose}>
+                    <img
+                        src={
+                            isCloseButtonHovered
+                                ? images.fill_close_button
+                                : images.close_button
+                        }
+                        alt="Close Button"
+                        onMouseEnter={() => setCloseButtonHovered(true)}
+                        onMouseLeave={() => setCloseButtonHovered(false)}
+                    />
+                </p>
                 <div className="user-section">
-                    <div
-                        className="user-avatar"
-                        style={{ backgroundImage: `url(path_to_user_avatar)` }}
-                    ></div>
+                    <div className="user-avatar">
+                        <img src={images.profile_image} alt={username} />
+                    </div>
                     <div className="user-name">{username}</div>
                 </div>
 
-                <div className="favorite-movie">
-                    <div
-                        className="arrow left"
-                        // onClick={/* functionality to slide left */}
-                    >
-                        &lt;&lt;
-                    </div>
-
-                    <div
-                        className="movie-image"
-                        // style={{
-                        //     backgroundImage: `url(${favoriteMovieImage})`,
-                        // }}
-                    ></div>
-
-                    <div
-                        className="arrow right"
-                        // onClick={/* functionality to slide right */}
-                    >
-                        &gt;&gt;
-                    </div>
-
-                    <div className="indicators">
-                        <div className="dot active"></div>
-                        <div className="dot"></div>
-                        <div className="dot"></div>
-                    </div>
-
-                    <button onClick={onClose}>Close</button>
+                <div className="movie-slider-container">
+                    <h1>Top Favourite Movies</h1>
+                    {isPending && <p>Loading...</p>}
+                    {error && <p>Error: {error}</p>}
+                    {moviesData.length > 0 && (
+                        <MovieSlider movies={moviesData.slice(0, 3)} />
+                    )}
                 </div>
             </div>
         </div>
     );
-}
-
-FriendModal.propTypes = {
-    username: PropTypes.string.isRequired,
-    onClose: PropTypes.func.isRequired,
 };
-
 export default FriendModal;

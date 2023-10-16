@@ -1,88 +1,69 @@
+.modal {
+    position: relative; /* To position child elements absolutely */
+    width: 100%;
+    height: 70%;
+    background-color: aquamarine;
+    border-radius: 100px;
+}
+
 .modal-overlay {
-    position: fixed;
+    position: fixed; /* Make sure the modal takes the full screen */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     display: flex;
-    align-items: center; /* This vertically centers the modal */
-    justify-content: center; /* This horizontally centers the modal */
-    background-color: rgba(
-        0,
-        0,
-        0,
-        0.5
-    ); /* Optional: Gives a darkened background */
-    z-index: 1000; /* Ensures the modal is on top of other content */
+    justify-content: center;
+    align-items: center;
 }
 
-.modal {
-    position: absolute;
-    width: 80%; /* Adjust according to your preference */
-    max-width: 600px; /* Adjust according to your preference */
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    z-index: 1010; /* Higher than the overlay to ensure it appears on top */
+.close-btn {
+    position: absolute; /* Absolute positioning inside the .modal */
+    top: 8%; /* Position close button closer to the top */
+    right: 8%; /* Position close button closer to the right */
+    cursor: pointer;
+    width: 50px; /* Adjust this for the size you want */
+    height: 50px; /* Adjust this for the size you want */
 }
 
-.modal .user-avatar {
-    width: 150px;
-    height: 150px;
+.close-btn img {
+    width: 100%; /* Make sure the image fills the button's size */
+    height: 100%; /* Make sure the image fills the button's size */
+}
+
+.user-section {
+    display: flex;
+    flex-direction: column; /* Vertical layout */
+    align-items: center; /* Center items horizontally */
+    justify-content: flex-start; /* Start from the top */
+    position: absolute; /* Position it inside the modal */
+    top: 35%; /* Adjust as needed */
+    left: 10%; /* Adjust as needed */
+}
+
+.user-avatar {
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     overflow: hidden;
-    margin-right: 20px;
+    margin-bottom: 10px; /* Vertical space between the image and the name */
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.modal .favorite-movie {
-    flex: 1;
-    position: relative;
-}
-
-.modal .arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 50px;
-    width: 40px;
-    background-color: blue;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal .arrow.left {
-    left: 0;
-}
-
-.modal .arrow.right {
-    right: 0;
-}
-
-.modal .movie-image {
+.user-avatar img {
     width: 100%;
-    height: 200px; /* adjust height if needed */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    height: 100%;
+    object-fit: cover; /* makes the image cover the entire container */
 }
 
-.modal .indicators {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+.user-name {
+    text-align: center;
+    font-size: 1.2rem; /* adjust as necessary */
+    margin-top: 20px;
 }
 
-.modal .indicators .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: white;
-    opacity: 0.5;
-}
-
-.modal .indicators .dot.active {
-    opacity: 1;
+.movie-slider-container {
+    position: absolute; /* Absolute positioning inside the .modal */
+    top: 20%;
+    right: 5%;
 }

@@ -213,12 +213,14 @@ const FavouritesList: React.FC = () => {
                                                         : "Not rated yet"}
                                                 </div>
 
-                                                <DeleteButton
-                                                    movieId={movie.id} // This is the TMDB movie object
-                                                    onMovieDeleted={
-                                                        handleMovieDeleted
-                                                    }
-                                                />
+                                                <div className="delete-btn-div">
+                                                    <DeleteButton
+                                                        movieId={movie.id} // This is the TMDB movie object
+                                                        onMovieDeleted={
+                                                            handleMovieDeleted
+                                                        }
+                                                    />
+                                                </div>
                                             </Grid>
                                         ))}
                                     </Grid>

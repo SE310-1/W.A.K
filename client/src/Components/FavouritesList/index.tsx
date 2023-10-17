@@ -10,7 +10,7 @@ import "./style.css";
 
 // Define the Movie interface with relevant properties
 interface FavouriteMovie {
-    movieId: number;
+    movieId: string;
     movieTitle: string;
     addedAt: Date;
     rating: number;
@@ -113,6 +113,7 @@ const FavouritesList: React.FC = () => {
 
                         // Return a combined object with movie details and rating
                         return {
+                            movieId: movieDetail.id,
                             ...movieDetail,
                             rating: favorite.rating,
                         };
@@ -143,7 +144,7 @@ const FavouritesList: React.FC = () => {
     }, [reload, sortOrder]);
 
     // Function to handle movie deletion from favorites
-    const handleMovieDeleted = (deletedMovieId: number) => {
+    const handleMovieDeleted = (deletedMovieId: string) => {
         setIsPending(true);
         setMoviesData(
             moviesData.filter((movie) => movie.movieId !== deletedMovieId)

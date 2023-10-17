@@ -16,7 +16,13 @@ interface FavouriteMovie {
     rating: number;
 }
 
-const FavouritesList: React.FC = () => {
+interface FavouritesListProps {
+    onFirstMovieChange: (movie: any) => void;
+}
+
+const FavouritesList: React.FC<FavouritesListProps> = ({
+    onFirstMovieChange,
+}) => {
     // Access user data from the authentication context
     const { user } = useAuthContext();
 
@@ -120,16 +126,16 @@ const FavouritesList: React.FC = () => {
                     }
                 );
 
-                // if (movieDetailsWithRating.length > 0) {
-                //     onFirstMovieChange(movieDetailsWithRating[0]);
-                // }
-
                 const reccomendations = await getReccomendations(favIds);
 
                 // Wait for all movie details promises to resolve
                 const movieDetailsWithRating = await Promise.all(
                     movieDetailsPromises
                 );
+
+                if (movieDetailsWithRating.length > 0) {
+                    onFirstMovieChange(movieDetailsWithRating[0]);
+                }
 
                 setMoviesData(movieDetailsWithRating);
                 setReccomendations(reccomendations);
@@ -144,12 +150,32 @@ const FavouritesList: React.FC = () => {
     }, [reload, sortOrder]);
 
     // Function to handle movie deletion from favorites
-    const handleMovieDeleted = (deletedMovieId: string) => {
-        setIsPending(true);
-        setMoviesData(
-            moviesData.filter((movie) => movie.movieId !== deletedMovieId)
+    // const handleMovieDeleted = (deletedMovieId: string) => {
+    //     setIsPending(true);
+    //     setMoviesData(
+    //         moviesData.filter((movie) => movie.movieId !== deletedMovieId)
+    //     );
+    //     triggerReload(!reload); // This will run the process that refreshes reccomendations and favourite data, which will trigger pending to be false
+    // };
+
+    const handleMovieDeleted = (deletedMovieId: number) => {
+        const wasFirstMovie =
+            moviesData[0] && moviesData[0].id === deletedMovieId;
+
+        const updatedMoviesData = moviesData.filter(
+            (movie) => movie.id !== deletedMovieId
         );
-        triggerReload(!reload); // This will run the process that refreshes reccomendations and favourite data, which will trigger pending to be false
+        setMoviesData(updatedMoviesData);
+
+        if (wasFirstMovie) {
+            if (updatedMoviesData.length > 0) {
+                onFirstMovieChange(updatedMoviesData[0]);
+            } else {
+                // Reset to default theme if no movies are left.
+                onFirstMovieChange(null);
+            }
+        }
+        triggerReload(!reload);
     };
 
     return (

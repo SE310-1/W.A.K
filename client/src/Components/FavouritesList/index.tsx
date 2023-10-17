@@ -206,22 +206,28 @@ const FavouritesList: React.FC = () => {
                                                 md={3}
                                                 key={index}
                                             >
-                                                <MovieCard movie={movie} />
-
-                                                <div className="rating-div">
-                                                    {" "}
-                                                    {movie.rating > 0
-                                                        ? `You rated : ${movie.rating}/5`
-                                                        : "Not rated yet"}
+                                                <div className="movie-item-container">
+                                                    <MovieCard movie={movie} />
                                                 </div>
 
-                                                <div className="delete-btn-div">
-                                                    <DeleteButton
-                                                        movieId={movie.id} // This is the TMDB movie object
-                                                        onMovieDeleted={
-                                                            handleMovieDeleted
-                                                        }
-                                                    />
+                                                <div className="movie-subheader-container">
+                                                    <div className="rating-div">
+                                                        {" "}
+                                                        {movie.rating > 0
+                                                            ? `You rated : ${movie.rating}/5`
+                                                            : "Not rated yet"}
+                                                    </div>
+
+                                                    <div className="delete-btn-div">
+                                                        <DeleteButton
+                                                            movieId={
+                                                                movie.movieId
+                                                            } // This is the TMDB movie object
+                                                            onMovieDeleted={
+                                                                handleMovieDeleted
+                                                            }
+                                                        />
+                                                    </div>
                                                 </div>
                                             </Grid>
                                         ))}

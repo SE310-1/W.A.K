@@ -188,9 +188,6 @@ const Friends = () => {
             setOpenModalUsername(username);
         }
         setModalState(!isModalOpen);
-
-        console.log("close");
-        console.log(isModalOpen);
     };
 
     return (

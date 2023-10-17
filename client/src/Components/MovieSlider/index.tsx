@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./style.css";
-import { useNavigate } from "react-router-dom";
 import "./style.css";
 import { images } from "../../Constants";
 
+// Type definition for a movie object
 interface Movie {
     id: number;
     title: string;
@@ -12,16 +12,18 @@ interface Movie {
     release_date: string;
 }
 
+// Type definition for the component props
 interface MovieSliderProps {
     movies: Movie[];
 }
 
-// Card that displays movie information, used on the movie details page
+// The MovieSlider component which displays the top favorite movies as a slider
 const MovieSlider: React.FC<MovieSliderProps> = ({ movies }) => {
-    const [imageIndex, setImageIndex] = useState(0);
-    const [isLeftButtonHovered, setLeftButtonHovered] = useState(false);
-    const [isRightButtonHovered, setRightButtonHovered] = useState(false);
+    const [imageIndex, setImageIndex] = useState(0); // State to track the current displayed movie
+    const [isLeftButtonHovered, setLeftButtonHovered] = useState(false); // State to track if left button is hovered
+    const [isRightButtonHovered, setRightButtonHovered] = useState(false); // State to track if right button is hovered
 
+    // Function to display the next movie in the slider
     function showNextMovie() {
         setImageIndex((index) => {
             if (index === movies.length - 1) return 0;
@@ -29,13 +31,13 @@ const MovieSlider: React.FC<MovieSliderProps> = ({ movies }) => {
         });
     }
 
+    // Function to display the previous movie in the slider
     function showPrevMovie() {
         setImageIndex((index) => {
             if (index === 0) return movies.length - 1;
             return index - 1;
         });
     }
-
     return (
         <>
             <h1>Top Favourite Movies</h1>

@@ -23,23 +23,27 @@ export const FriendModal: React.FC<FriendModalProps> = ({
     username,
     onClose,
 }) => {
+    // States to manage loading, errors, fetched data, and other interactivities
     const [isPending, setIsPending] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [moviesData, setMoviesData] = useState<Movie[]>([]);
     const [reload, triggerReload] = useState(false);
     const [isCloseButtonHovered, setCloseButtonHovered] = useState(false);
+
+    // useEffect hook to fetch data when the component mounts or when 'reload' state changes
     useEffect(() => {
         console.log(username);
+
         // Function to fetch user's favorite movies
         const fetchFavourites = async () => {
             try {
+                // Fetch user's favorite movie IDs
                 const response = await axios.get(
                     `${import.meta.env.VITE_BASE_API_URL}/${username}/favorites`
                 );
-
                 const favIds = response.data.map((x) => x.movieId);
 
-                // Fetch details for each favorite movie using promises
+                // Fetch details for each favorite movie
                 const movieDetailsPromises = favIds.map((movieId: number) =>
                     fetch(
                         `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
@@ -48,15 +52,18 @@ export const FriendModal: React.FC<FriendModalProps> = ({
 
                 const movieDetails = await Promise.all(movieDetailsPromises);
 
+                // Set the fetched movie details to the state
                 setMoviesData(movieDetails);
                 setIsPending(false);
             } catch (err: any) {
+                // Handle errors and update the states accordingly
                 setIsPending(false);
                 setError(err.message);
             }
         };
 
-        fetchFavourites(); // Invoke the fetchFavourites function when the component mounts
+        // Invoke the fetch function
+        fetchFavourites();
     }, [reload]);
 
     return (

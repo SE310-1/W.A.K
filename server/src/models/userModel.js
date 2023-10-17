@@ -123,6 +123,16 @@ userSchema.methods.removeFavorite = async function (movieId) {
   return this.save();
 };
 
+// Method to replace current profile picture with new one
+userSchema.methods.replaceProfilePicture = async function (movieId) {
+  this.profilePicture.splice(0, 1);
+  this.profilePictures.push({
+    movieId: movieId,
+    addedAt: new Date(),
+  });
+  return this.save();
+};
+
 // Set
 
 // Exporting the User model for use in other files

@@ -342,6 +342,21 @@ app.get("/:myUsername/profilePicture", async (req, res) => {
   }
 });
 
+// Route to add a profile picture to an account
+app.post("/:myUsername/profilePicture/replace", async (req, res) => {
+  const movieId = req.body.movieId;
+  const myUsername = req.params.myUsername;
+
+  try {
+    const user = await User.findOne({ username: myUsername });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    await user.replaceProfilePicture(movieId);
+    res.status(200).json({ message: "Profile picture set" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {

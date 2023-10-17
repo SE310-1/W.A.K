@@ -39,7 +39,7 @@ export const useFavourites = () => {
     }
   }, [user]);
 
-  // Function to add a movie to favorites
+  // Function to add a movie to favorites (TODO: update pfp)
   const addFavourite = async (movieId) => {
     await fetchData(
       `${BASE_URL}/favorites/add/${movieId}`,
@@ -55,7 +55,7 @@ export const useFavourites = () => {
     }
   };
 
-  // Function to remove a movie from favorites
+  // Function to remove a movie from favorites (TODO: update pfp)
   const removeFavourite = async (movieId) => {
     await fetchData(
       `${BASE_URL}/favorites/remove/${movieId}`,

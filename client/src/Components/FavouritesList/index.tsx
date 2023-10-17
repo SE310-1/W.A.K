@@ -150,14 +150,6 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
     }, [reload, sortOrder]);
 
     // Function to handle movie deletion from favorites
-    // const handleMovieDeleted = (deletedMovieId: string) => {
-    //     setIsPending(true);
-    //     setMoviesData(
-    //         moviesData.filter((movie) => movie.movieId !== deletedMovieId)
-    //     );
-    //     triggerReload(!reload); // This will run the process that refreshes reccomendations and favourite data, which will trigger pending to be false
-    // };
-
     const handleMovieDeleted = (deletedMovieId: number) => {
         const wasFirstMovie =
             moviesData[0] && moviesData[0].id === deletedMovieId;

@@ -26,6 +26,8 @@ export const useTheme = (firstMovieBackdropPath) => {
                 setThemeImage,
                 firstMovieBackdropPath
             );
+        } else {
+            setThemeImage(""); // explicitly set themeImage to null if no first movie
         }
         console.log("Updated Theme Color:", themeColour);
     }, [user, firstMovieBackdropPath]);

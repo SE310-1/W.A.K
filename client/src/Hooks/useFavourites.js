@@ -75,8 +75,14 @@ export const useFavourites = () => {
       });
       if (!isFavourite(response)) {
         //movieID = first from favourites list
+        const response = await fetchData(`${BASE_URL}/favorites${movieId}`, {
+          method: "GET",
+        });
+
+        const favIds = response.data.map((x) => x.movieId);
+
         await fetchData(
-          `${BASE_URL}/profilePicture/replace/${movieId}`,
+          `${BASE_URL}/profilePicture/replace/${favIds[0]}`,
           { method: "POST" },
           () => setProfilePicture(movieId)
         );

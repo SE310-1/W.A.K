@@ -67,7 +67,19 @@ export const FriendModal: React.FC<FriendModalProps> = ({
         const response1 = await axios.get(
           `${import.meta.env.VITE_BASE_API_URL}/${username}/profilePicture`
         );
-        const profilePicturePath = response1.data.map((x) => x.movieId);
+        const profilePictureID = response1.data.map((x) => x.movieId);
+
+        // Fetch details for each favorite movie
+        const profilePicturePromises = profilePictureID.map((movieId: number) =>
+          fetch(
+            `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
+          ).then((response) => response.json())
+        );
+
+        const profilePictureDetails = await Promise.all(profilePicturePromises);
+
+        const profilePicturePath = profilePictureDetails[0].poster_path;
+
         setProfilePicturePath(profilePicturePath);
         console.log(profilePicturePath);
         setIsPending(false);
@@ -100,7 +112,10 @@ export const FriendModal: React.FC<FriendModalProps> = ({
         </p>
         <div className="user-section">
           <div className="user-avatar">
-            <img src={profilePicturePath} alt={username} />
+            <img
+              src={`https://image.tmdb.org/t/p/w300/${profilePicturePath}`}
+              alt={username}
+            />
           </div>
           <h1 className="user-name">{username}</h1>
         </div>

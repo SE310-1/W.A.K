@@ -7,13 +7,13 @@ import { Grid } from "@mui/material";
 import DeleteButton from "../DeleteFavoriteButton";
 import Spinner from "../../Components/Spinner";
 import "./style.css";
+
 // Define the Movie interface with relevant properties
-interface Movie {
+interface FavouriteMovie {
     movieId: number;
     movieTitle: string;
     addedAt: Date;
     rating: number;
-    // Add more properties as needed
 }
 
 const FavouritesList: React.FC = () => {
@@ -23,8 +23,10 @@ const FavouritesList: React.FC = () => {
     // State variables to manage loading, errors, and movie data
     const [isPending, setIsPending] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [moviesData, setMoviesData] = useState<Movie[]>([]);
-    const [reccomendations, setReccomendations] = useState<Movie[]>([]);
+    const [moviesData, setMoviesData] = useState<FavouriteMovie[]>([]);
+    const [reccomendations, setReccomendations] = useState<FavouriteMovie[]>(
+        []
+    );
     const [reload, triggerReload] = useState(false);
     const [sortOrder, setSortOrder] = useState<string>("added"); // New state variable to manage the sortin order
 
@@ -103,7 +105,7 @@ const FavouritesList: React.FC = () => {
                 const favIds = response.data.map((x) => x.movieId);
 
                 const movieDetailsPromises = response.data.map(
-                    async (favorite: Movie) => {
+                    async (favorite: FavouriteMovie) => {
                         const movieDetailRes = await fetch(
                             `https://api.themoviedb.org/3/movie/${favorite.movieId}?api_key=${apiKey}&language=en-US`
                         );

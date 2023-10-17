@@ -6,6 +6,7 @@ import MovieCard from "../MovieCard";
 import { Grid } from "@mui/material";
 import DeleteButton from "../DeleteFavoriteButton";
 import Spinner from "../../Components/Spinner";
+import "./style.css";
 // Define the Movie interface with relevant properties
 interface Movie {
     movieId: number;

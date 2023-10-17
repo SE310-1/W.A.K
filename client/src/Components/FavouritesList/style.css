@@ -1,7 +1,35 @@
-.favourites-box {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  height: 100%;
-  background-color: black;
+favourites-box {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    background-color: black;
+}
+.dropdown-container {
+    margin-bottom: 60px; /* Adds space between dropdown and grid */
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+.dropdown-label {
+    font-size: 1.2rem;
+    font-weight: 900;
+    margin-right: 10px;
+    color: white;
+}
+
+.dropdown-select {
+    font-size: 18px; /* Increase font size of the dropdown */
+    padding: 5px 10px; /* Add padding around the dropdown itself */
+    border-radius: 5px; /* Optional: Round the edges of the dropdown */
+    background-color: whitesmoke; /* Optional: Background color */
+    border: 1px solid #ddd; /* Optional: Border */
+}
+
+.dropdown-select:hover option:not(:hover) {
+    background-color: transparent; /* Reset other options to have no background */
+}
+
+.dropdown-select option:hover {
+    background-color: #f0f0f0; /* Background color of hovered option */
 }

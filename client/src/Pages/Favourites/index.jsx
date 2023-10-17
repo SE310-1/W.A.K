@@ -23,7 +23,7 @@ const Favourites = () => {
                 }}
             ></div>
             <div className="favourites-list">
-                <h1>Favourites Page</h1>
+                <h1 className="favourites-section-title">Favourites</h1>
                 {user ? (
                     <FavouritesList
                         onFirstMovieChange={(movie) => {

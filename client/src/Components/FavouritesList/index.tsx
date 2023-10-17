@@ -196,10 +196,10 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
                     ) : (
                         <>
                             {!moviesData.length ? (
-                                <div>
-                                    <p className="text-shadow">
+                                <div className="favourites-message-container">
+                                    <p>
                                         Nothing added to favorites yet! Check
-                                        out the Reccomendations Below!
+                                        out the Recommendations Below!
                                     </p>
                                 </div>
                             ) : (
@@ -220,7 +220,7 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
                                             }
                                         >
                                             <option value="added">
-                                                Added Date
+                                                Recently added
                                             </option>
                                             <option value="rating">
                                                 Top rated by you
@@ -274,7 +274,7 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
             )}
             <br></br>
             <br></br>
-            <h1 className="favourites-section-title">Reccomended For You</h1>
+            <h1 className="favourites-section-title">Recommended For You</h1>
             {error ? (
                 <div>{error}</div>
             ) : (

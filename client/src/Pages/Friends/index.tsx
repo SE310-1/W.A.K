@@ -175,9 +175,20 @@ const Friends = () => {
     const allDefined = friends && searchUsers && incoming && outgoing;
 
     const [isModalOpen, setModalState] = React.useState(false);
+    const [openModalUsername, setOpenModalUsername] = useState<string | null>(
+        null
+    );
 
-    const toggleModal = () => {
+    const toggleModal = (username: string) => {
+        if (openModalUsername === username) {
+            // If the modal for this user is already open, close it.
+            setOpenModalUsername(null);
+        } else {
+            // Otherwise, open the modal for this user.
+            setOpenModalUsername(username);
+        }
         setModalState(!isModalOpen);
+
         console.log("close");
         console.log(isModalOpen);
     };
@@ -263,23 +274,25 @@ const Friends = () => {
                                                                                     username={
                                                                                         friend
                                                                                     }
-                                                                                    onClick={
-                                                                                        toggleModal
-                                                                                    } // handleCardClick should be a function you define
+                                                                                    onClick={() =>
+                                                                                        toggleModal(
+                                                                                            friend
+                                                                                        )
+                                                                                    }
                                                                                 >
-                                                                                    {isModalOpen && (
+                                                                                    {openModalUsername ===
+                                                                                        friend && (
                                                                                         <FriendModal
                                                                                             username={
                                                                                                 friend
                                                                                             }
-                                                                                            onClose={
-                                                                                                toggleModal
+                                                                                            onClose={() =>
+                                                                                                setOpenModalUsername(
+                                                                                                    null
+                                                                                                )
                                                                                             }
                                                                                         />
                                                                                     )}
-                                                                                    <>
-
-                                                                                    </>
                                                                                 </FriendListCard>
                                                                             </Card>
                                                                         </>

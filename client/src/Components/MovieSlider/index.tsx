@@ -38,6 +38,7 @@ const MovieSlider: React.FC<MovieSliderProps> = ({ movies }) => {
 
     return (
         <>
+            <h1>Top Favourite Movies</h1>
             <div className="slider-container">
                 <button
                     className="slider-button slider-button-left"

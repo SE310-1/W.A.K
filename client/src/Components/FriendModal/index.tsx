@@ -82,11 +82,25 @@ export const FriendModal: React.FC<FriendModalProps> = ({
                 </div>
 
                 <div className="movie-slider-container">
-                    <h1>Top Favourite Movies</h1>
-                    {isPending && <p>Loading...</p>}
+                    {isPending && (
+                        <div>
+                            <h1 className="favourite-movie">
+                                Top Favourite Movies
+                            </h1>
+                            <p className="loading">Loading...</p>
+                        </div>
+                    )}
                     {error && <p>Error: {error}</p>}
-                    {moviesData.length > 0 && (
+                    {!isPending && !error && moviesData.length > 0 && (
                         <MovieSlider movies={moviesData.slice(0, 3)} />
+                    )}
+                    {!isPending && !error && moviesData.length === 0 && (
+                        <div>
+                            <h1 className="favourite-movie">
+                                Top Favourite Movies
+                            </h1>
+                            <div className="no-result">No Movie :( </div>
+                        </div>
                     )}
                 </div>
             </div>

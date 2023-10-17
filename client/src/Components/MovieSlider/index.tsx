@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./style.css";
-import "./style.css";
 import { images } from "../../Constants";
 
 // Type definition for a movie object
@@ -101,7 +100,7 @@ const MovieSlider: React.FC<MovieSliderProps> = ({ movies }) => {
                 <p>There are no favorite movies.</p>
             )}
 
-            <button>View More</button>
+            <button className="button-view-more">View More</button>
         </>
     );
 };

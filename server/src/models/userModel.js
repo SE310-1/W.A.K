@@ -47,9 +47,17 @@ const userSchema = new Schema({
   outgoingRequests: {
     type: Array,
   },
-  profilePicture: {
-    type: String,
-  },
+  profilePicture: [
+    {
+      movieId: {
+        type: String, // storing the ID of the movie according to TMDB
+        required: true,
+      },
+      addedAt: {
+        type: Date, // date when it was added to favourites
+      },
+    },
+  ],
 });
 
 // Static method to signup a new user

@@ -67,9 +67,7 @@ export const FriendModal: React.FC<FriendModalProps> = ({
         const response1 = await axios.get(
           `${import.meta.env.VITE_BASE_API_URL}/${username}/profilePicture`
         );
-        const profilePicturePath = response1.data;
-        console.log(profilePicturePath);
-
+        const profilePicturePath = response1.data.map((x) => x.movieId);
         setProfilePicturePath(profilePicturePath);
         console.log(profilePicturePath);
         setIsPending(false);

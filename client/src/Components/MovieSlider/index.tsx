@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./style.css";
-import "./style.css";
 import { images } from "../../Constants";
+import { Link } from "react-router-dom";
 
 // Type definition for a movie object
 interface Movie {
@@ -15,10 +15,11 @@ interface Movie {
 // Type definition for the component props
 interface MovieSliderProps {
     movies: Movie[];
+    username: string;
 }
 
 // The MovieSlider component which displays the top favorite movies as a slider
-const MovieSlider: React.FC<MovieSliderProps> = ({ movies }) => {
+const MovieSlider: React.FC<MovieSliderProps> = ({ movies, username }) => {
     const [imageIndex, setImageIndex] = useState(0); // State to track the current displayed movie
     const [isLeftButtonHovered, setLeftButtonHovered] = useState(false); // State to track if left button is hovered
     const [isRightButtonHovered, setRightButtonHovered] = useState(false); // State to track if right button is hovered
@@ -101,7 +102,14 @@ const MovieSlider: React.FC<MovieSliderProps> = ({ movies }) => {
                 <p>There are no favorite movies.</p>
             )}
 
-            <button>View More</button>
+            <Link to={`/favourites/${username}`}>
+                <button
+                    className="button-view-more"
+                    onClick={() => console.log("view more")}
+                >
+                    View More
+                </button>
+            </Link>
         </>
     );
 };

@@ -32,8 +32,6 @@ export const FriendModal: React.FC<FriendModalProps> = ({
 
     // useEffect hook to fetch data when the component mounts or when 'reload' state changes
     useEffect(() => {
-        console.log(username);
-
         // Function to fetch user's favorite movies
         const fetchFavourites = async () => {
             try {
@@ -99,7 +97,10 @@ export const FriendModal: React.FC<FriendModalProps> = ({
                     )}
                     {error && <p>Error: {error}</p>}
                     {!isPending && !error && moviesData.length > 0 && (
-                        <MovieSlider movies={moviesData.slice(0, 3)} />
+                        <MovieSlider
+                            movies={moviesData.slice(0, 3)}
+                            username={username}
+                        />
                     )}
                     {!isPending && !error && moviesData.length === 0 && (
                         <div>

@@ -71,16 +71,17 @@ export const FriendModal: React.FC<FriendModalProps> = ({
         console.log(profilePicturePath);
 
         setProfilePicturePath(profilePicturePath);
+        console.log(profilePicturePath);
+        setIsPending(false);
       } catch (err: any) {
         // Handle errors and update the states accordingly
-
+        setIsPending(false);
         setError(err.message);
       }
     };
 
     // Invoke the fetch function
     fetchFavourites();
-    console.log("hello");
     fetchProfilePicture();
   }, [reload]);
 
@@ -101,7 +102,7 @@ export const FriendModal: React.FC<FriendModalProps> = ({
         </p>
         <div className="user-section">
           <div className="user-avatar">
-            <img src={"${profilePicturePath}"} alt={username} />
+            <img src={profilePicturePath} alt={username} />
           </div>
           <h1 className="user-name">{username}</h1>
         </div>

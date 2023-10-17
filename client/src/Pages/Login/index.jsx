@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useLogin } from "../../Hooks/useLogin.js";
+import { GOOGLE_CLIENT_ID } from "../../../env.js";
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import React from "react";
 import "./style.css";
 
 import backgroundImage from "./img/movies.jpeg";
@@ -22,6 +25,11 @@ const Index = () => {
     await login(username, password);
   };
 
+  const handleGoogleSignIn = async (credentialResponse) => {
+    console.log(credentialResponse.credential);
+    alert("Signed in with Google");
+  };
+
   return (
     <div className="home-container-login">
       <div
@@ -36,6 +44,18 @@ const Index = () => {
       <div className="login-page">
         <form className="login" onSubmit={handleSubmit}>
           <h3>Log In</h3>
+
+          <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+            <GoogleLogin
+              onSuccess={credentialResponse => {
+                console.log(credentialResponse);
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+            />;
+          </GoogleOAuthProvider>
+
 
           <label>Username:</label>
           <input

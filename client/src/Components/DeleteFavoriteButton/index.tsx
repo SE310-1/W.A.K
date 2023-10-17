@@ -41,7 +41,11 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
     };
 
     // Render a button that triggers the handleDelete function when clicked
-    return <button onClick={handleDelete}>Delete from Favorites</button>;
+    return (
+        <button className="delete-button" onClick={handleDelete}>
+            <i className="fas fa-times red-icon bold-icon"></i>&nbsp; Remove
+        </button>
+    );
 };
 
 export default DeleteButton;

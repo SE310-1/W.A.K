@@ -59,8 +59,19 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
 
     // Render the button to add or display a message if the movie is already a favorite
     return (
-        <button onClick={handleAddFavorite} disabled={isFavorite}>
-            {isFavorite ? "Movie added to favorites !" : "Add to favorites"}
+        <button
+            onClick={handleAddFavorite}
+            disabled={isFavorite}
+            className="add-button"
+        >
+            {isFavorite ? (
+                <>
+                    Movie added to favorites ! &nbsp;
+                    <i className="fas fa-check green-icon bold-icon"></i>
+                </>
+            ) : (
+                "Add to favorites"
+            )}
         </button>
     );
 };

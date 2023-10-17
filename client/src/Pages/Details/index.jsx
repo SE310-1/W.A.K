@@ -128,24 +128,28 @@ const MovieDetailsPage = () => {
                                 </div>
                             </div>
                             {showShareButtons && <ShareButtons />}
-                            <div>
-                                <h2>Your rating</h2>
-                                <ReactStars
-                                    count={5}
-                                    onChange={ratingChanged}
-                                    size={24}
-                                    color2={"#ffd700"}
-                                    value={userRating}
-                                />
-                            </div>
-                            <div>
-                                {user && (
-                                    <FavoriteButton
-                                        movieId={movieId}
-                                        movieTitle={movieData.title}
-                                        username={user.username}
+                            <div className="rating-and-fav">
+                                <div className="rating-section">
+                                    <h2>Your rating</h2>
+                                    <ReactStars
+                                        count={5}
+                                        onChange={ratingChanged}
+                                        size={24}
+                                        color2={"#ffd700"}
+                                        value={userRating}
                                     />
-                                )}
+                                </div>
+                                <div>
+                                    {user && (
+                                        <div className="details-fav-btn">
+                                            <FavoriteButton
+                                                movieId={movieId}
+                                                movieTitle={movieData.title}
+                                                username={user.username}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

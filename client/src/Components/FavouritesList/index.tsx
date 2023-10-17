@@ -16,10 +16,12 @@ interface FavouriteMovie {
     rating: number;
 }
 
+// TypeScript interface describing the properties that FavouritesList component expects.
 interface FavouritesListProps {
     onFirstMovieChange: (movie: any) => void;
 }
 
+// FavouritesList component declaration.
 const FavouritesList: React.FC<FavouritesListProps> = ({
     onFirstMovieChange,
 }) => {
@@ -98,26 +100,30 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
         return (await getPopularFilms()).slice(0, 12); // Only return 12 reccomendations
     }
 
+    // This effect runs when the 'reload' or 'sortOrder' values change.
     useEffect(() => {
-        // Function to fetch user's favorite movies
+        // Define an asynchronous function to fetch the user's favorite movies.
         const fetchFavourites = async () => {
             try {
+                // Fetch the list of favorite movies for the user from the backend API.
                 const response = await axios.get(
                     `${import.meta.env.VITE_BASE_API_URL}/${
                         user.username
                     }/favorites?sortBy=${sortOrder}`
                 );
 
+                // Extract movieIds from the response.
                 const favIds = response.data.map((x) => x.movieId);
 
+                // For each favorite movie, fetch its detailed information from the TMDB API.
                 const movieDetailsPromises = response.data.map(
-                    async (favorite: FavouriteMovie) => {
+                    async (favorite) => {
                         const movieDetailRes = await fetch(
                             `https://api.themoviedb.org/3/movie/${favorite.movieId}?api_key=${apiKey}&language=en-US`
                         );
                         const movieDetail = await movieDetailRes.json();
 
-                        // Return a combined object with movie details and rating
+                        // Combine the movie details with the user's rating and return.
                         return {
                             movieId: movieDetail.id,
                             ...movieDetail,
@@ -126,47 +132,56 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
                     }
                 );
 
+                // Fetch movie recommendations based on the user's favorite movieIds.
                 const reccomendations = await getReccomendations(favIds);
 
-                // Wait for all movie details promises to resolve
+                // Resolve all the promises to get movie details.
                 const movieDetailsWithRating = await Promise.all(
                     movieDetailsPromises
                 );
 
+                // If there's at least one movie, pass its details to the parent component.
                 if (movieDetailsWithRating.length > 0) {
                     onFirstMovieChange(movieDetailsWithRating[0]);
                 }
 
+                // Update the component's state with the fetched movie details and recommendations.
                 setMoviesData(movieDetailsWithRating);
                 setReccomendations(reccomendations);
-                setIsPending(false);
-            } catch (err: any) {
-                setIsPending(false);
-                setError(err.message);
+                setIsPending(false); // Indicate that the data fetching is complete.
+            } catch (err) {
+                // Handle any errors during the data fetching.
+                setIsPending(false); // Indicate that the data fetching is complete, even if it resulted in an error.
+                setError(err.message); // Update the error state with the error message.
             }
         };
 
-        fetchFavourites(); // Invoke the fetchFavourites function when the component mounts
+        // Call the defined fetchFavourites function.
+        fetchFavourites();
     }, [reload, sortOrder]);
 
-    // Function to handle movie deletion from favorites
-    const handleMovieDeleted = (deletedMovieId: number) => {
+    // Define a function to handle the deletion of a movie from the user's favorites.
+    const handleMovieDeleted = (deletedMovieId) => {
+        // Determine if the deleted movie was the first in the list.
         const wasFirstMovie =
             moviesData[0] && moviesData[0].id === deletedMovieId;
 
+        // Filter out the deleted movie from the moviesData list.
         const updatedMoviesData = moviesData.filter(
             (movie) => movie.id !== deletedMovieId
         );
-        setMoviesData(updatedMoviesData);
+        setMoviesData(updatedMoviesData); // Update the state with the new list of movies.
 
+        // If the deleted movie was the first in the list, update the theme of the parent component.
         if (wasFirstMovie) {
             if (updatedMoviesData.length > 0) {
-                onFirstMovieChange(updatedMoviesData[0]);
+                onFirstMovieChange(updatedMoviesData[0]); // Pass details of the new first movie.
             } else {
-                // Reset to default theme if no movies are left.
+                // If no movies are left after the deletion, reset the theme.
                 onFirstMovieChange(null);
             }
         }
+        // Toggle the 'reload' state to force the useEffect above to run again.
         triggerReload(!reload);
     };
 

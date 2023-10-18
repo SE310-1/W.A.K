@@ -57,7 +57,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
           `${
             import.meta.env.VITE_BASE_API_URL
           }/${username}/profilePicture/replace/`,
-          { movieId }
+          { movieId, movieTitle }
         );
       }
     } catch (error) {

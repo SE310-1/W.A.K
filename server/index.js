@@ -355,7 +355,8 @@ app.get("/:myUsername/profilePicture", async (req, res) => {
 
 // Route to add a profile picture to an account
 app.post("/:myUsername/profilePicture/replace", async (req, res) => {
-  const movieId = req.body;
+  const movieId = req.body.movieId;
+  const movieTitle = req.body.movieTitle;
   const myUsername = req.params.myUsername;
 
   console.log("replaceServer");

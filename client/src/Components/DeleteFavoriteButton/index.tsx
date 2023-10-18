@@ -38,10 +38,13 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
 
       if (favourites.length == 0) {
         //movieID = random movie from top movies list
+        movieId = 24791;
+        const movieTitle = "new";
         await axios.post(
           `${import.meta.env.VITE_BASE_API_URL}/${
             user.username
-          }/profilePicture/replace/${"24791"}`
+          }/profilePicture/replace/`,
+          { movieId, movieTitle } // Pass the movieId in the request body
         );
       } else {
         const response = await axios.get(
@@ -58,10 +61,13 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
 
           const favIds = response.data.map((x) => x.movieId);
 
+          movieId = favIds[0];
+          const movieTitle = "new";
           await axios.post(
             `${import.meta.env.VITE_BASE_API_URL}/${
               user.username
-            }/profilePicture/replace/${favIds[0]}`
+            }/profilePicture/replace`,
+            { movieId, movieTitle }
           );
         }
       }

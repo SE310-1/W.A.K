@@ -4,67 +4,76 @@ import "./style.css";
 
 // Define the props interface for the FavoriteButton component
 interface FavoriteButtonProps {
-  movieId: string;
-  username: string;
-  token: string;
+    movieId: string;
+    movieTitle: string;
+    username: string;
 }
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({
-  movieId,
-  username,
-  token,
+    movieId,
+    movieTitle,
+    username,
 }) => {
-  // State variables to track whether the movie is a favorite and loading status
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+    // State variables to track whether the movie is a favorite and loading status
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Function to check if the movie is already in the user's favorites list
-    const checkFavorite = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_API_URL}/${username}/favorites/isFavorite/${movieId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setIsFavorite(response.data.isFavorite);
-      } catch (error) {
-        console.error("Failed to check favorite", error);
-      } finally {
-        setIsLoading(false);
-      }
+    useEffect(() => {
+        // Function to check if the movie is already in the user's favorites list
+        const checkFavorite = async () => {
+            try {
+                const response = await axios.get(
+                    `${
+                        import.meta.env.VITE_BASE_API_URL
+                    }/${username}/favorites/isFavorite/${movieId}`
+                );
+                setIsFavorite(response.data.isFavorite);
+            } catch (error) {
+                console.error("Failed to check favorite", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        // Invoke the checkFavorite function when the component mounts or when movieId, username, or token changes
+        checkFavorite();
+    }, [movieId, username]); // removed token
+
+    // Function to handle adding the movie to favorites
+    const handleAddFavorite = async () => {
+        try {
+            await axios.post(
+                `${
+                    import.meta.env.VITE_BASE_API_URL
+                }/${username}/favorites/add/`,
+                { movieId, movieTitle }
+            );
+            setIsFavorite(true);
+        } catch (error) {
+            console.error("Failed to add to favorites", error);
+        }
     };
 
-    // Invoke the checkFavorite function when the component mounts or when movieId, username, or token changes
-    checkFavorite();
-  }, [movieId, username, token]);
+    // If loading, display a disabled button with "Loading..."
+    if (isLoading) return <button disabled>Loading...</button>;
 
-  // Function to handle adding the movie to favorites
-  const handleAddFavorite = async () => {
-    try {
-      await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}/${username}/favorites/add/${movieId}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setIsFavorite(true);
-    } catch (error) {
-      console.error("Failed to add to favorites", error);
-    }
-  };
-
-  // If loading, display a disabled button with "Loading..."
-  if (isLoading) return <button disabled>Loading...</button>;
-
-  // Render the button to add or display a message if the movie is already a favorite
-  return (
-    <button onClick={handleAddFavorite} disabled={isFavorite}>
-      {isFavorite ? "Movie added to favorites !" : "Add to favorites"}
-    </button>
-  );
+    // Render the button to add or display a message if the movie is already a favorite
+    return (
+        <button
+            onClick={handleAddFavorite}
+            disabled={isFavorite}
+            className="add-button"
+        >
+            {isFavorite ? (
+                <>
+                    Movie added to favorites ! &nbsp;
+                    <i className="fas fa-check green-icon bold-icon"></i>
+                </>
+            ) : (
+                "Add to favorites"
+            )}
+        </button>
+    );
 };
 
 export default FavoriteButton;

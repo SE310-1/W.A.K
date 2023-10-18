@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
+import { useState } from "react";
 import FavouritesList from "../../Components/FavouritesList"; // import the FavouritesList component
 import { useAuthContext } from "../../Hooks/useAuthContext"; // import the useAuthContext hook
 import { useTheme } from "../../Hooks/useTheme";
 import backgroundImage from "..//Search/img/movies.jpeg";
 import "./style.css";
-import { useParams } from "react-router-dom";
 
 const Favourites = () => {
     // The actual list component content goes here
-    const { user } = useAuthContext();
-    const { username } = useParams();
-
-    const { themeColour, themeImage } = useTheme();
+    const { user } = useAuthContext(); // get the user from the AuthContext
+    const [firstMovieImage, setFirstMovieImage] = useState(null);
+    const { themeColour, themeImage } = useTheme(firstMovieImage);
 
     return (
         <div className="home-container-search">
@@ -24,19 +23,18 @@ const Favourites = () => {
                 }}
             ></div>
             <div className="favourites-list">
-                {user.username === username ? (
-                    <h1 className="favourites-section-title">Favourites</h1>
+                <h1 className="favourites-section-title">Favourites</h1>
+                {user ? (
+                    <FavouritesList
+                        onFirstMovieChange={(movie) => {
+                            // If there's a movie, set its backdrop path, otherwise set to null
+                            setFirstMovieImage(
+                                movie ? movie.backdrop_path : null
+                            );
+                        }}
+                    />
                 ) : (
-                    <h1 className="favourites-section-title">
-                        {username}'s Favourites
-                    </h1>
-                )}
-                {user ? ( // check if user is not null
-                    <FavouritesList /> // render the FavouritesList component
-                ) : (
-                    <p className="text-shadow">
-                        Please log in to see your favourites list.
-                    </p> // show a message asking the user to log in
+                    <p>Please log in to see your favourites list.</p>
                 )}
             </div>
         </div>

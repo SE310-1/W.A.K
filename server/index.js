@@ -251,7 +251,15 @@ app.get("/:myUsername/favorites", async (req, res) => {
         // Optionally sort the enhanced favorites based on provided criteria
         switch (req.query.sortBy) {
             case "rating":
-                ratedFavorites.sort((a, b) => b.rating - a.rating); // Sort by rating in descending order
+                ratedFavorites.sort((a, b) => {
+                    // First, compare ratings
+                    const ratingDiff = b.rating - a.rating;
+                    if (ratingDiff !== 0) {
+                        return ratingDiff;
+                    }
+                    // If ratings are the same, sort alphabetically by movieTitle
+                    return a.movieTitle.localeCompare(b.movieTitle);
+                });
                 break;
             case "added":
             default:

@@ -4,11 +4,10 @@ import { computeThemeColourAndImage } from "../Functions/computeThemeColourAndIm
 
 /**
  * Provides theming information using the user's favorite's list.
- * 
+ *
  * @returns Stateful theme colour and theme image references
  */
-export const useTheme = () => {
-
+export const useTheme = (firstMovieBackdropPath) => {
     const { user } = useAuthContext();
 
     // Set white title fallback colour
@@ -18,15 +17,20 @@ export const useTheme = () => {
     // this will be used if this string is blank
     const [themeImage, setThemeImage] = useState("");
 
-
     // Update if the user state changes
     useEffect(() => {
-        if (user) {
-            computeThemeColourAndImage(user, setThemeColour, setThemeImage);
+        if (firstMovieBackdropPath) {
+            computeThemeColourAndImage(
+                user,
+                setThemeColour,
+                setThemeImage,
+                firstMovieBackdropPath
+            );
+        } else {
+            setThemeImage(""); // explicitly set themeImage to null if no first movie
         }
-
-    }, [user, themeColour, themeImage]);
-
+        console.log("Updated Theme Color:", themeColour);
+    }, [user, firstMovieBackdropPath]);
 
     return { themeColour, themeImage };
 };

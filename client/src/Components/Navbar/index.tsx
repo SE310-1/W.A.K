@@ -39,9 +39,10 @@ const Navbar = () => {
                     {user ? ( // Display navigation options for authenticated users
                         <div>
                             <span>Welcome {user.username}</span>
-                            <button className="button-13">
+                            <button className="button-13 fav-button">
                                 <Link to={`/favourites/${user.username}`}>
-                                    <i className="fas fa-star"></i> Favourites
+                                    <i className="fas fa-star"></i> {"  "}
+                                    Favourites
                                 </Link>
                             </button>
                             <button className="button-13">

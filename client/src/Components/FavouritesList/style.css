@@ -1,7 +1,81 @@
-.favourites-box {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  height: 100%;
-  background-color: black;
+favourites-box {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    background-color: black;
+}
+.favourites-message-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    font-size: 20px;
+    font-weight: bolder;
+    color: aliceblue;
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    font-family: "Roboto", sans-serif; /* Set the font-family to Roboto */
+}
+
+.dropdown-container {
+    margin-bottom: 60px; /* Adds space between dropdown and grid */
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    z-index: 3;
+}
+.dropdown-label {
+    font-size: 1.2rem;
+    font-weight: 900;
+    margin-right: 10px;
+    color: white;
+    z-index: 3;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.dropdown-select {
+    font-size: 18px;
+    padding: 5px 10px; /* Add padding around the dropdown itself */
+    border-radius: 5px;
+    background-color: whitesmoke;
+    border: 1px solid #ddd;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); /* Add a shadow */
+}
+
+.dropdown-select:hover option:not(:hover) {
+    background-color: transparent; /* Reset other options to have no background */
+}
+
+.dropdown-select option:hover {
+    background-color: #f0f0f0; /* Background color of hovered option */
+}
+.dropdown-select option {
+    padding: 5px 20px; /* Add padding to each individual option */
+}
+.grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.movie-subheader-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 8px;
+}
+.rating-div {
+    /* margin: 10px 0; */
+    opacity: 1;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    background: none;
+}
+
+.delete-btn-div {
+    opacity: 100%;
+    opacity: 1;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }

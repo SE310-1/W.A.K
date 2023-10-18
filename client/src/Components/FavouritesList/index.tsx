@@ -6,24 +6,37 @@ import MovieCard from "../MovieCard";
 import { Grid } from "@mui/material";
 import DeleteButton from "../DeleteFavoriteButton";
 import Spinner from "../../Components/Spinner";
-import { useParams } from "react-router-dom";
+import "./style.css";
+
 // Define the Movie interface with relevant properties
-interface Movie {
-    id: number;
-    // Add more properties as needed
+interface FavouriteMovie {
+    movieId: string;
+    movieTitle: string;
+    addedAt: Date;
+    rating: number;
 }
 
-const FavouritesList: React.FC = () => {
+// TypeScript interface describing the properties that FavouritesList component expects.
+interface FavouritesListProps {
+    onFirstMovieChange: (movie: any) => void;
+}
+
+// FavouritesList component declaration.
+const FavouritesList: React.FC<FavouritesListProps> = ({
+    onFirstMovieChange,
+}) => {
     // Access user data from the authentication context
     const { user } = useAuthContext();
-    const { username } = useParams();
 
     // State variables to manage loading, errors, and movie data
     const [isPending, setIsPending] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [moviesData, setMoviesData] = useState<Movie[]>([]);
-    const [reccomendations, setReccomendations] = useState<Movie[]>([]);
+    const [moviesData, setMoviesData] = useState<FavouriteMovie[]>([]);
+    const [reccomendations, setReccomendations] = useState<FavouriteMovie[]>(
+        []
+    );
     const [reload, triggerReload] = useState(false);
+    const [sortOrder, setSortOrder] = useState<string>("added"); // New state variable to manage the sortin order
 
     async function getPopularFilms() {
         const popular = await fetch(
@@ -87,54 +100,89 @@ const FavouritesList: React.FC = () => {
         return (await getPopularFilms()).slice(0, 12); // Only return 12 reccomendations
     }
 
+    // This effect runs when the 'reload' or 'sortOrder' values change.
     useEffect(() => {
-        // Function to fetch user's favorite movies
+        // Define an asynchronous function to fetch the user's favorite movies.
         const fetchFavourites = async () => {
             try {
+                // Fetch the list of favorite movies for the user from the backend API.
                 const response = await axios.get(
-                    `${
-                        import.meta.env.VITE_BASE_API_URL
-                    }/${username}/favorites`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${user.token}`,
-                        },
+                    `${import.meta.env.VITE_BASE_API_URL}/${
+                        user.username
+                    }/favorites?sortBy=${sortOrder}`
+                );
+
+                // Extract movieIds from the response.
+                const favIds = response.data.map((x) => x.movieId);
+
+                // For each favorite movie, fetch its detailed information from the TMDB API.
+                const movieDetailsPromises = response.data.map(
+                    async (favorite) => {
+                        const movieDetailRes = await fetch(
+                            `https://api.themoviedb.org/3/movie/${favorite.movieId}?api_key=${apiKey}&language=en-US`
+                        );
+                        const movieDetail = await movieDetailRes.json();
+
+                        // Combine the movie details with the user's rating and return.
+                        return {
+                            movieId: movieDetail.id,
+                            ...movieDetail,
+                            rating: favorite.rating,
+                        };
                     }
                 );
 
-                const favIds = response.data.map((x) => x.movieId);
+                // Fetch movie recommendations based on the user's favorite movieIds.
+                const reccomendations = await getReccomendations(favIds);
 
-                // Fetch details for each favorite movie using promises
-                const movieDetailsPromises = favIds.map((movieId: number) =>
-                    fetch(
-                        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
-                    ).then((response) => response.json())
+                // Resolve all the promises to get movie details.
+                const movieDetailsWithRating = await Promise.all(
+                    movieDetailsPromises
                 );
 
-                const reccomendations = await getReccomendations(favIds);
-                // Wait for all movie details promises to resolve
+                // If there's at least one movie, pass its details to the parent component.
+                if (movieDetailsWithRating.length > 0) {
+                    onFirstMovieChange(movieDetailsWithRating[0]);
+                }
 
-                const movieDetails = await Promise.all(movieDetailsPromises);
-
-                setMoviesData(movieDetails);
+                // Update the component's state with the fetched movie details and recommendations.
+                setMoviesData(movieDetailsWithRating);
                 setReccomendations(reccomendations);
-                setIsPending(false);
-            } catch (err: any) {
-                setIsPending(false);
-                setError(err.message);
+                setIsPending(false); // Indicate that the data fetching is complete.
+            } catch (err) {
+                // Handle any errors during the data fetching.
+                setIsPending(false); // Indicate that the data fetching is complete, even if it resulted in an error.
+                setError(err.message); // Update the error state with the error message.
             }
         };
 
-        fetchFavourites(); // Invoke the fetchFavourites function when the component mounts
-    }, [reload, username]);
+        // Call the defined fetchFavourites function.
+        fetchFavourites();
+    }, [reload, sortOrder]);
 
-    // Function to handle movie deletion from favorites
-    const handleMovieDeleted = (deletedMovieId: number) => {
-        setIsPending(true);
-        setMoviesData(
-            moviesData.filter((movie) => movie.id !== deletedMovieId)
+    // Define a function to handle the deletion of a movie from the user's favorites.
+    const handleMovieDeleted = (deletedMovieId) => {
+        // Determine if the deleted movie was the first in the list.
+        const wasFirstMovie =
+            moviesData[0] && moviesData[0].id === deletedMovieId;
+
+        // Filter out the deleted movie from the moviesData list.
+        const updatedMoviesData = moviesData.filter(
+            (movie) => movie.id !== deletedMovieId
         );
-        triggerReload(!reload); // This will run the process that refreshes reccomendations and favourite data, which will trigger pending to be false
+        setMoviesData(updatedMoviesData); // Update the state with the new list of movies.
+
+        // If the deleted movie was the first in the list, update the theme of the parent component.
+        if (wasFirstMovie) {
+            if (updatedMoviesData.length > 0) {
+                onFirstMovieChange(updatedMoviesData[0]); // Pass details of the new first movie.
+            } else {
+                // If no movies are left after the deletion, reset the theme.
+                onFirstMovieChange(null);
+            }
+        }
+        // Toggle the 'reload' state to force the useEffect above to run again.
+        triggerReload(!reload);
     };
 
     return (
@@ -148,38 +196,77 @@ const FavouritesList: React.FC = () => {
                     ) : (
                         <>
                             {!moviesData.length ? (
-                                <div>
-                                    <p className="text-shadow">
+                                <div className="favourites-message-container">
+                                    <p>
                                         Nothing added to favorites yet! Check
-                                        out the Reccomendations Below!
+                                        out the Recommendations Below!
                                     </p>
                                 </div>
                             ) : (
-                                <Grid
-                                    container
-                                    spacing={1}
-                                    sx={{ marginRight: "-8px!important" }}
-                                >
-                                    {moviesData.map((movie, index) => (
-                                        <Grid
-                                            item
-                                            xs={6}
-                                            sm={4}
-                                            md={3}
-                                            key={index}
+                                <>
+                                    <div className="dropdown-container">
+                                        <label
+                                            htmlFor="sortOrder"
+                                            className="dropdown-label"
                                         >
-                                            <MovieCard movie={movie} />
-                                            {user.username === username ? (
-                                                <DeleteButton
-                                                    movieId={movie.id}
-                                                    onMovieDeleted={
-                                                        handleMovieDeleted
-                                                    }
-                                                />
-                                            ) : null}
-                                        </Grid>
-                                    ))}
-                                </Grid>
+                                            Sort by:{" "}
+                                        </label>
+                                        <select
+                                            className="dropdown-select"
+                                            id="sortOrder"
+                                            value={sortOrder}
+                                            onChange={(e) =>
+                                                setSortOrder(e.target.value)
+                                            }
+                                        >
+                                            <option value="added">
+                                                Recently added
+                                            </option>
+                                            <option value="rating">
+                                                Top rated by you
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <Grid
+                                        container
+                                        spacing={1}
+                                        sx={{ marginRight: "-8px!important" }}
+                                    >
+                                        {moviesData.map((movie, index) => (
+                                            <Grid
+                                                item
+                                                xs={6}
+                                                sm={4}
+                                                md={3}
+                                                key={index}
+                                            >
+                                                <div className="movie-item-container">
+                                                    <MovieCard movie={movie} />
+                                                </div>
+
+                                                <div className="movie-subheader-container">
+                                                    <div className="rating-div">
+                                                        {" "}
+                                                        {movie.rating > 0
+                                                            ? `You rated : ${movie.rating}/5`
+                                                            : "Not rated yet"}
+                                                    </div>
+
+                                                    <div className="delete-btn-div">
+                                                        <DeleteButton
+                                                            movieId={
+                                                                movie.movieId
+                                                            } // This is the TMDB movie object
+                                                            onMovieDeleted={
+                                                                handleMovieDeleted
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </>
                             )}
                         </>
                     )}
@@ -187,40 +274,28 @@ const FavouritesList: React.FC = () => {
             )}
             <br></br>
             <br></br>
-            {user.username === username ? (
+            <h1 className="favourites-section-title">Recommended For You</h1>
+            {error ? (
+                <div>{error}</div>
+            ) : (
                 <>
-                    <h1 className="favourites-section-title">
-                        Reccomended For You
-                    </h1>
-                    {error ? (
-                        <div>{error}</div>
+                    {isPending || !reccomendations || !moviesData ? (
+                        <Spinner />
                     ) : (
-                        <>
-                            {isPending || !reccomendations || !moviesData ? (
-                                <Spinner />
-                            ) : (
-                                <Grid
-                                    container
-                                    spacing={1}
-                                    sx={{ marginRight: "-8px!important" }}
-                                >
-                                    {reccomendations.map((movie1, index) => (
-                                        <Grid
-                                            item
-                                            xs={6}
-                                            sm={4}
-                                            md={3}
-                                            key={index}
-                                        >
-                                            <MovieCard movie={movie1} />
-                                        </Grid>
-                                    ))}
+                        <Grid
+                            container
+                            spacing={1}
+                            sx={{ marginRight: "-8px!important" }}
+                        >
+                            {reccomendations.map((movie1, index) => (
+                                <Grid item xs={6} sm={4} md={3} key={index}>
+                                    <MovieCard movie={movie1} />
                                 </Grid>
-                            )}
-                        </>
+                            ))}
+                        </Grid>
                     )}
                 </>
-            ) : null}
+            )}
         </div>
     );
 };

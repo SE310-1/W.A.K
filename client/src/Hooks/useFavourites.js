@@ -46,7 +46,9 @@ export const useFavourites = () => {
       { method: "POST" },
       () => setFavourites((prev) => [...prev, movieId])
     );
+    console.log(movieId);
     if (favourites.length == 1) {
+      console.log(movieId);
       await fetchData(
         `${BASE_URL}/profilePicture/replace/${movieId}`,
         { method: "POST" },
@@ -65,7 +67,7 @@ export const useFavourites = () => {
     if (favourites.length == 0) {
       //movieID = random movie from top movies list
       await fetchData(
-        `${BASE_URL}/profilePicture/replace/${movieId}`,
+        `${BASE_URL}/profilePicture/replace/${"24791"}`,
         { method: "POST" },
         () => setProfilePicture(movieId)
       );

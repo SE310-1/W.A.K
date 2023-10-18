@@ -134,7 +134,7 @@ userSchema.methods.removeFavorite = async function (movieId) {
 // Method to replace current profile picture with new one
 userSchema.methods.replaceProfilePicture = async function (movieId) {
   this.profilePicture.splice(0, 1);
-  this.profilePictures.push({
+  this.profilePicture.push({
     movieId: movieId,
     addedAt: new Date(),
   });

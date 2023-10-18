@@ -29,6 +29,7 @@ export const FriendModal: React.FC<FriendModalProps> = ({
   const [moviesData, setMoviesData] = useState<Movie[]>([]);
   const [reload, triggerReload] = useState(false);
   const [isCloseButtonHovered, setCloseButtonHovered] = useState(false);
+  const [profileMovie, setProfileMovie] = useState<Movie[]>([]);
   const [profilePicturePath, setProfilePicturePath] = useState<String>();
 
   // useEffect hook to fetch data when the component mounts or when 'reload' state changes
@@ -64,24 +65,21 @@ export const FriendModal: React.FC<FriendModalProps> = ({
     const fetchProfilePicture = async () => {
       try {
         // Fetch user's proile picture file path
-        const response1 = await axios.get(
+        const response = await axios.get(
           `${import.meta.env.VITE_BASE_API_URL}/${username}/profilePicture`
         );
-        const profilePictureID = response1.data.map((x) => x.movieId);
+        const profilePictureID = response.data.profilePicture[0].movieId;
 
         // Fetch details for each favorite movie
-        const profilePicturePromises = profilePictureID.map((movieId: number) =>
-          fetch(
-            `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
-          ).then((response) => response.json())
+        const profilePictureDetails = await fetch(
+          `https://api.themoviedb.org/3/movie/${profilePictureID}?api_key=${apiKey}&language=en-US`
         );
 
-        const profilePictureDetails = await Promise.all(profilePicturePromises);
+        setProfileMovie(profilePictureDetails);
 
-        const profilePicturePath = profilePictureDetails[0].poster_path;
+        const profilePicturePath = profileMovie[0].poster_path;
 
         setProfilePicturePath(profilePicturePath);
-        console.log(profilePicturePath);
         setIsPending(false);
       } catch (err: any) {
         // Handle errors and update the states accordingly

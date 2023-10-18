@@ -56,6 +56,7 @@ app.post("/signup", async (req, res) => {
 
   try {
     const user = await User.signup(email, username, password);
+    await user.replaceProfilePicture("24791");
     const token = createToken(user._id);
     res.status(200).json({ email, username, token });
   } catch (error) {
@@ -335,7 +336,9 @@ app.get("/:myUsername/profilePicture", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
     // Extract and send the profile picture path as the response
-    res.json({ profilePicture: user.profilePicture });
+    res.json({
+      profilePicture: user.profilePicture,
+    });
   } catch (error) {
     console.error("Error fetching user's profile picture:", error);
     res.status(500).json({ error: error.message });

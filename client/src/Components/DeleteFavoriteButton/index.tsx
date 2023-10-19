@@ -40,7 +40,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
         //movieID = random movie from top movies list
         movieId = 24791;
         const movieTitle = "new";
-        await axios.post(
+        await axios.put(
           `${import.meta.env.VITE_BASE_API_URL}/${
             user.username
           }/profilePicture/replace/`,
@@ -63,7 +63,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
 
           movieId = favIds[0];
           const movieTitle = "new";
-          await axios.post(
+          await axios.put(
             `${import.meta.env.VITE_BASE_API_URL}/${
               user.username
             }/profilePicture/replace`,

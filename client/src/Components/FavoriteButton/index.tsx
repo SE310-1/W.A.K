@@ -53,7 +53,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
       const favourites = response.data.map((x) => x.movieId);
       if (favourites.length == 1) {
         console.log("replaceClient");
-        await axios.post(
+        await axios.put(
           `${
             import.meta.env.VITE_BASE_API_URL
           }/${username}/profilePicture/replace/`,

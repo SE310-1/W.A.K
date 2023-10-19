@@ -7,6 +7,7 @@ import { Grid } from "@mui/material";
 import DeleteButton from "../DeleteFavoriteButton";
 import Spinner from "../../Components/Spinner";
 import "./style.css";
+import { useParams } from "react-router-dom";
 
 // Define the Movie interface with relevant properties
 interface FavouriteMovie {
@@ -27,6 +28,7 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
 }) => {
     // Access user data from the authentication context
     const { user } = useAuthContext();
+    const { username } = useParams();
 
     // State variables to manage loading, errors, and movie data
     const [isPending, setIsPending] = useState<boolean>(true);
@@ -107,9 +109,9 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
             try {
                 // Fetch the list of favorite movies for the user from the backend API.
                 const response = await axios.get(
-                    `${import.meta.env.VITE_BASE_API_URL}/${
-                        user.username
-                    }/favorites?sortBy=${sortOrder}`
+                    `${
+                        import.meta.env.VITE_BASE_API_URL
+                    }/${username}/favorites?sortBy=${sortOrder}`
                 );
 
                 // Extract movieIds from the response.
@@ -204,29 +206,33 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
                                 </div>
                             ) : (
                                 <>
-                                    <div className="dropdown-container">
-                                        <label
-                                            htmlFor="sortOrder"
-                                            className="dropdown-label"
-                                        >
-                                            Sort by:{" "}
-                                        </label>
-                                        <select
-                                            className="dropdown-select"
-                                            id="sortOrder"
-                                            value={sortOrder}
-                                            onChange={(e) =>
-                                                setSortOrder(e.target.value)
-                                            }
-                                        >
-                                            <option value="added">
-                                                Recently added
-                                            </option>
-                                            <option value="rating">
-                                                Top rated by you
-                                            </option>
-                                        </select>
-                                    </div>
+                                    {user.username === username ? (
+                                        <div className="dropdown-container">
+                                            <label
+                                                htmlFor="sortOrder"
+                                                className="dropdown-label"
+                                            >
+                                                Sort by:{" "}
+                                            </label>
+                                            <select
+                                                className="dropdown-select"
+                                                id="sortOrder"
+                                                value={sortOrder}
+                                                onChange={(e) =>
+                                                    setSortOrder(e.target.value)
+                                                }
+                                            >
+                                                <option value="added">
+                                                    Recently added
+                                                </option>
+                                                <option value="rating">
+                                                    Top rated by you
+                                                </option>
+                                            </select>
+                                        </div>
+                                    ) : (
+                                        <div className="favourites-section-title"></div>
+                                    )}
                                     <Grid
                                         container
                                         spacing={1}
@@ -243,26 +249,29 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
                                                 <div className="movie-item-container">
                                                     <MovieCard movie={movie} />
                                                 </div>
-
-                                                <div className="movie-subheader-container">
-                                                    <div className="rating-div">
-                                                        {" "}
-                                                        {movie.rating > 0
-                                                            ? `You rated : ${movie.rating}/5`
-                                                            : "Not rated yet"}
+                                                {user.username === username ? (
+                                                    <div>
+                                                        <div className="movie-subheader-container">
+                                                            <div className="rating-div">
+                                                                {" "}
+                                                                {movie.rating >
+                                                                0
+                                                                    ? `You rated : ${movie.rating}/5`
+                                                                    : "Not rated yet"}
+                                                            </div>
+                                                            <div className="delete-btn-div">
+                                                                <DeleteButton
+                                                                    movieId={
+                                                                        movie.movieId
+                                                                    } // This is the TMDB movie object
+                                                                    onMovieDeleted={
+                                                                        handleMovieDeleted
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        </div>
                                                     </div>
-
-                                                    <div className="delete-btn-div">
-                                                        <DeleteButton
-                                                            movieId={
-                                                                movie.movieId
-                                                            } // This is the TMDB movie object
-                                                            onMovieDeleted={
-                                                                handleMovieDeleted
-                                                            }
-                                                        />
-                                                    </div>
-                                                </div>
+                                                ) : null}
                                             </Grid>
                                         ))}
                                     </Grid>
@@ -274,28 +283,40 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
             )}
             <br></br>
             <br></br>
-            <h1 className="favourites-section-title">Recommended For You</h1>
-            {error ? (
-                <div>{error}</div>
-            ) : (
+            {user.username === username ? (
                 <>
-                    {isPending || !reccomendations || !moviesData ? (
-                        <Spinner />
+                    <h1 className="favourites-section-title">
+                        Recommended For You
+                    </h1>
+                    {error ? (
+                        <div>{error}</div>
                     ) : (
-                        <Grid
-                            container
-                            spacing={1}
-                            sx={{ marginRight: "-8px!important" }}
-                        >
-                            {reccomendations.map((movie1, index) => (
-                                <Grid item xs={6} sm={4} md={3} key={index}>
-                                    <MovieCard movie={movie1} />
+                        <>
+                            {isPending || !reccomendations || !moviesData ? (
+                                <Spinner />
+                            ) : (
+                                <Grid
+                                    container
+                                    spacing={1}
+                                    sx={{ marginRight: "-8px!important" }}
+                                >
+                                    {reccomendations.map((movie1, index) => (
+                                        <Grid
+                                            item
+                                            xs={6}
+                                            sm={4}
+                                            md={3}
+                                            key={index}
+                                        >
+                                            <MovieCard movie={movie1} />
+                                        </Grid>
+                                    ))}
                                 </Grid>
-                            ))}
-                        </Grid>
+                            )}
+                        </>
                     )}
                 </>
-            )}
+            ) : null}
         </div>
     );
 };

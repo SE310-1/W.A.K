@@ -59,10 +59,19 @@ const Index = () => {
           {validationError && <div className="error">{validationError}</div>}
           {error && <div className="error">{error}</div>}
 
-          <LoginSocialFacebook>
-        <FacebookLoginButton />
-      </LoginSocialFacebook>
+          <LoginSocialFacebook
+            appId="1030308514679380" 
+            
+            onResolve= {(response) => {
+              console.log(response);
+            }}
+            onReject= {(error) => {
+              console.log(error);
+            }}
 
+            >
+            <FacebookLoginButton />
+          </LoginSocialFacebook>
         </form>
       </div>
     </div>

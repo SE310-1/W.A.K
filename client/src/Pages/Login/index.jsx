@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useLogin } from "../../Hooks/useLogin.js";
 import "./style.css";
+import { FacebookLoginButton } from "react-social-login-buttons";
+import { LoginSocialFacebook } from "reactjs-social-login";
 
 import backgroundImage from "./img/movies.jpeg";
+import React from "react";
 
 const Index = () => {
   const [username, setUserName] = useState("");
@@ -55,6 +58,11 @@ const Index = () => {
           </button>
           {validationError && <div className="error">{validationError}</div>}
           {error && <div className="error">{error}</div>}
+
+          <LoginSocialFacebook>
+        <FacebookLoginButton />
+      </LoginSocialFacebook>
+
         </form>
       </div>
     </div>

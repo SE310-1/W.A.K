@@ -59,11 +59,10 @@ const Index = () => {
         </form>
 
         <LoginSocialFacebook>
+        <FacebookLoginButton />
+      </LoginSocialFacebook>
 
-        
-          <FacebookLoginButton />
 
-        </LoginSocialFacebook>
       </div>
     </div>
   );

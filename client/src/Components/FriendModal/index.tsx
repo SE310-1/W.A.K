@@ -29,7 +29,6 @@ export const FriendModal: React.FC<FriendModalProps> = ({
   const [moviesData, setMoviesData] = useState<Movie[]>([]);
   const [reload, triggerReload] = useState(false);
   const [isCloseButtonHovered, setCloseButtonHovered] = useState(false);
-  const [profileMovie, setProfileMovie] = useState<Movie[]>([]);
   const [profilePicturePath, setProfilePicturePath] = useState<String>();
 
   // useEffect hook to fetch data when the component mounts or when 'reload' state changes
@@ -73,11 +72,11 @@ export const FriendModal: React.FC<FriendModalProps> = ({
         // Fetch details for each favorite movie
         const profilePictureDetails = await fetch(
           `https://api.themoviedb.org/3/movie/${profilePictureID}?api_key=${apiKey}&language=en-US`
-        );
+        ).then((response) => response.json());
 
-        setProfileMovie(profilePictureDetails);
+        const profilePicturePath = profilePictureDetails.backdrop_path;
 
-        const profilePicturePath = profileMovie[0].poster_path;
+        //console.log(profilePicturePath);
 
         setProfilePicturePath(profilePicturePath);
         setIsPending(false);

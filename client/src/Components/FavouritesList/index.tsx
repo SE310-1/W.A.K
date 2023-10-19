@@ -160,7 +160,7 @@ const FavouritesList: React.FC<FavouritesListProps> = ({
 
         // Call the defined fetchFavourites function.
         fetchFavourites();
-    }, [reload, sortOrder]);
+    }, [reload, sortOrder, username]);
 
     // Define a function to handle the deletion of a movie from the user's favorites.
     const handleMovieDeleted = (deletedMovieId) => {

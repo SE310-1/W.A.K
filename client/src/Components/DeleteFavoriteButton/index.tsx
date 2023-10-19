@@ -47,16 +47,20 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
           { movieId, movieTitle } // Pass the movieId in the request body
         );
       } else {
-        const response = await axios.get(
+        const responseId = await axios.get(
           `${import.meta.env.VITE_BASE_API_URL}/${user.username}/profilePicture`
         );
-        const isFavourite = response.data.map((x) => x.movieId);
-        if (!isFavourite) {
+        const isFavouriteId = responseId.data.profilePicture[0].movieId;
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_API_URL}/${
+            user.username
+          }/favorites/isFavorite/${isFavouriteId}`
+        );
+        const isFavorite = response.data.isFavorite;
+        if (!isFavorite) {
           //movieID = first from favourites list
           const response = await axios.get(
-            `${import.meta.env.VITE_BASE_API_URL}/${
-              user.username
-            }/favorites${movieId}`
+            `${import.meta.env.VITE_BASE_API_URL}/${user.username}/favorites`
           );
 
           const favIds = response.data.map((x) => x.movieId);

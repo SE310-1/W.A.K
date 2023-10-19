@@ -5,6 +5,7 @@ import { images } from "../../Constants";
 import axios from "axios";
 import { apiKey } from "../../../env";
 import MovieSlider from "../MovieSlider";
+import Modal from "react-modal";
 
 interface Movie {
   id: number;

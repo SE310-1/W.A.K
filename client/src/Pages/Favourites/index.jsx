@@ -5,10 +5,12 @@ import { useAuthContext } from "../../Hooks/useAuthContext"; // import the useAu
 import { useTheme } from "../../Hooks/useTheme";
 import backgroundImage from "..//Search/img/movies.jpeg";
 import "./style.css";
+import { useParams } from "react-router-dom";
 
 const Favourites = () => {
     // The actual list component content goes here
     const { user } = useAuthContext(); // get the user from the AuthContext
+    const { username } = useParams();
     const [firstMovieImage, setFirstMovieImage] = useState(null);
     const { themeColour, themeImage } = useTheme(firstMovieImage);
 
@@ -23,7 +25,13 @@ const Favourites = () => {
                 }}
             ></div>
             <div className="favourites-list">
-                <h1 className="favourites-section-title">Favourites</h1>
+                {user.username === username ? (
+                    <h1 className="favourites-section-title">Favourites</h1>
+                ) : (
+                    <h1 className="favourites-section-title">
+                        {username}'s Favourites
+                    </h1>
+                )}
                 {user ? (
                     <FavouritesList
                         onFirstMovieChange={(movie) => {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import React from "react";
 import { useLogin } from "../../Hooks/useLogin.js";
-import { loginWithGoogleJWT } from "../../Hooks/useGoogleAuth.js";
+import { useGoogleAuth } from "../../Hooks/useGoogleAuth.ts";
 import { GOOGLE_CLIENT_ID } from "../../../env.js";
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import "./style.css";
@@ -13,6 +13,7 @@ const Index = () => {
   const [password, setPassword] = useState("");
   const [validationError, setValidationError] = useState("");
   const { login, error, isLoading } = useLogin();
+  const { loginWithGoogleJWT, googleAuthError, googleAuthIsLoading } = useGoogleAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,6 +80,7 @@ const Index = () => {
           </button>
           {validationError && <div className="error">{validationError}</div>}
           {error && <div className="error">{error}</div>}
+          {googleAuthError && <div className="error">{googleAuthError}</div>}
         </form>
       </div>
     </div>

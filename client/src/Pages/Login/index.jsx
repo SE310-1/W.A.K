@@ -4,8 +4,11 @@ import { GOOGLE_CLIENT_ID } from "../../../env.js";
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import React from "react";
 import "./style.css";
+import { FacebookLoginButton } from "react-social-login-buttons";
+import { LoginSocialFacebook } from "reactjs-social-login";
 
 import backgroundImage from "./img/movies.jpeg";
+import React from "react";
 
 const Index = () => {
   const [username, setUserName] = useState("");
@@ -75,6 +78,20 @@ const Index = () => {
           </button>
           {validationError && <div className="error">{validationError}</div>}
           {error && <div className="error">{error}</div>}
+
+          <LoginSocialFacebook
+            appId="1030308514679380" 
+            
+            onResolve= {(response) => {
+              console.log(response);
+            }}
+            onReject= {(error) => {
+              console.log(error);
+            }}
+
+            >
+            <FacebookLoginButton />
+          </LoginSocialFacebook>
         </form>
       </div>
     </div>

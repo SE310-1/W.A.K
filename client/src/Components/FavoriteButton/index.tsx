@@ -5,14 +5,14 @@ import "./style.css";
 // Define the props interface for the FavoriteButton component
 interface FavoriteButtonProps {
   movieId: string;
+  movieTitle: string;
   username: string;
-  token: string;
 }
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   movieId,
+  movieTitle,
   username,
-  token,
 }) => {
   // State variables to track whether the movie is a favorite and loading status
   const [isFavorite, setIsFavorite] = useState(false);
@@ -23,10 +23,9 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     const checkFavorite = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_API_URL}/${username}/favorites/isFavorite/${movieId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+          `${
+            import.meta.env.VITE_BASE_API_URL
+          }/${username}/favorites/isFavorite/${movieId}`
         );
         setIsFavorite(response.data.isFavorite);
       } catch (error) {
@@ -38,19 +37,29 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
 
     // Invoke the checkFavorite function when the component mounts or when movieId, username, or token changes
     checkFavorite();
-  }, [movieId, username, token]);
+  }, [movieId, username]); // removed token
 
   // Function to handle adding the movie to favorites
   const handleAddFavorite = async () => {
     try {
       await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}/${username}/favorites/add/${movieId}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        `${import.meta.env.VITE_BASE_API_URL}/${username}/favorites/add/`,
+        { movieId, movieTitle }
       );
       setIsFavorite(true);
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_API_URL}/${username}/favorites`
+      );
+      const favourites = response.data.map((x) => x.movieId);
+      if (favourites.length == 1) {
+        console.log("replaceClient");
+        await axios.put(
+          `${
+            import.meta.env.VITE_BASE_API_URL
+          }/${username}/profilePicture/replace/`,
+          { movieId, movieTitle }
+        );
+      }
     } catch (error) {
       console.error("Failed to add to favorites", error);
     }
@@ -61,8 +70,19 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
 
   // Render the button to add or display a message if the movie is already a favorite
   return (
-    <button onClick={handleAddFavorite} disabled={isFavorite}>
-      {isFavorite ? "Movie added to favorites !" : "Add to favorites"}
+    <button
+      onClick={handleAddFavorite}
+      disabled={isFavorite}
+      className="add-button"
+    >
+      {isFavorite ? (
+        <>
+          Movie added to favorites ! &nbsp;
+          <i className="fas fa-check green-icon bold-icon"></i>
+        </>
+      ) : (
+        "Add to favorites"
+      )}
     </button>
   );
 };

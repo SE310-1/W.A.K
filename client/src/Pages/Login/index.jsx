@@ -1,6 +1,7 @@
 import { useState } from "react";
 import React from "react";
 import { useLogin } from "../../Hooks/useLogin.js";
+import { loginWithGoogleJWT } from "../../Hooks/useGoogleAuth.js";
 import { GOOGLE_CLIENT_ID } from "../../../env.js";
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import "./style.css";
@@ -27,12 +28,13 @@ const Index = () => {
 
   // Pass the Google JWT to the server to sign the user in
   const handleGoogleSignInSuccess = async (credentialResponse) => {
-    console.log(credentialResponse);
+    await loginWithGoogleJWT(credentialResponse);
   };
 
   // Display Google sign in errors to the user
   const handleGoogleSignInError = (error) => {
     console.log(error);
+    alert("Sorry there was an issue signing in with Google. Please try again.");
   };
 
   return (

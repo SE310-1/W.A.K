@@ -1,10 +1,10 @@
 import { useState } from "react";
+import React from "react";
 import { useLogin } from "../../Hooks/useLogin.js";
+import { useGoogleAuth } from "../../Hooks/useGoogleAuth.ts";
 import { GOOGLE_CLIENT_ID } from "../../../env.js";
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import "./style.css";
-import { FacebookLoginButton } from "react-social-login-buttons";
-import { LoginSocialFacebook } from "reactjs-social-login";
 
 import backgroundImage from "./img/movies.jpeg";
 
@@ -13,6 +13,7 @@ const Index = () => {
   const [password, setPassword] = useState("");
   const [validationError, setValidationError] = useState("");
   const { login, error, isLoading } = useLogin();
+  const { loginWithGoogleJWT, googleAuthError, googleAuthIsLoading } = useGoogleAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,9 +27,15 @@ const Index = () => {
     await login(username, password);
   };
 
-  const handleGoogleSignIn = async (credentialResponse) => {
-    console.log(credentialResponse.credential);
-    alert("Signed in with Google");
+  // Pass the Google JWT to the server to sign the user in
+  const handleGoogleSignInSuccess = async (credentialResponse) => {
+    await loginWithGoogleJWT(credentialResponse);
+  };
+
+  // Display Google sign in errors to the user
+  const handleGoogleSignInError = (error) => {
+    console.log(error);
+    alert("Sorry there was an issue signing in with Google. Please try again.");
   };
 
   return (
@@ -44,37 +51,16 @@ const Index = () => {
       <div className="overlay-login"></div>
       <div className="login-page">
         <form className="login" onSubmit={handleSubmit}>
-          <h3 style={{ paddingBottom: 10 }}>Log In</h3>
-          <div style={{ padding: 5 }}>
+          <h3 className="title">Log In</h3>
+          <div className="googleAuthContainer">
             <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-              <GoogleLogin width={390}
-                onSuccess={credentialResponse => {
-                  console.log(credentialResponse);
-                }}
-                onError={() => {
-                  console.log('Login Failed');
-                }}
-              />
+              <GoogleLogin width={390} onSuccess={handleGoogleSignInSuccess} onError={handleGoogleSignInError} />
             </GoogleOAuthProvider>
           </div>
-          <LoginSocialFacebook
-            appId="1030308514679380"
 
-            onResolve={(response) => {
-              console.log(response);
-            }}
-            onReject={(error) => {
-              console.log(error);
-            }}
-
-          >
-            <FacebookLoginButton />
-          </LoginSocialFacebook>
-
-          <div style={{ textAlign: "center", color: "#FFFFFF", padding: 20 }}>
+          <div className="orContainer">
             <h3>Or</h3>
           </div>
-
 
           <label>Username:</label>
           <input
@@ -94,6 +80,7 @@ const Index = () => {
           </button>
           {validationError && <div className="error">{validationError}</div>}
           {error && <div className="error">{error}</div>}
+          {googleAuthError && <div className="error">{googleAuthError}</div>}
         </form>
       </div>
     </div>

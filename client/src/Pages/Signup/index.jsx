@@ -57,7 +57,6 @@ const Index = () => {
           </button>
           {error && <div className="error">{error}</div>}
         </form>
-
       </div>
     </div>
   );

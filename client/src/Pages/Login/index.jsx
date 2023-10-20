@@ -94,7 +94,6 @@ const Index = () => {
           </button>
           {validationError && <div className="error">{validationError}</div>}
           {error && <div className="error">{error}</div>}
-
         </form>
       </div>
     </div>

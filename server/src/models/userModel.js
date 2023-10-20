@@ -108,6 +108,28 @@ userSchema.statics.login = async function (username, password) {
   return user;
 };
 
+// Static method to login a user
+// #TODO
+userSchema.statics.loginWithGoogleJWT = async function (googleJWT) {
+  if (!googleJWT) {
+    throw Error("Google JWT must be supplied");
+  }
+
+  // #TODO: Need to check that the JWT is valid
+  // then extract email and check if a user exists
+
+  // Check if the user with the provided username exists
+  const [user] = await Promise.all([this.findOne({ username })]);
+
+  if (!user) {
+    // #TODO: Need to create a user
+    // return newUser;
+  }
+
+  // Return the user so a JWT can be created
+  return user;
+};
+
 // Method to add a movie to the user's favorites
 userSchema.methods.addFavorite = async function (movieId, movieTitle) {
   if (this.favorites.some((fav) => fav.movieId === movieId)) {

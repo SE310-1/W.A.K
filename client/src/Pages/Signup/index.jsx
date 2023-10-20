@@ -58,11 +58,6 @@ const Index = () => {
           {error && <div className="error">{error}</div>}
         </form>
 
-        <LoginSocialFacebook>
-        <FacebookLoginButton />
-      </LoginSocialFacebook>
-
-
       </div>
     </div>
   );

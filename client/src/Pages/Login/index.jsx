@@ -2,13 +2,11 @@ import { useState } from "react";
 import { useLogin } from "../../Hooks/useLogin.js";
 import { GOOGLE_CLIENT_ID } from "../../../env.js";
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
-import React from "react";
 import "./style.css";
 import { FacebookLoginButton } from "react-social-login-buttons";
 import { LoginSocialFacebook } from "reactjs-social-login";
 
 import backgroundImage from "./img/movies.jpeg";
-import React from "react";
 
 const Index = () => {
   const [username, setUserName] = useState("");
@@ -46,18 +44,36 @@ const Index = () => {
       <div className="overlay-login"></div>
       <div className="login-page">
         <form className="login" onSubmit={handleSubmit}>
-          <h3>Log In</h3>
+          <h3 style={{ paddingBottom: 10 }}>Log In</h3>
+          <div style={{ padding: 5 }}>
+            <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+              <GoogleLogin width={390}
+                onSuccess={credentialResponse => {
+                  console.log(credentialResponse);
+                }}
+                onError={() => {
+                  console.log('Login Failed');
+                }}
+              />
+            </GoogleOAuthProvider>
+          </div>
+          <LoginSocialFacebook
+            appId="1030308514679380"
 
-          <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-            <GoogleLogin
-              onSuccess={credentialResponse => {
-                console.log(credentialResponse);
-              }}
-              onError={() => {
-                console.log('Login Failed');
-              }}
-            />;
-          </GoogleOAuthProvider>
+            onResolve={(response) => {
+              console.log(response);
+            }}
+            onReject={(error) => {
+              console.log(error);
+            }}
+
+          >
+            <FacebookLoginButton />
+          </LoginSocialFacebook>
+
+          <div style={{ textAlign: "center", color: "#FFFFFF", padding: 20 }}>
+            <h3>Or</h3>
+          </div>
 
 
           <label>Username:</label>
@@ -79,19 +95,6 @@ const Index = () => {
           {validationError && <div className="error">{validationError}</div>}
           {error && <div className="error">{error}</div>}
 
-          <LoginSocialFacebook
-            appId="1030308514679380" 
-            
-            onResolve= {(response) => {
-              console.log(response);
-            }}
-            onReject= {(error) => {
-              console.log(error);
-            }}
-
-            >
-            <FacebookLoginButton />
-          </LoginSocialFacebook>
         </form>
       </div>
     </div>

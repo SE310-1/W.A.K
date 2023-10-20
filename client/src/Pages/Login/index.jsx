@@ -25,9 +25,14 @@ const Index = () => {
     await login(username, password);
   };
 
-  const handleGoogleSignIn = async (credentialResponse) => {
-    console.log(credentialResponse.credential);
-    alert("Signed in with Google");
+  // Pass the Google JWT to the server to sign the user in
+  const handleGoogleSignInSuccess = async (credentialResponse) => {
+    console.log(credentialResponse);
+  };
+
+  // Display Google sign in errors to the user
+  const handleGoogleSignInError = (error) => {
+    console.log(error);
   };
 
   return (
@@ -43,24 +48,16 @@ const Index = () => {
       <div className="overlay-login"></div>
       <div className="login-page">
         <form className="login" onSubmit={handleSubmit}>
-          <h3 style={{ paddingBottom: 10 }}>Log In</h3>
-          <div style={{ padding: 5 }}>
+          <h3 className="title">Log In</h3>
+          <div className="googleAuthContainer">
             <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-              <GoogleLogin width={390}
-                onSuccess={credentialResponse => {
-                  console.log(credentialResponse);
-                }}
-                onError={() => {
-                  console.log('Login Failed');
-                }}
-              />
+              <GoogleLogin width={390} onSuccess={handleGoogleSignInSuccess} onError={handleGoogleSignInError} />
             </GoogleOAuthProvider>
           </div>
 
-          <div style={{ textAlign: "center", color: "#FFFFFF", padding: 20 }}>
+          <div className="orContainer">
             <h3>Or</h3>
           </div>
-
 
           <label>Username:</label>
           <input

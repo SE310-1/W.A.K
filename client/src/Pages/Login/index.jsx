@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useLogin } from "../../Hooks/useLogin.js";
+import { GOOGLE_CLIENT_ID } from "../../../env.js";
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import "./style.css";
 import { FacebookLoginButton } from "react-social-login-buttons";
 import { LoginSocialFacebook } from "reactjs-social-login";
 
 import backgroundImage from "./img/movies.jpeg";
-import React from "react";
 
 const Index = () => {
   const [username, setUserName] = useState("");
@@ -25,6 +26,11 @@ const Index = () => {
     await login(username, password);
   };
 
+  const handleGoogleSignIn = async (credentialResponse) => {
+    console.log(credentialResponse.credential);
+    alert("Signed in with Google");
+  };
+
   return (
     <div className="home-container-login">
       <div
@@ -38,7 +44,37 @@ const Index = () => {
       <div className="overlay-login"></div>
       <div className="login-page">
         <form className="login" onSubmit={handleSubmit}>
-          <h3>Log In</h3>
+          <h3 style={{ paddingBottom: 10 }}>Log In</h3>
+          <div style={{ padding: 5 }}>
+            <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+              <GoogleLogin width={390}
+                onSuccess={credentialResponse => {
+                  console.log(credentialResponse);
+                }}
+                onError={() => {
+                  console.log('Login Failed');
+                }}
+              />
+            </GoogleOAuthProvider>
+          </div>
+          <LoginSocialFacebook
+            appId="1030308514679380"
+
+            onResolve={(response) => {
+              console.log(response);
+            }}
+            onReject={(error) => {
+              console.log(error);
+            }}
+
+          >
+            <FacebookLoginButton />
+          </LoginSocialFacebook>
+
+          <div style={{ textAlign: "center", color: "#FFFFFF", padding: 20 }}>
+            <h3>Or</h3>
+          </div>
+
 
           <label>Username:</label>
           <input

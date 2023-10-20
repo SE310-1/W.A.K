@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useSignup } from "../../Hooks/useSignup.js";
 import "./style.css";
 import backgroundImage from "./img/movies.jpeg";
-import { FacebookLoginButton } from "react-social-login-buttons";
-import { LoginSocialFacebook } from "reactjs-social-login";
 import React from "react";
 
 const Index = () => {

@@ -1,10 +1,9 @@
 import { useState } from "react";
+import React from "react";
 import { useLogin } from "../../Hooks/useLogin.js";
 import { GOOGLE_CLIENT_ID } from "../../../env.js";
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import "./style.css";
-import { FacebookLoginButton } from "react-social-login-buttons";
-import { LoginSocialFacebook } from "reactjs-social-login";
 
 import backgroundImage from "./img/movies.jpeg";
 
@@ -57,19 +56,6 @@ const Index = () => {
               />
             </GoogleOAuthProvider>
           </div>
-          <LoginSocialFacebook
-            appId="1030308514679380"
-
-            onResolve={(response) => {
-              console.log(response);
-            }}
-            onReject={(error) => {
-              console.log(error);
-            }}
-
-          >
-            <FacebookLoginButton />
-          </LoginSocialFacebook>
 
           <div style={{ textAlign: "center", color: "#FFFFFF", padding: 20 }}>
             <h3>Or</h3>

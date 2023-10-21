@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const app = express();
 const User = require("./src/models/userModel");
 const Rating = require("./src/models/ratingModel");
@@ -15,6 +16,7 @@ const createToken = (_id) => {
 };
 
 app.use(express.json());
+app.use(cors());
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -291,21 +293,21 @@ app.post("/:myUsername/favorites/add", async (req, res) => {
   }
 });
 
-// // Route to login with Google
-// app.post("/login_google", async (req, res) => {
-//   const { googleJWT } = req.body;
+// Route to login with Google
+app.post("/login_google", async (req, res) => {
+  const { googleJWT } = req.body;
 
-//   try {
-//     const user = await User.loginWithGoogleJWT(googleJWT);
+  try {
+    const user = await User.loginWithGoogleJWT(googleJWT); // THIS LINE IS THE ISSUE
 
-//     // create a token
-//     const token = createToken(user._id);
+    // create a token
+    const token = createToken(user._id);
 
-//     res.status(200).json({ user.username, token });
-//   } catch (error) {
-//     res.status(400).json({ error: error.message });
-//   }
-// });
+    res.status(200).json({ username: user.username, token: token });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 // Route to delete a movie from the favorites list
 app.delete(

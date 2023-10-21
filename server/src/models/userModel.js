@@ -2,6 +2,10 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
+const { OAuth2Client } = require('google-auth-library');
+const { GOOGLE_CLIENT_ID } = require("../../../client/env");
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
 
 // Defining the schema for a User
 const Schema = mongoose.Schema;
@@ -117,6 +121,30 @@ userSchema.statics.loginWithGoogleJWT = async function (googleJWT) {
 
   // #TODO: Need to check that the JWT is valid
   // then extract email and check if a user exists
+
+    // Verify Google JWT
+    let payload;
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: googleJWT,
+        audience: GOOGLE_CLIENT_ID,
+      });
+      payload = ticket.getPayload();
+    } catch (error) {
+      throw Error('Invalid Google JWT');
+    }
+
+     // Extract email from the payload
+  const email = payload['email'];
+  if (!email) {
+    throw Error('Email not found in JWT payload');
+  }
+
+
+
+
+    //Extract user's email from the payload
+    const username = payload['email'];
 
   // Check if the user with the provided username exists
   const [user] = await Promise.all([this.findOne({ username })]);

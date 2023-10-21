@@ -291,6 +291,22 @@ app.post("/:myUsername/favorites/add", async (req, res) => {
   }
 });
 
+// Route to login with Google
+app.post("/login_google", async (req, res) => {
+  const { googleJWT } = req.body;
+
+  try {
+    const user = await User.loginWithGoogleJWT(googleJWT);
+
+    // create a token
+    const token = createToken(user._id);
+
+    res.status(200).json({ user.username, token });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 // Route to delete a movie from the favorites list
 app.delete(
   "/:myUsername/favorites/remove/:movieId",

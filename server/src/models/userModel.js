@@ -5,7 +5,6 @@ const validator = require("validator");
 const { OAuth2Client } = require('google-auth-library');
 const { GOOGLE_CLIENT_ID } = require("../../../client/env");
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
-const User = mongoose.model("User", userSchema);
 
 
 // Defining the schema for a User
@@ -65,6 +64,9 @@ const userSchema = new Schema({
   ],
 });
 
+const User = mongoose.model("User", userSchema);
+
+
 // Static method to signup a new user
 userSchema.statics.signup = async function (email, username, password) {
   // Validation checks
@@ -113,12 +115,23 @@ userSchema.statics.login = async function (username, password) {
   return user;
 };
 
+async function verifyGoogleToken(token) {
+  try {
+      const ticket = await client.verifyIdToken({
+          idToken: token,
+          audience: GOOGLE_CLIENT_ID,
+      });
+      return ticket;
+  } catch (error) {
+      console.error('Error verifying Google token:', error);
+      throw error;
+  }
+}
+
+
 // Static method to login a user
 // #TODO
 userSchema.statics.loginWithGoogleJWT = async function (googleJWT) {
-
-  import("../../../client/env").then(env => {
-  GOOGLE_CLIENT_ID = env.GOOGLE_CLIENT_ID;
 
   if (!googleJWT) {
     throw Error("Google JWT must be supplied");
@@ -127,16 +140,13 @@ userSchema.statics.loginWithGoogleJWT = async function (googleJWT) {
   // #TODO: Need to check that the JWT is valid
   // then extract email and check if a user exists
 
-    // Verify Google JWT
+    // Verify Google JWT using the helper function
     let payload;
     try {
-      const ticket = await client.verifyIdToken({
-        idToken: googleJWT,
-        audience: GOOGLE_CLIENT_ID,
-      });
-      payload = ticket.getPayload();
+        const ticket = await verifyGoogleToken(googleJWT);
+        payload = ticket.getPayload();
     } catch (error) {
-      throw Error('Invalid Google JWT');
+        throw Error('Invalid Google JWT');
     }
 
      // Extract email from the payload

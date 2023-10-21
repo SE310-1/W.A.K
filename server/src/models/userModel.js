@@ -3,7 +3,16 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const { OAuth2Client } = require('google-auth-library');
-const { GOOGLE_CLIENT_ID } = require("../../../client/env");
+
+let GOOGLE_CLIENT_ID;
+
+// Use an immediately-invoked async function to allow top-level await
+(async () => {
+  const env = await import("../../../client/env.js");
+  GOOGLE_CLIENT_ID = env.GOOGLE_CLIENT_ID;
+})();
+
+// const { GOOGLE_CLIENT_ID } = require("../../../client/env");
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 

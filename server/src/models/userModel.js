@@ -5,6 +5,7 @@ const validator = require("validator");
 const { OAuth2Client } = require('google-auth-library');
 const { GOOGLE_CLIENT_ID } = require("../../../client/env");
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+const User = mongoose.model("User", userSchema);
 
 
 // Defining the schema for a User
@@ -115,6 +116,10 @@ userSchema.statics.login = async function (username, password) {
 // Static method to login a user
 // #TODO
 userSchema.statics.loginWithGoogleJWT = async function (googleJWT) {
+
+  import("../../../client/env").then(env => {
+  GOOGLE_CLIENT_ID = env.GOOGLE_CLIENT_ID;
+
   if (!googleJWT) {
     throw Error("Google JWT must be supplied");
   }
@@ -140,22 +145,29 @@ userSchema.statics.loginWithGoogleJWT = async function (googleJWT) {
     throw Error('Email not found in JWT payload');
   }
 
+    // Check if the user with the provided email exists
+    let user = await User.findOne({ email: email });
 
-
-
-    //Extract user's email from the payload
-    const username = payload['email'];
-
-  // Check if the user with the provided username exists
-  const [user] = await Promise.all([this.findOne({ username })]);
-
-  if (!user) {
-    // #TODO: Need to create a user
-    // return newUser;
-  }
-
-  // Return the user so a JWT can be created
-  return user;
+    if (!user) {
+      // Derive a username from the email
+      const derivedUsername = email.split('@')[0]; // Use the part of the email before the @ symbol as the username
+      const usernameExists = await User.findOne({ username: derivedUsername });
+  
+      // Create a new user
+      user = await User.create({
+        email: email,
+        username: derivedUsername,  // Use the derived username
+        password: bcrypt.hashSync('google-' + payload['sub'], 10), // Use a default password or any dummy one, as it won't be used
+        friends: [],
+        friendsRequests: [],
+        outgoingRequests: [],
+        profilePicture: [],
+        favorites: [],
+      });
+    }
+  
+    // Return the user so a JWT can be created
+    return user;
 };
 
 // Method to add a movie to the user's favorites

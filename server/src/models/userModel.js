@@ -140,8 +140,7 @@ async function verifyGoogleToken(token) {
 
 // Static method to login a user
 // #TODO
-userSchema.statics.loginWithGoogleJWT = async function (googleJWT) {
-
+User.loginWithGoogleJWT = async function (googleJWT) {
   if (!googleJWT) {
     throw Error("Google JWT must be supplied");
   }

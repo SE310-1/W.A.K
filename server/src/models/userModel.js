@@ -2,6 +2,19 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
+const { OAuth2Client } = require('google-auth-library');
+
+let GOOGLE_CLIENT_ID;
+
+// Use an immediately-invoked async function to allow top-level await
+(async () => {
+  const env = await import("../../../client/env.js");
+  GOOGLE_CLIENT_ID = env.GOOGLE_CLIENT_ID;
+})();
+
+// const { GOOGLE_CLIENT_ID } = require("../../../client/env");
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
 
 // Defining the schema for a User
 const Schema = mongoose.Schema;
@@ -60,6 +73,9 @@ const userSchema = new Schema({
   ],
 });
 
+const User = mongoose.model("User", userSchema);
+
+
 // Static method to signup a new user
 userSchema.statics.signup = async function (email, username, password) {
   // Validation checks
@@ -106,6 +122,70 @@ userSchema.statics.login = async function (username, password) {
   }
 
   return user;
+};
+
+async function verifyGoogleToken(token) {
+  try {
+      const ticket = await client.verifyIdToken({
+          idToken: token,
+          audience: GOOGLE_CLIENT_ID,
+      });
+      return ticket;
+  } catch (error) {
+      console.error('Error verifying Google token:', error);
+      throw error;
+  }
+}
+
+
+// Static method to login a user
+// #TODO
+User.loginWithGoogleJWT = async function (googleJWT) {
+  if (!googleJWT) {
+    throw Error("Google JWT must be supplied");
+  }
+
+  // #TODO: Need to check that the JWT is valid
+  // then extract email and check if a user exists
+
+    // Verify Google JWT using the helper function
+    let payload;
+    try {
+        const ticket = await verifyGoogleToken(googleJWT);
+        payload = ticket.getPayload();
+    } catch (error) {
+        throw Error('Invalid Google JWT');
+    }
+
+     // Extract email from the payload
+  const email = payload['email'];
+  if (!email) {
+    throw Error('Email not found in JWT payload');
+  }
+
+    // Check if the user with the provided email exists
+    let user = await User.findOne({ email: email });
+
+    if (!user) {
+      // Derive a username from the email
+      const derivedUsername = email.split('@')[0]; // Use the part of the email before the @ symbol as the username
+      const usernameExists = await User.findOne({ username: derivedUsername });
+  
+      // Create a new user
+      user = await User.create({
+        email: email,
+        username: derivedUsername,  // Use the derived username
+        password: bcrypt.hashSync('google-' + payload['sub'], 10), // Use a default password or any dummy one, as it won't be used
+        friends: [],
+        friendsRequests: [],
+        outgoingRequests: [],
+        profilePicture: [],
+        favorites: [],
+      });
+    }
+  
+    // Return the user so a JWT can be created
+    return user;
 };
 
 // Method to add a movie to the user's favorites
